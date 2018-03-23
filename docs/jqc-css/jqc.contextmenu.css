@@ -1,0 +1,48 @@
+@charset 'utf-8';
+.jqcContextMenuBox {
+    border: 1px solid #c9c9c9;
+    position: absolute;
+    overflow: hidden;
+    width: 158px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    display: none;
+}
+.jqcContextMenuBox .fakeScollBox{
+    overflow: hidden;
+    width: 158px;
+    max-height: 224px;
+    background: #fff;
+}
+.jqcContextMenuBox .jqcContextMenuLeftBox{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 200px;
+    max-height: 224px;
+    overflow-y: scroll;
+}
+.jqcContextMenuBox .jqcContextMenuLeftBox > div {
+    width: 158px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    color: #333;
+    text-indent: 20px;
+    cursor: pointer;
+}
+.jqcContextMenuBox .jqcContextMenuLeftBox > div:hover {
+    background: #F2F2F2;
+}
+.jqcContextMenuBox .slide{
+    width: 5px;
+    height: 40px;
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+    background: #d8d8d8;
+}
+.jqcContextMenuBox .slide1{
+    left: 152px;
+}
