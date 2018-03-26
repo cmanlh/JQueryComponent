@@ -57,7 +57,7 @@
                     <td>是</td>
                     <td>合法的数组数据</td>
                     <td></td>
-                    <td>右击菜单中的选项，如：[{label: '菜单', id: 1}]</td>
+                    <td>右击菜单中的选项，最多支持两级菜单；二级菜单添加在对应的child属性下。格式如下代码：</td>
                 </tr>
                 <tr argument-name="selector">
                     <td>selector</td>
@@ -115,6 +115,16 @@ new $.jqcContextMenu({
     operations: [{
         label: '产品',
         id: 1
+        child: [{
+            label: '一',
+            id: 11
+        }, {
+            label: '二',
+            id: 12
+        }, {
+            label: '三',
+            id: 13
+        }]
     }, {
         label: '设计',
         id: 2

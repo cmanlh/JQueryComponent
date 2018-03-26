@@ -7,7 +7,17 @@ new $.jqcContextMenu({
     },
     operations: [{
         label: '产品',
-        id: 1
+        id: 1,
+        child: [{
+            label: '一',
+            id: 11
+        }, {
+            label: '二',
+            id: 12
+        }, {
+            label: '三',
+            id: 13
+        }]
     }, {
         label: '设计',
         id: 2

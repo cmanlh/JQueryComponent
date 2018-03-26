@@ -56,18 +56,35 @@
                 _fakeScollBox.append(_this.contextMenuFirstLevel);
                 this.contextMenuBox.append(_fakeScollBox);
                 this.options.operations.forEach(function(element) {
-                    var _el = $('<div>' + element.label + '</div>');
+                    var _el = $('<div class="jqcContextMenu-item">' + element.label + '</div>');
                     _el.attr('eventId', element.id);
-                    _el.click(function () {
-                        if (_this.options.onSelect) {
-                            _this.options.onSelect.call(_this.selector, {
-                                selectorId: _this.selectorId,
-                                eventId: element.id
-                            });
-                            _this.contextMenuBox.hide();
-                            _this.selectorId = '';
-                        }
-                    });
+                    if (element.child) {
+                        _el.on('mouseenter', function (e) {
+                           e.stopPropagation();
+                           $(this).addClass('jqcContextMenu-active').siblings().removeClass('jqcContextMenu-active');
+                           _this.renderSecondLevel(element.child, element.label);
+                        }).click(function (e) {
+                            e.stopPropagation();
+                        });
+                    } else {
+                        _el.click(function (e) {
+                            e.stopPropagation();
+                            if (_this.options.onSelect) {
+                                _this.options.onSelect.call(_this.selector, {
+                                    selectorId: _this.selectorId,
+                                    eventId: element.id
+                                });
+                                _this.contextMenuBox.hide();
+                                _this.selectorId = '';
+                            }
+                        }).on('mouseenter', function (e) {
+                            e.stopPropagation();
+                            _this.contextMenuBox.removeClass('jqcContextMenuDoubleSize');
+                            _this.contextMenuBox.find('.fakeScollBox2').remove();
+                            _this.contextMenuBox.find('.slide2').remove();
+                            _this.contextMenuBox.find('.jqcContextMenu-active').removeClass('jqcContextMenu-active');
+                        });
+                    }
                     _this.contextMenuFirstLevel.append(_el);
                 });
                 if (this.options.operations.length > this.options.max) {
@@ -90,7 +107,7 @@
                         _this.slide1.css('top', _top);
                     });
                     var _parentOffsetTop = this.contextMenuBox.offset().top + 1;
-                    this.slide1.on('mousedown', function (e) {
+                    this.slide1.on('mousedown click', function (e) {
                         e.stopPropagation();
                         var _y = e.pageY;
                         $(document).on('mousemove', function (e) {
@@ -106,7 +123,6 @@
                     $(document).on('mouseup', function () {
                         $(this).off('mousemove');
                     });
-
                 }
                 this.contextMenuBox.on('contextmenu', function (e) {
                     e.preventDefault();
@@ -123,47 +139,81 @@
                         _this.contextMenuBox.hide();
                     }
                 });
-                $(document).click(function (e) {
-                    if ($(e.target) != _this.contextMenuBox) {
-                        _this.contextMenuBox.hide();
-                    }
-                });
             };
             $.jqcContextMenu.prototype.contextMenuShow = function (e) {
                 var _this = this;
+                this.contextMenuBox
+                    .removeClass('jqcContextMenuDoubleSize')
+                    .find('.jqcContextMenu-active')
+                    .removeClass('jqcContextMenu-active');
                 var _offset = _this.el.offset().left + _this.el.width();
                 _this.contextMenuBox.css({
                     'top': e.pageY,
-                    'left': (e.pageX <= _offset - 158 ? e.pageX : e.pageX - 158)
+                    'left': (e.pageX <= _offset - 320 ? e.pageX : e.pageX - 158)
                 }).show();
                 this.contextMenuFirstLevel.scrollTop(0);
-                this.slide1 && this.slide1.css('top', 0);  
+                this.slide1 && this.slide1.css('top', 0);
+                $(document).off('click');
+                $(document).on('click', function () {
+                    _this.contextMenuBox.hide();
+                });  
             };
-            $.jqcContextMenu.prototype.renderMenuList = function (targetId, operationIds) {
+            $.jqcContextMenu.prototype.renderSecondLevel = function (child, parentLabel) {
                 var _this = this;
-                var _operationIds = operationIds.split(',');
-                this.contextMenuBox.html('操作');
-                $.each(_operationIds, function (i, operationId) {
-                    var _el = $('<div>'+ _this.options.operations[operationId] +'</div>');
-                    _el.addClass('jqcContextMenu-active');
-                    _el.click(function () {
+                this.contextMenuBox.addClass('jqcContextMenuDoubleSize');
+                this.contextMenuBox.find('.fakeScollBox2').remove();
+                this.contextMenuBox.find('.slide2').remove();
+                this.contextMenuSecondLevel = $('<div class="jqcContextMenuRightBox"></div>').css('max-height', _this.maxHeight);
+                var _fakeScollBox = $('<div class="fakeScollBox fakeScollBox2"></div>').css('max-height', _this.maxHeight);
+                _fakeScollBox.append(this.contextMenuSecondLevel);
+                this.contextMenuBox.append(_fakeScollBox);
+                child.forEach(function(data) {
+                    var _el = $('<div class="jqcContextMenu-item">' + parentLabel + '/' + data.label + '</div>');
+                    _el.click(function (e) {
+                        e.stopPropagation();
                         if (_this.options.onSelect) {
-                            _this.options.onSelect({
-                                targetId: targetId,
-                                operationId: operationId
+                            _this.options.onSelect.call(_this.selector, {
+                                selectorId: _this.selectorId,
+                                eventId: data.id
                             });
+                            _this.contextMenuBox.hide();
+                            _this.selectorId = '';
                         }
-                        $JqcWatcher.trigger(_this.options.listener, {
-                            targetId: targetId,
-                            operationId: operationId
+                    });
+                    _this.contextMenuSecondLevel.append(_el);
+                });
+                if (child.length > this.options.max) {
+                    this.slide2 = $('<span><span>').addClass('slide slide2');
+                    var _height = parseInt(_this.options.max * _this.maxHeight / child.length) ;
+                    this.slide2.height(_height);
+                    this.contextMenuBox.append(_this.slide2);
+                }
+                if (this.slide2) {
+                    var _height = this.slide2.height();
+                    this.contextMenuSecondLevel.scroll(function (e) {
+                        e.stopPropagation();
+                        var _scrollTop = $(this).scrollTop();
+                        var _top = (_this.maxHeight + _scrollTop) * _this.maxHeight / 32 / child.length - _height;
+                        _this.slide2.css('top', _top);
+                    });
+                    var _parentOffsetTop = this.contextMenuBox.offset().top + 1;
+                    this.slide2.on('mousedown click', function (e) {
+                        e.stopPropagation();
+                        var _y = e.pageY;
+                        $(document).on('mousemove', function (e) {
+                            var _offsetTop = _this.slide2.offset().top - _parentOffsetTop;
+                            var _top = e.pageY - _y;
+                            _top = _top < 0 ? 0 : _top;
+                            _top = _top + _height > _this.maxHeight ? _this.maxHeight - _height : _top;
+                            _this.slide2.css('top', _top); 
+                            var _scrollTop = (_top + _height) * child.length * 32 / _this.maxHeight - _this.maxHeight;
+                            _this.contextMenuSecondLevel.scrollTop(_scrollTop);
                         });
                     });
-                    _this.contextMenuBox.append(_el);
-                });
-                this.contextMenuBox.off();
-                this.contextMenuBox.on('contextmenu', function (e) {
-                    e.preventDefault();
-                });
+                    $(document).on('mouseup', function () {
+                        $(this).off('mousemove');
+                    });
+                }
             };
         });
 }(jQuery));

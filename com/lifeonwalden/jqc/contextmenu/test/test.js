@@ -13,7 +13,20 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 element: $('#table1'),
                 operations: [{
                     label: '操作1',
-                    id: 1
+                    id: 1,
+                    child: [{
+                        label: '测试101',
+                        id: 101
+                    }, {
+                        label: '测试102',
+                        id: 102
+                    }, {
+                        label: '测试103',
+                        id: 103
+                    }, {
+                        label: '测试104',
+                        id: 104
+                    }]
                 }, {
                     label: '操作2',
                     id: 2
@@ -40,7 +53,14 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                     id: 9
                 }, {
                     label: '操作10',
-                    id: 10
+                    id: 10,
+                    child: [{
+                        label: '测试101',
+                        id: 101
+                    }, {
+                        label: '测试102',
+                        id: 102
+                    }]
                 }],
                 selector: 'tr',
                 selectorId: 'targetId',

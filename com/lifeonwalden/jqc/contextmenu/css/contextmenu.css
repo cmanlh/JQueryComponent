@@ -1,9 +1,8 @@
 @charset 'utf-8';
 .jqcContextMenuBox {
-    border: 1px solid #c9c9c9;
     position: absolute;
     overflow: hidden;
-    width: 158px;
+    width: 160px;
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
@@ -14,16 +13,26 @@
     width: 158px;
     max-height: 224px;
     background: #fff;
+    border: 1px solid #c9c9c9;
+}
+.jqcContextMenuDoubleSize{
+    width: 329px;
+}
+.jqcContextMenuBox .fakeScollBox2{
+    position: absolute;
+    top: 0;
+    left: 160px;
+    border-left: none;
 }
 .jqcContextMenuBox .jqcContextMenuLeftBox{
-    position: relative;
-    top: 0;
-    left: 0;
     width: 200px;
-    max-height: 224px;
     overflow-y: scroll;
 }
-.jqcContextMenuBox .jqcContextMenuLeftBox > div {
+.jqcContextMenuBox .jqcContextMenuRightBox{
+    width: 200px;
+    overflow-y: scroll;
+}
+.jqcContextMenuBox div.jqcContextMenu-item {
     width: 158px;
     height: 32px;
     line-height: 32px;
@@ -32,7 +41,10 @@
     text-indent: 20px;
     cursor: pointer;
 }
-.jqcContextMenuBox .jqcContextMenuLeftBox > div:hover {
+.jqcContextMenuBox div.jqcContextMenu-item:hover {
+    background: #F2F2F2;
+}
+.jqcContextMenuBox div.jqcContextMenu-active {
     background: #F2F2F2;
 }
 .jqcContextMenuBox .slide{
@@ -45,4 +57,7 @@
 }
 .jqcContextMenuBox .slide1{
     left: 152px;
+}
+.jqcContextMenuBox .slide2{
+    left: 311px;
 }
