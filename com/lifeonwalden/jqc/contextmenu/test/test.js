@@ -15,17 +15,42 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                     label: '操作1',
                     id: 1,
                     child: [{
-                        label: '测试101',
-                        id: 101
+                        label: '测试11',
+                        id: 11,
+                        child: [{
+                            label: '测试111',
+                            id: 111
+                        }, {
+                            label: '测试112',
+                            id: 112
+                        }, {
+                            label: '测试113',
+                            id: 113
+                        }, {
+                            label: '测试114',
+                            id: 114
+                        }, {
+                            label: '测试115',
+                            id: 115
+                        }, {
+                            label: '测试116',
+                            id: 116
+                        }]
                     }, {
-                        label: '测试102',
-                        id: 102
+                        label: '测试12',
+                        id: 12
                     }, {
-                        label: '测试103',
-                        id: 103
+                        label: '测试13',
+                        id: 13
                     }, {
-                        label: '测试104',
-                        id: 104
+                        label: '测试14',
+                        id: 14
+                    }, {
+                        label: '测试15',
+                        id: 15
+                    }, {
+                        label: '测试16',
+                        id: 16
                     }]
                 }, {
                     label: '操作2',

@@ -8,7 +8,7 @@
     user-select: none;
     display: none;
 }
-.jqcContextMenuBox .fakeScollBox{
+.jqcContextMenuBox .fakeScrollBox{
     overflow: hidden;
     width: 158px;
     max-height: 224px;
@@ -18,17 +18,28 @@
 .jqcContextMenuDoubleSize{
     width: 329px;
 }
-.jqcContextMenuBox .fakeScollBox2{
+.jqcContextMenuTrebleSize{
+    width: 479px;
+}
+.jqcContextMenuBox .fakeScrollBox2{
     position: absolute;
     top: 0;
-    left: 160px;
-    border-left: none;
+    left: 159px;
+}
+.jqcContextMenuBox .fakeScrollBox3{
+    position: absolute;
+    top: 0;
+    left: 318px;
 }
 .jqcContextMenuBox .jqcContextMenuLeftBox{
     width: 200px;
     overflow-y: scroll;
 }
 .jqcContextMenuBox .jqcContextMenuRightBox{
+    width: 200px;
+    overflow-y: scroll;
+}
+.jqcContextMenuBox .jqcContextMenuThirdLevelBox{
     width: 200px;
     overflow-y: scroll;
 }
@@ -40,6 +51,9 @@
     color: #333;
     text-indent: 20px;
     cursor: pointer;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
 }
 .jqcContextMenuBox div.jqcContextMenu-item:hover {
     background: #F2F2F2;
@@ -60,4 +74,7 @@
 }
 .jqcContextMenuBox .slide2{
     left: 311px;
+}
+.jqcContextMenuBox .slide3{
+    left: 470px;
 }

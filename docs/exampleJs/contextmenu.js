@@ -10,7 +10,26 @@ new $.jqcContextMenu({
         id: 1,
         child: [{
             label: '一',
-            id: 11
+            id: 11,
+            child: [{
+                label: 'aa1',
+                id: 111
+            }, {
+                label: 'aa2',
+                id: 112
+            }, {
+                label: 'aa3',
+                id: 113
+            }, {
+                label: 'aa4',
+                id: 114
+            }, {
+                label: 'aa5',
+                id: 115
+            }, {
+                label: 'aa6',
+                id: 116
+            }]
         }, {
             label: '二',
             id: 12
