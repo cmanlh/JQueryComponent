@@ -9,11 +9,11 @@ var data = [{
     }, {
         label: '二级菜单01-03',
         zid: 18,
-        eid: 20
-        // child: [{
-        //     label: '三级菜单01-03-01',
-        //     href: 'http://www.qq.com'
-        // }]
+        eid: 20,
+        child: [{
+            label: '三级菜单01-03-01',
+            href: 'http://www.qq.com'
+        }]
     }]
 }, {
     label: '一级菜单02',
@@ -32,19 +32,24 @@ var data = [{
     label: '一级菜单03',
     child: [{
         label: '二级菜单03-01',
-        // child: [{
-        //     label: '三级菜单03-01-01'
-        // }, {
-        //     label: '三级菜单03-01-02'
-        // }, {
-        //     label: '三级菜单03-01-03'
-        // }]
+        child: [{
+            label: '三级菜单03-01-01'
+        }, {
+            label: '三级菜单03-01-02'
+        }, {
+            label: '三级菜单03-01-03'
+        }]
     }, {
         label: '二级菜单03-02',
         href: 'http://www.baidu.com'
     }]
 }, {
     label: '一级菜单04'
+}, {
+    label: '一级菜单05',
+    child: [{
+        label: '二级菜单05-01'
+    }]
 }];
 var menu;
 $('#btn_create').one('click', function () {
@@ -69,6 +74,6 @@ $('#btn_hide').click(function () {
 $('#btn_select').click(function () {
     if (menu) {
         menu.showMenu();
-        menu.setCurrentLabel('二级菜单02-03');
+        menu.setCurrentLabel('三级菜单03-01-02');
     }
 });

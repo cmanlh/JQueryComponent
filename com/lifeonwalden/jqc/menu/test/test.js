@@ -20,11 +20,11 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 }, {
                     label: '二级菜单01-03',
                     zid: 18,
-                    eid: 20
-                    // child: [{
-                    //     label: '三级菜单01-03-01',
-                    //     href: 'http://www.qq.com'
-                    // }]
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
                 }]
             }, {
                 label: '一级菜单02',
@@ -43,13 +43,13 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 label: '一级菜单03',
                 child: [{
                     label: '二级菜单03-01',
-                    // child: [{
-                    //     label: '三级菜单03-01-01'
-                    // }, {
-                    //     label: '三级菜单03-01-02'
-                    // }, {
-                    //     label: '三级菜单03-01-03'
-                    // }]
+                    child: [{
+                        label: '三级菜单03-01-01'
+                    }, {
+                        label: '三级菜单03-01-02'
+                    }, {
+                        label: '三级菜单03-01-03'
+                    }]
                 }, {
                     label: '二级菜单03-02',
                     href: 'http://www.baidu.com'
@@ -66,7 +66,6 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 data: data,
                 show: true,
                 speed: 200,
-                // defaultLabel: '二级菜单03-02',
                 onSelect: function (menu) {
                     $('#div2').text(JSON.stringify(menu));
                 }

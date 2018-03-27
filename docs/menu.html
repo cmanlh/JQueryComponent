@@ -24,7 +24,7 @@
     <div class="catalog">
         <a href="index.html">主目录 >>></a>
     </div>
-    <div class="title">Menu</div>
+    <div class="title">menu</div>
     <section>
         <div class="sectionTitle">功能</div>
         <ul>
@@ -142,7 +142,11 @@ var data = [{
     }, {
         label: '二级菜单01-03',
         zid: 18,
-        eid: 20
+        eid: 20,
+        child: [{
+            label: '三级菜单01-03-01',
+            href: 'http://www.qq.com'
+        }]
     }]
 }, {
     label: '一级菜单02',
@@ -161,12 +165,24 @@ var data = [{
     label: '一级菜单03',
     child: [{
         label: '二级菜单03-01',
+        child: [{
+            label: '三级菜单03-01-01'
+        }, {
+            label: '三级菜单03-01-02'
+        }, {
+            label: '三级菜单03-01-03'
+        }]
     }, {
         label: '二级菜单03-02',
         href: 'http://www.baidu.com'
     }]
 }, {
     label: '一级菜单04'
+}, {
+    label: '一级菜单05',
+    child: [{
+        label: '二级菜单05-01'
+    }]
 }];
             </pre>
         </section>
@@ -177,9 +193,11 @@ var data = [{
                 <button id="btn_create">生成菜单</button>
                 <button id="btn_show">展开菜单</button>
                 <button id="btn_hide">隐藏菜单</button>
-                <button id="btn_select">展开并选中‘二级菜单02-03’</button>
+                <button id="btn_select">展开并选中‘三级菜单03-01-02’</button>
             </div>
             <pre class="prettyprint linenums">
+var menu;
+
 $('#btn_create').one('click', function () {
     menu = new $.jqcMenu({
         data: data,
@@ -202,7 +220,7 @@ $('#btn_hide').click(function () {
 $('#btn_select').click(function () {
     if (menu) {
         menu.showMenu();
-        menu.setCurrentLabel('二级菜单02-03');
+        menu.setCurrentLabel('三级菜单03-01-02');
     }
 });
         </pre>

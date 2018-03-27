@@ -56,6 +56,9 @@
     cursor: pointer;
     margin: 0;
     padding: 0;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
 }
 .jqcMenuContainer > div{
     overflow: hidden;
@@ -63,7 +66,7 @@
     line-height: 52px;
     font-size: 16px;
     color: #fff;
-    text-indent: 60px;
+    text-indent: 50px;
     box-sizing: border-box;
 }
 .jqcMenuContainer div.isCollapes{
@@ -72,28 +75,23 @@
 .jqcMenuContainer > div.hasChild{
     position: relative;
 }
-.jqcMenuContainer > div.hasChild:before{
-    position: absolute;
-    content: '';
-    width: 20px;
-    height: 20px;
-    background: url('./images/icon_add.png') no-repeat center;
-    background-size: 20px 20px;
-    top: 16px;
-    left: 35px;
-}
 .jqcMenuContainer > div:hover{
     background: #818285;
 }
 .jqcMenuContainer > div.isCollapes{
     background: #818285;
 }
-.jqcMenuContainer > div.isCollapes:before{
-    background: url('./images/icon_collapes.png') no-repeat center;
-    background-size: 20px 20px;
-}
 .jqcMenuContainer > div > div{
-    background: rgba(0, 0, 0, 1);
+    background: #333;
+    color: #818285;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+    text-indent: 60px;
+}
+.jqcMenuContainer > div > div > div{
+    background: #333;
     color: #818285;
     font-size: 12px;
     height: 40px;
@@ -101,22 +99,11 @@
     position: relative;
     text-indent: 75px;
 }
-.jqcMenuContainer > div > div:before{
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: url('./images/icon_level_2.png') no-repeat center;
-    background-size: 10px 10px;
-    top: 15px;
-    left: 60px;
-}
 .jqcMenuContainer > div > div:hover{
     color: #fff;
 }
-.jqcMenuContainer > div > div:hover:before{
-    background: url('./images/icon_level_2_active.png') no-repeat center;
-    background-size: 10px 10px;
+.jqcMenuContainer > div > div > div:hover{
+    color: #fff;
 }
 .jqcMenuContainer > div.jqcMenu-active{
     background-color: #818285;
@@ -124,25 +111,13 @@
 .jqcMenuContainer > div > div.jqcMenu-active{
     color: #fff;
     font-size: 14px;
+    background: #666;
 }
-.jqcMenuContainer > div > div.jqcMenu-active:before{
-    background: url('./images/icon_level_2_active.png') no-repeat center;
-    background-size: 10px 10px;
+.jqcMenuContainer > div > div > div.jqcMenu-active{
+    color: #fff;
+    background: #555;
 }
 .jqcMenuContainer > div > div.isCollapes{
     color: #fff;
-    font-size: 14px;
-}
-.jqcMenuContainer > div > div.isCollapes:before{
-    background: url('./images/icon_level_2_active.png') no-repeat center;
-    background-size: 10px 10px;
-}
-.jqcMenuContainer > div > div:nth-child(1){
-    padding-top: 10px;
-}
-.jqcMenuContainer > div > div:nth-child(1):before{
-    top: 25px;
-}
-.jqcMenuContainer > div > div:nth-last-child(1){
-    padding-bottom: 10px;
+    background: #666;
 }
