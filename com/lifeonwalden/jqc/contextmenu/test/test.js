@@ -9,87 +9,34 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
             .registerComponent('contextmenu'));
 
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['contextmenu']).execute(function () {
+            function create_data() {
+                var create_three = function (num) {
+                    return new Array(10).fill(1).map((item, index) => ({
+                        label: '三级菜单' + num + index,
+                        id: num.toString() + index
+                    }));
+                };
+                var create_two = function (num) {
+                    return new Array(10).fill(1).map((item, index) => ({
+                        label: '二级菜单' + num + index,
+                        id: num.toString() + index,
+                        child: create_three(num.toString() + index)
+                    }));
+                };
+                return new Array(10).fill(1).map((item, index) => ({
+                    label: '一级菜单' + index,
+                    id: index,
+                    child: create_two(index)
+                }));
+            }
+
+            var data = create_data();
+
             var contextMenu = new $.jqcContextMenu({
                 element: $('#table1'),
-                operations: [{
-                    label: '操作1',
-                    id: 1,
-                    child: [{
-                        label: '测试11',
-                        id: 11,
-                        child: [{
-                            label: '测试111',
-                            id: 111
-                        }, {
-                            label: '测试112',
-                            id: 112
-                        }, {
-                            label: '测试113',
-                            id: 113
-                        }, {
-                            label: '测试114',
-                            id: 114
-                        }, {
-                            label: '测试115',
-                            id: 115
-                        }, {
-                            label: '测试116',
-                            id: 116
-                        }]
-                    }, {
-                        label: '测试12',
-                        id: 12
-                    }, {
-                        label: '测试13',
-                        id: 13
-                    }, {
-                        label: '测试14',
-                        id: 14
-                    }, {
-                        label: '测试15',
-                        id: 15
-                    }, {
-                        label: '测试16',
-                        id: 16
-                    }]
-                }, {
-                    label: '操作2',
-                    id: 2
-                }, {
-                    label: '操作3',
-                    id: 3
-                }, {
-                    label: '操作4',
-                    id: 4
-                }, {
-                    label: '操作5',
-                    id: 5
-                }, {
-                    label: '操作6',
-                    id: 6
-                }, {
-                    label: '操作7',
-                    id: 7
-                }, {
-                    label: '操作8',
-                    id: 8
-                }, {
-                    label: '操作9',
-                    id: 9
-                }, {
-                    label: '操作10',
-                    id: 10,
-                    child: [{
-                        label: '测试101',
-                        id: 101
-                    }, {
-                        label: '测试102',
-                        id: 102
-                    }]
-                }],
+                operations: data,
                 selector: 'tr',
                 selectorId: 'targetId',
-                max: 5,
                 onSelect: function (data) {
                     console.log(data);
                 }
@@ -100,16 +47,8 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 element: $('#div1'),
                 selector: 'li',
                 selectorId: 'data-id',
-                operations: [{
-                    label: '删除',
-                    id: 1
-                }, {
-                    label: '撤销',
-                    id: 2
-                }, {
-                    label: '发送',
-                    id: 3
-                }],
+                operations: data,
+                max: 5,
                 onSelect: function (data) {
                     console.log(data);
                 }
@@ -119,22 +58,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 element: $('#div2'),
                 selector: '.test',
                 selectorId: 'data-did',
-                operations: [{
-                    label: 'test1',
-                    id: 1
-                }, {
-                    label: 'test2',
-                    id: 2
-                }, {
-                    label: 'test3',
-                    id: 3
-                }, {
-                    label: 'test4',
-                    id: 4
-                }, {
-                    label: 'test5',
-                    id: 5
-                }],
+                operations: data,
                 onSelect: function (data) {
                     console.log(data);
                 }

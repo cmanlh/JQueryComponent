@@ -29,9 +29,9 @@
         element: null,
         selectorId: '',
         selector: '',
-        max: 5,
         onSelect: null,
     };
+    var $window = $(window);
     $.jqcContextMenu = function (params) {
         if (arguments.length > 0) {
             $.jqcBaseElement.apply(this, arguments);
@@ -45,18 +45,27 @@
         this.elementId = 'jqc'.concat($.jqcUniqueKey.fetchIntradayKey());
         this.el.attr($.jqcBaseElement.JQC_ELEMENT_TYPE, this.typeName);
         this.el.attr($.jqcBaseElement.JQC_ELEMENT_ID, this.elementId);
-        this.maxHeight = this.options.max * 32;
-        this.renderFirstLevel();
+        this.maxHeight = this.options.max ? this.options.max * 32 : 'auto';
+        var firstLevelLen = this.options.operations.length;
+        this.currentHeight = (this.options.max && firstLevelLen > this.options.max) ? this.maxHeight : firstLevelLen * 32;
+        this.screenHeight = $window.height();
+        this.screenWidth = $window.width();
+        this.level = 1;
+        this.init();
         
     };
     $.jqcContextMenu.prototype = new $.jqcBaseElement();
     $.jqcContextMenu.prototype.constructor = $.jqcContextMenu;
+    $.jqcContextMenu.prototype.init = function () {
+        this.getLevel();
+        this.renderFirstLevel();
+    };
     $.jqcContextMenu.prototype.renderFirstLevel = function () {
         var _this = this;
         this.contextMenuBox = $('<div class="jqcContextMenuBox"></div>')
             .attr('data-id', _this.elementId);
-        this.contextMenuFirstLevel = $('<div class="jqcContextMenuLeftBox"></div>').css('max-height', _this.maxHeight);
-        var _fakeScrollBox = $('<div class="fakeScrollBox"></div>').css('max-height', _this.maxHeight);
+        this.contextMenuFirstLevel = $('<div class="jqcContextMenuScrollBox"></div>').css('max-height', _this.maxHeight);
+        var _fakeScrollBox = $('<div class="fakeScrollBox fakeScrollBox1"></div>').css('max-height', _this.maxHeight);
         _fakeScrollBox.append(_this.contextMenuFirstLevel);
         this.contextMenuBox.append(_fakeScrollBox);
         this.options.operations.forEach(function(element) {
@@ -66,7 +75,8 @@
                 _el.on('mouseenter', function (e) {
                     e.stopPropagation();
                     $(this).addClass('jqcContextMenu-active').siblings().removeClass('jqcContextMenu-active');
-                    _this.renderSecondLevel(element.child);
+                    _this.destroySecondLevel();
+                    _this.renderSecondLevel(element.child, $(this).offset().top);
                 }).click(function (e) {
                     e.stopPropagation();
                 });
@@ -93,13 +103,8 @@
             this.slide1 = $('<span><span>').addClass('slide slide1');
             var _height = parseInt(_this.options.max * _this.maxHeight / this.options.operations.length) ;
             this.slide1.height(_height);
-            this.contextMenuBox.append(_this.slide1);
+            _fakeScrollBox.append(_this.slide1);
         }
-        $('body').append(_this.contextMenuBox);
-        this.bindEvent();
-    };
-    $.jqcContextMenu.prototype.bindEvent = function () {
-        var _this = this;
         if (this.slide1) {
             var _height = this.slide1.height();
             this.contextMenuFirstLevel.scroll(function (e) {
@@ -110,7 +115,7 @@
             });
             this.slide1.on('mousedown click', function (e) {
                 e.stopPropagation();
-                var _parentOffsetTop = _this.contextMenuBox.offset().top;
+                var _parentOffsetTop = $(this).parent('.fakeScrollBox').offset().top;
                 var _y = e.pageY;
                 var _offsetTop = _this.slide1.offset().top - _parentOffsetTop;
                 $(document).on('mousemove', function (e) {
@@ -126,10 +131,16 @@
                 $(this).off('mousemove');
             });
         }
+        $('body').append(_this.contextMenuBox);
+        this.bindEvent();
+    };
+    $.jqcContextMenu.prototype.bindEvent = function () {
+        var _this = this;
         this.contextMenuBox.on('contextmenu', function (e) {
+            e.stopPropagation();
             e.preventDefault();
+            _this.contextMenuBox.show();
         });
-
         this.el.on('contextmenu', _this.options.selector, function (e) {
             e.preventDefault();
             var _selectorId = $(this).attr(_this.options.selectorId);
@@ -141,6 +152,10 @@
                 _this.contextMenuBox.hide();
             }
         });
+        $(window).on('resize', function (e) {
+            _this.screenHeight = $window.height();
+            _this.screenWidth = $window.width();
+        });
     };
     $.jqcContextMenu.prototype.contextMenuShow = function (e) {
         var _this = this;
@@ -149,10 +164,21 @@
             .find('.jqcContextMenu-active')
             .removeClass('jqcContextMenu-active');
         var _offset = _this.el.offset().left + _this.el.width();
-        _this.contextMenuBox.css({
-            'top': e.pageY,
-            'left': (e.pageX <= _offset - 320 ? e.pageX : e.pageX - 158)
-        }).show();
+        if (this.level > 1 && (e.pageX > (this.screenWidth - this.level * 160))) {
+            this.contextMenuBox.addClass('to-left');
+        } else {
+            this.contextMenuBox.removeClass('to-left');
+        }
+        if (e.pageY > _this.screenHeight - _this.currentHeight) {
+            this.contextMenuBox.addClass('to-top');
+        } else {
+            this.contextMenuBox.removeClass('to-top');
+        }
+        this.contextMenuBox
+            .css({
+                'left': e.pageX,
+                'top': e.pageY
+            }).show();
         this.contextMenuFirstLevel.scrollTop(0);
         this.slide1 && this.slide1.css('top', 0);
         $(document).off('click');
@@ -171,13 +197,24 @@
             .find('.slide2')
             .remove();
     };
-    $.jqcContextMenu.prototype.renderSecondLevel = function (child, parentLabel) {
+    $.jqcContextMenu.prototype.renderSecondLevel = function (child, offsetTop) {
         var _this = this;
         this.destroyThirdLevel();
         this.contextMenuBox.addClass('jqcContextMenuDoubleSize');
-        this.contextMenuSecondLevel = $('<div class="jqcContextMenuRightBox"></div>').css('max-height', _this.maxHeight);
+        this.contextMenuSecondLevel = $('<div class="jqcContextMenuScrollBox"></div>').css('max-height', _this.maxHeight);
         var _fakeScrollBox = $('<div class="fakeScrollBox fakeScrollBox2"></div>').css('max-height', _this.maxHeight);
         _fakeScrollBox.append(this.contextMenuSecondLevel);
+        if (offsetTop + child.length * 32 + 20 > this.screenHeight) {
+            _fakeScrollBox.css({
+                'top': 'auto',
+                'bottom': _this.contextMenuBox.offset().top - offsetTop - 33
+            });
+        } else {
+            _fakeScrollBox.css({
+                'top': offsetTop - _this.contextMenuBox.offset().top -1,
+                'bottom': 'auto'
+            });
+        }
         this.contextMenuBox.append(_fakeScrollBox);
         child.forEach(function(data) {
             var _el = $('<div class="jqcContextMenu-item">' + data.label + '</div>');
@@ -185,7 +222,7 @@
                 _el.on('mouseenter', function (e) {
                     e.stopPropagation();
                     $(this).addClass('jqcContextMenu-active').siblings().removeClass('jqcContextMenu-active');
-                    _this.renderThirdLevel(data.child);
+                    _this.renderThirdLevel(data.child, $(this).offset().top);
                 }).click(function (e) {
                     e.stopPropagation();
                 }); 
@@ -206,15 +243,14 @@
                     _this.destroyThirdLevel();
                     $(this).siblings().removeClass('jqcContextMenu-active');
                 });
-            }
-                
+            }   
             _this.contextMenuSecondLevel.append(_el);
         });
         if (child.length > this.options.max) {
             this.slide2 = $('<span><span>').addClass('slide slide2');
             var _height = parseInt(_this.options.max * _this.maxHeight / child.length) ;
             this.slide2.height(_height);
-            this.contextMenuBox.append(_this.slide2);
+            _fakeScrollBox.append(_this.slide2);
         }
         if (this.slide2) {
             var _height = this.slide2.height();
@@ -226,9 +262,10 @@
             });
             this.slide2.on('mousedown click', function (e) {
                 e.stopPropagation();
-                var _parentOffsetTop = _this.contextMenuBox.offset().top + 1;
+                var _parentOffsetTop = $(this).parent('.fakeScrollBox').offset().top + 1;
                 var _y = e.pageY;
                 var _offsetTop = _this.slide2.offset().top - _parentOffsetTop;
+                console.log(_offsetTop);
                 $(document).on('mousemove', function (e) {
                     var _top = e.pageY - _y + _offsetTop;
                     _top = _top < 0 ? 0 : _top;
@@ -253,14 +290,25 @@
             .find('.slide3')
             .remove();
     };
-    $.jqcContextMenu.prototype.renderThirdLevel = function (child, parentLabel) {
+    $.jqcContextMenu.prototype.renderThirdLevel = function (child, offsetTop) {
         var _this = this;
         this.contextMenuBox.addClass('jqcContextMenuTrebleSize');
         this.contextMenuBox.find('.fakeScrollBox3').remove();
         this.contextMenuBox.find('.slide3').remove();
-        this.contextMenuThirdLevel = $('<div class="jqcContextMenuThirdLevelBox"></div>').css('max-height', _this.maxHeight);
+        this.contextMenuThirdLevel = $('<div class="jqcContextMenuScrollBox"></div>').css('max-height', _this.maxHeight);
         var _fakeScrollBox = $('<div class="fakeScrollBox fakeScrollBox3"></div>').css('max-height', _this.maxHeight);
         _fakeScrollBox.append(this.contextMenuThirdLevel);
+        if (offsetTop + child.length * 32 + 20 > this.screenHeight) {
+            _fakeScrollBox.css({
+                'top': 'auto',
+                'bottom': _this.contextMenuBox.offset().top - offsetTop - 33
+            });
+        } else {
+            _fakeScrollBox.css({
+                'top': offsetTop - _this.contextMenuBox.offset().top - 1,
+                'bottom': 'auto'
+            });
+        }
         this.contextMenuBox.append(_fakeScrollBox);
         child.forEach(function(data) {
             var _el = $('<div class="jqcContextMenu-item">' + data.label + '</div>');
@@ -282,7 +330,7 @@
             this.slide3 = $('<span><span>').addClass('slide slide3');
             var _height = parseInt(_this.options.max * _this.maxHeight / child.length) ;
             this.slide3.height(_height);
-            this.contextMenuBox.append(_this.slide3);
+            _fakeScrollBox.append(_this.slide3);
         }
         if (this.slide3) {
             var _height = this.slide3.height();
@@ -294,7 +342,7 @@
             });
             this.slide3.on('mousedown click', function (e) {
                 e.stopPropagation();
-                var _parentOffsetTop = _this.contextMenuBox.offset().top + 1;
+                var _parentOffsetTop = $(this).parent('.fakeScrollBox').offset().top + 1;
                 var _y = e.pageY;
                 var _offsetTop = _this.slide3.offset().top - _parentOffsetTop;
                 $(document).on('mousemove', function (e) {
@@ -310,5 +358,20 @@
                 $(this).off('mousemove');
             });
         }
+    };
+    $.jqcContextMenu.prototype.getLevel = function () {
+        var _this = this;
+        var _child = [];
+        this.options.operations.forEach(function(item) {
+            if (item.child) {
+                _this.level = 2;
+                _child = _child.concat(item.child);
+            }
+        });
+        _child.forEach(function (item) {
+            if (item.child) {
+                _this.level = 3;
+            }
+        });
     };
 }(jQuery));

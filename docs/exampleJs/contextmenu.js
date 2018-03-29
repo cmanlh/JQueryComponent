@@ -1,3 +1,40 @@
+// example
+var example_data = [{
+    label: 'example1',
+    id: 1,
+    child: [{
+        label: 'example2',
+        id: 11,
+        child: [{
+            label: 'example3',
+            id: 111
+        }]
+    }]
+}];
+
+
+function create_data() {
+    var create_three = function (num) {
+        return new Array(10).fill(1).map((item, index) => ({
+            label: '三级菜单' + num + index,
+            id: num.toString() + index
+        }));
+    };
+    var create_two = function (num) {
+        return new Array(10).fill(1).map((item, index) => ({
+            label: '二级菜单' + num + index,
+            id: num.toString() + index,
+            child: create_three(num.toString() + index)
+        }));
+    };
+    return new Array(10).fill(1).map((item, index) => ({
+        label: '一级菜单' + index,
+        id: index,
+        child: create_two(index)
+    }));
+}
+
+
 new $.jqcContextMenu({
     element: $('#argumentsTable'),
     selector: 'tr',
@@ -5,52 +42,5 @@ new $.jqcContextMenu({
     onSelect: function (data) {
         $('#input1').val(JSON.stringify(data));     
     },
-    operations: [{
-        label: '产品',
-        id: 1,
-        child: [{
-            label: '一',
-            id: 11,
-            child: [{
-                label: 'aa1',
-                id: 111
-            }, {
-                label: 'aa2',
-                id: 112
-            }, {
-                label: 'aa3',
-                id: 113
-            }, {
-                label: 'aa4',
-                id: 114
-            }, {
-                label: 'aa5',
-                id: 115
-            }, {
-                label: 'aa6',
-                id: 116
-            }]
-        }, {
-            label: '二',
-            id: 12
-        }, {
-            label: '三',
-            id: 13
-        }]
-    }, {
-        label: '设计',
-        id: 2
-    }, {
-        label: '前端',
-        id: 3
-    }, {
-        label: '后台',
-        id: 4
-    }, {
-        label: '项目',
-        id: 5
-    }, {
-        label: '发布',
-        id: 6
-    }]
+    operations: create_data()
 });

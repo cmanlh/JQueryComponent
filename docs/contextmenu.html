@@ -82,8 +82,8 @@
                     <td>Number</td>
                     <td></td>
                     <td>正整数</td>
-                    <td>5</td>
-                    <td>右击菜单最多显示行数，多出的显示滚动条，滚动条可拖动，滚轮可滑动。</td>
+                    <td></td>
+                    <td>右击菜单最多显示行数，多出的显示滚动条，滚动条可拖动，滚轮可滑动。不设置即无滚动条。</td>
                 </tr>
                 <tr argument-name="onSelect">
                     <td>onSelect</td>
@@ -107,6 +107,43 @@
 //这里是用argument-name记录唯一标识的，实例化对象中selectorId需要保持一致。
 &lttr argument-name="唯一标识"&gt&lt/tr&gt
 
+// example
+var example_data = [{
+    label: 'example1',
+    id: 1,
+    child: [{
+        label: 'example2',
+        id: 11,
+        child: [{
+            label: 'example3',
+            id: 111
+        }]
+    }]
+}];
+
+
+function create_data() {
+    var create_three = function (num) {
+        return new Array(10).fill(1).map((item, index) => ({
+            label: '三级菜单' + num + index,
+            id: num.toString() + index
+        }));
+    };
+    var create_two = function (num) {
+        return new Array(10).fill(1).map((item, index) => ({
+            label: '二级菜单' + num + index,
+            id: num.toString() + index,
+            child: create_three(num.toString() + index)
+        }));
+    };
+    return new Array(10).fill(1).map((item, index) => ({
+        label: '一级菜单' + index,
+        id: index,
+        child: create_two(index)
+    }));
+}
+
+//实例化
 new $.jqcContextMenu({
     element: $('#argumentsTable'),
     selector: 'tr',
@@ -114,54 +151,7 @@ new $.jqcContextMenu({
     onSelect: function (data) {
         $('#input1').val(JSON.stringify(data));     
     },
-    operations: [{
-        label: '产品',
-        id: 1,
-        child: [{
-            label: '一',
-            id: 11,
-            child: [{
-                label: 'aa1',
-                id: 111
-            }, {
-                label: 'aa2',
-                id: 112
-            }, {
-                label: 'aa3',
-                id: 113
-            }, {
-                label: 'aa4',
-                id: 114
-            }, {
-                label: 'aa5',
-                id: 115
-            }, {
-                label: 'aa6',
-                id: 116
-            }]
-        }, {
-            label: '二',
-            id: 12
-        }, {
-            label: '三',
-            id: 13
-        }]
-    }, {
-        label: '设计',
-        id: 2
-    }, {
-        label: '前端',
-        id: 3
-    }, {
-        label: '后台',
-        id: 4
-    }, {
-        label: '项目',
-        id: 5
-    }, {
-        label: '发布',
-        id: 6
-    }]
+    operations: create_data()
 });
             </pre>
         </section>

@@ -1,8 +1,6 @@
 @charset 'utf-8';
 .jqcContextMenuBox {
     position: absolute;
-    overflow: hidden;
-    width: 160px;
     z-index: 100;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -12,37 +10,32 @@
 .jqcContextMenuBox .fakeScrollBox{
     overflow: hidden;
     width: 158px;
-    max-height: 224px;
     background: #fff;
     border: 1px solid #c9c9c9;
-}
-.jqcContextMenuDoubleSize{
-    width: 329px;
-}
-.jqcContextMenuTrebleSize{
-    width: 479px;
+    position: absolute;
 }
 .jqcContextMenuBox .fakeScrollBox2{
-    position: absolute;
-    top: 0;
     left: 159px;
 }
 .jqcContextMenuBox .fakeScrollBox3{
-    position: absolute;
-    top: 0;
     left: 318px;
 }
-.jqcContextMenuBox .jqcContextMenuLeftBox{
-    width: 200px;
-    overflow-y: scroll;
+.jqcContextMenuBox.to-left .fakeScrollBox{
+    left: -160px;
 }
-.jqcContextMenuBox .jqcContextMenuRightBox{
-    width: 200px;
-    overflow-y: scroll;
+.jqcContextMenuBox.to-top .fakeScrollBox1{
+    bottom: 0;
 }
-.jqcContextMenuBox .jqcContextMenuThirdLevelBox{
+.jqcContextMenuBox.to-left .fakeScrollBox2{
+    left: -319px;
+}
+.jqcContextMenuBox.to-left .fakeScrollBox3{
+    left: -478px;
+}
+.jqcContextMenuBox .jqcContextMenuScrollBox{
     width: 200px;
     overflow-y: scroll;
+    position: relative;
 }
 .jqcContextMenuBox div.jqcContextMenu-item {
     width: 158px;
@@ -51,6 +44,7 @@
     font-size: 12px;
     color: #333;
     text-indent: 20px;
+    position: relative;
     cursor: pointer;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
@@ -68,14 +62,6 @@
     border-radius: 2px;
     position: absolute;
     top: 0;
+    left: 152px;    
     background: #d8d8d8;
-}
-.jqcContextMenuBox .slide1{
-    left: 152px;
-}
-.jqcContextMenuBox .slide2{
-    left: 311px;
-}
-.jqcContextMenuBox .slide3{
-    left: 470px;
 }
