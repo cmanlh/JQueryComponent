@@ -51,6 +51,7 @@
         this.screenHeight = $window.height();
         this.screenWidth = $window.width();
         this.level = 1;
+        this.scrollTop = 0;
         this.init();
         
     };
@@ -156,6 +157,9 @@
             _this.screenHeight = $window.height();
             _this.screenWidth = $window.width();
         });
+        $(window).scroll(function () {
+            _this.scrollTop = $(window).scrollTop();
+        });
     };
     $.jqcContextMenu.prototype.contextMenuShow = function (e) {
         var _this = this;
@@ -169,7 +173,8 @@
         } else {
             this.contextMenuBox.removeClass('to-left');
         }
-        if (e.pageY > _this.screenHeight - _this.currentHeight) {
+        console.log(e.pageY);
+        if (e.pageY - _this.scrollTop > _this.screenHeight - _this.currentHeight) {
             this.contextMenuBox.addClass('to-top');
         } else {
             this.contextMenuBox.removeClass('to-top');
@@ -204,14 +209,14 @@
         this.contextMenuSecondLevel = $('<div class="jqcContextMenuScrollBox"></div>').css('max-height', _this.maxHeight);
         var _fakeScrollBox = $('<div class="fakeScrollBox fakeScrollBox2"></div>').css('max-height', _this.maxHeight);
         _fakeScrollBox.append(this.contextMenuSecondLevel);
-        if (offsetTop + child.length * 32 + 20 > this.screenHeight) {
+        if (offsetTop - _this.scrollTop + child.length * 32 + 20 > this.screenHeight) {
             _fakeScrollBox.css({
                 'top': 'auto',
-                'bottom': _this.contextMenuBox.offset().top - offsetTop - 33
+                'bottom': _this.contextMenuBox.offset().top - offsetTop - 33 + _this.scrollTop
             });
         } else {
             _fakeScrollBox.css({
-                'top': offsetTop - _this.contextMenuBox.offset().top -1,
+                'top': offsetTop - _this.contextMenuBox.offset().top - 1 - _this.scrollTop,
                 'bottom': 'auto'
             });
         }
@@ -298,14 +303,14 @@
         this.contextMenuThirdLevel = $('<div class="jqcContextMenuScrollBox"></div>').css('max-height', _this.maxHeight);
         var _fakeScrollBox = $('<div class="fakeScrollBox fakeScrollBox3"></div>').css('max-height', _this.maxHeight);
         _fakeScrollBox.append(this.contextMenuThirdLevel);
-        if (offsetTop + child.length * 32 + 20 > this.screenHeight) {
+        if (offsetTop - _this.scrollTop + child.length * 32 + 20 > this.screenHeight) {
             _fakeScrollBox.css({
                 'top': 'auto',
-                'bottom': _this.contextMenuBox.offset().top - offsetTop - 33
+                'bottom': _this.contextMenuBox.offset().top - offsetTop - 33 + _this.scrollTop
             });
         } else {
             _fakeScrollBox.css({
-                'top': offsetTop - _this.contextMenuBox.offset().top - 1,
+                'top': offsetTop - _this.contextMenuBox.offset().top - 1 - _this.scrollTop,
                 'bottom': 'auto'
             });
         }
