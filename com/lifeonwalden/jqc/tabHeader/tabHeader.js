@@ -44,7 +44,7 @@
                 var _this = this;
                 if (!this.el) { throw new Error('argument(elemtnt) expect a jquery object.') }
                 if (this.options.search) {
-                    this.el.css('margin-right', 200);
+                    this.el.css('padding-right', 200);
                     this.searchBox = $('<div>')
                         .addClass('jqcTabHeader-search');
                     this.el.append(_this.searchBox);
@@ -70,13 +70,16 @@
                     .click(function () {
                         _this.toNext();
                     });
+                this.box = $('<div>')
+                    .addClass('jqcTabHeader-main')
+                    .append(this.middleBox)
+                    .append(this.prev)
+                    .append(this.next);
                 this.el
                     .attr($.jqcBaseElement.JQC_ELEMENT_TYPE, this.typeName)
                     .attr($.jqcBaseElement.JQC_ELEMENT_ID, this.elementId)
                     .addClass('jqcTabHeaderBox')
-                    .append(this.middleBox)
-                    .append(this.prev)
-                    .append(this.next);
+                    .append(this.box);
                 if (this.options.defaultTab) {
                     this.addTab(this.options.defaultTab);
                 }
@@ -176,7 +179,6 @@
                 var _move = _width + _offsetLeft - _boxWidth - _boxOffsetLeft;
                 if (_move > 0) {
                     var _left = parseInt(this.slideBox.css('left'));
-                    console.log(_left);
                     this.slideBox.css('left', _left - _move);
                 }
             };

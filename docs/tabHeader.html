@@ -8,7 +8,8 @@
     <meta name="description" content="jQuery Component : 基于jQuery的组件库">
     <link rel="stylesheet" type="text/css" media="screen" href="css/component.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/prettify.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.menu.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.search.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.tabHeader.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/highlight.css">
     <style>
         section>div>input {
@@ -48,52 +49,52 @@
             </tr>
             <tbody>
                 <tr>
-                    <td>data</td>
-                    <td>JSON Array,<br/>JSON Object</td>
+                    <td>element</td>
+                    <td>jQuery Object</td>
                     <td>是</td>
-                    <td>合法的数据类型</td>
+                    <td>合法的jQuery对象</td>
                     <td></td>
-                    <td>菜单数据源</td>
+                    <td>标签栏</td>
                 </tr>
                 <tr>
-                    <td>img</td>
-                    <td>String</td>
+                    <td>defaultTab</td>
+                    <td>Object</td>
                     <td></td>
-                    <td>合法的图片路径</td>
+                    <td>合法的对象</td>
                     <td></td>
-                    <td>菜单顶部图片</td>
+                    <td>默认生成标签栏时，添加的第一个标签。</td>
                 </tr>
                 <tr>
-                    <td>speed</td>
-                    <td>Number</td>
+                    <td>search</td>
+                    <td>Object</td>
                     <td></td>
-                    <td>正整数</td>
-                    <td>200</td>
-                    <td>菜单动画过渡时长，单位毫秒</td>
-                </tr>
-                <tr>
-                    <td>show</td>
-                    <td>Booble</td>
+                    <td>合法的search参数对象</td>
                     <td></td>
-                    <td></td>
-                    <td>false</td>
-                    <td>组件生成时是否显示菜单</td>
-                </tr>
-                <tr>
-                    <td>defaultLabel</td>
-                    <td>String</td>
-                    <td></td>
-                    <td>data对象内label属性值</td>
-                    <td></td>
-                    <td>组件生成时的默认值，具有选中效果。</td>
+                    <td>显示搜索框，参考search组件参数data,placeholder</td>
                 </tr>
                 <tr>
                     <td>onSelect</td>
-                    <td>function</td>
+                    <td>Function</td>
                     <td></td>
                     <td>可执行的函数</td>
                     <td></td>
-                    <td>菜单选中后执行的回调，参数为被选中的data</td>
+                    <td>选择某标签时触发的函数，参数data。</td>
+                </tr>
+                <tr>
+                    <td>onClose</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td>可执行的函数</td>
+                    <td></td>
+                    <td>关闭某标签时触发的函数,参数data。</td>
+                </tr>
+                <tr>
+                    <td>onAddTab</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td>可执行的函数</td>
+                    <td></td>
+                    <td>添加某标签时触发的函数,参数data。</td>
                 </tr>
             </tbody>
         </table>
@@ -110,22 +111,10 @@
             </tr>
             <tbody>
                 <tr>
-                    <td>showMenu</td>
+                    <td>addTab</td>
+                    <td>{label: '标签名', id: 1}</td>
                     <td></td>
-                    <td></td>
-                    <td>划出菜单</td>
-                </tr>
-                <tr>
-                    <td>hideMenu</td>
-                    <td></td>
-                    <td></td>
-                    <td>收起菜单</td>
-                </tr>
-                <tr>
-                    <td>setCurrentLabel</td>
-                    <td>传入需要选中菜单对应的label</td>
-                    <td></td>
-                    <td>菜单自动展开并定位到该选项，并触发onSelect事件。</td>
+                    <td>添加标签，先触发onAddTab，再触发onSelect</td>
                 </tr>
             </tbody>
         </table>        
@@ -133,101 +122,139 @@
     <section>
         <div class="sectionTitle">示例</div>
         <section>
-            <div class="exampleTitle">data数据格式</div>
+            <div class="exampleTitle">简单的标签栏</div>
+            <div id="div1"></div>
+            <button id="btn1">添加标签</button>
             <pre class="prettyprint linenums">
-var data = [{
-    label: '一级菜单',
-    child: [{
-        label: '二级菜单01-01',
-        age: 15
-    }, {
-        label: '二级菜单01-02',
-        href: 'http://www.jd.com'
-    }, {
-        label: '二级菜单01-03',
-        zid: 18,
-        eid: 20,
-        child: [{
-            label: '三级菜单01-03-01',
-            href: 'http://www.qq.com'
-        }]
-    }]
-}, {
-    label: '一级菜单02',
-    child: [{
-        label: '二级菜单02-01',
-        href: 'http://www.baidu.com',
-        img: 'a.jpg'
-    }, {
-        label: '二级菜单02-02',
-        href: 'http://www.baidu.com',
-        audio: 'b.mp3'
-    }, {
-        label: '二级菜单02-03'
-    }]
-}, {
-    label: '一级菜单03',
-    child: [{
-        label: '二级菜单03-01',
-        child: [{
-            label: '三级菜单03-01-01'
-        }, {
-            label: '三级菜单03-01-02'
-        }, {
-            label: '三级菜单03-01-03'
-        }]
-    }, {
-        label: '二级菜单03-02',
-        href: 'http://www.baidu.com'
-    }]
-}, {
-    label: '一级菜单04'
-}, {
-    label: '一级菜单05',
-    child: [{
-        label: '二级菜单05-01'
-    }]
-}];
+var tab1 = new $.jqcTabHeader({
+    element: $('#div1'),
+    defaultTab: {
+        label: 'test1',
+        id: 1
+    }
+});
+$('#btn1').click(function () {
+    var _id = Math.random() * 10000000 | 0;
+    tab1.addTab({
+        label: _id.toString(16),
+        id: _id
+    });
+});
             </pre>
         </section>
         <section>
-            <div id="div1">我是div1</div>
-            <div class="exampleTitle">基本菜单栏</div>
-            <div>
-                <button id="btn_create">生成菜单</button>
-                <button id="btn_show">展开菜单</button>
-                <button id="btn_hide">隐藏菜单</button>
-                <button id="btn_select">展开并选中‘三级菜单03-01-02’</button>
-            </div>
+            <div class="exampleTitle">带搜索功能的标签栏</div>
+            <div id="div2"></div>
+            <button id="btn4">添加test1</button>
+            <button id="btn2">添加test2</button>
+            <button id="btn3">添加test3</button>
             <pre class="prettyprint linenums">
-var menu;
-
-$('#btn_create').one('click', function () {
-    menu = new $.jqcMenu({
-        data: data,
-        onSelect: function (data) {
-            $('#div1').text(JSON.stringify(data));
-        }
+var tab2 = new $.jqcTabHeader({
+    element: $('#div2'),
+    defaultTab: {
+        label: 'test1',
+        id: 1
+    },
+    search: {
+        data: [{
+            label: 'test1',
+            id: 1
+        }, {
+            label: 'test2',
+            id: 2
+        }, {
+            label: 'test3',
+            id: 3
+        }],
+        placeholder: '标签栏带搜索框'
+    }
+});
+$('#btn2').click(function () {
+    tab2.addTab({
+        label: 'test2',
+        id: 2
     });
 });
+$('#btn3').click(function () {
+    tab2.addTab({
+        label: 'test3',
+        id: 3
+    });
+});
+$('#btn4').click(function () {
+    tab2.addTab({
+        label: 'test1',
+        id: 1
+    });
+});
+            </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">tab切换的实现</div>
+            <style>
+                #list li{
+                    list-style: none;
+                    width: 200px;
+                    height: 30px;
+                    line-height: 30px;
+                    background: #ccc;
+                    text-align: center;
+                    margin-bottom: 5px;
+                    cursor: pointer;
+                }
+                #tab_container div{
+                    height: 50px;
+                    line-height: 50px;
+                    text-align: center;
+                    margin: 5px;
+                    background: #ccc;
+                }
+            </style>
+            <ul id="list">
+                <li data-uid="1">test1</li>
+                <li data-uid="2">test2</li>
+                <li data-uid="3">test3</li>
+                <li data-uid="4">test4</li>
+                <li data-uid="5">test5</li>
+            </ul>
+            <div id="div3"></div>
+            <div id="tab_container"></div>
+            <pre class="prettyprint linenums">
+var $tabContainer = $('#tab_container');
 
-$('#btn_show').click(function () {
-    if (menu) {
-        menu.showMenu();
+var tab3 = new $.jqcTabHeader({
+    element: $('#div3'),
+    defaultTab: {
+        label: 'test1',
+        id: '1'
+    },
+    onAddTab: function (data) {
+        var _container = $('&ltdiv&gt')
+            .attr('data-id', data.id)
+            .text(data.label);
+        $tabContainer.append(_container);
+    },
+    onSelect: function (data) {
+        $tabContainer.find('[data-id='+data.id+']')
+            .show()
+            .siblings()
+            .hide();
+    },
+    onClose: function (data) {
+        $tabContainer.find('[data-id='+data.id+']')
+            .remove();
     }
 });
-$('#btn_hide').click(function () {
-    if (menu) {
-        menu.hideMenu();
-    }
+
+$('#list li').click(function () {
+    var _label = $(this).text();
+    var _id = $(this).attr('data-uid');
+    tab3.addTab({
+        label: _label,
+        id: _id
+    });
 });
-$('#btn_select').click(function () {
-    if (menu) {
-        menu.showMenu();
-        menu.setCurrentLabel('三级菜单03-01-02');
-    }
-});
-        </pre>
+            </pre>
         </section>
     </section>
     <script src="js/run_prettify.js"></script>
