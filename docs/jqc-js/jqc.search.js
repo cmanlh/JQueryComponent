@@ -37,6 +37,7 @@
         this.typeName = 'jqcSearch';
         this.elementId = 'jqc'.concat($.jqcUniqueKey.fetchIntradayKey());
         this.result = [];
+        this.index = 0;
         this.pinyin = new $.jqcPinyin();
         if (this.options.data) {
             this.data = getChildAndAddPinYin(this.options.data, this.pinyin);
@@ -61,8 +62,22 @@
             .focus(function () {
                 _this.renderResultList();
             })
-            .keyup(function () {
-                _this.renderResultList();
+            .keyup(function (e) {
+                var _keyCode = e.keyCode;
+                if (_keyCode === 38) {
+                    _this.index --;
+                    _this.index = _this.index < 1 ? _this.result.length : _this.index;
+                    _this.chooseItem();
+                } else if (_keyCode === 40) {
+                    _this.index ++;
+                    _this.index = (_this.index > _this.result.length ? 1 : _this.index);
+                    _this.chooseItem();
+                } else if (_keyCode === 13) {
+                    _this.resultList.find('.jqcSearch-resultItem-active')
+                        .trigger('click');
+                } else {
+                    _this.renderResultList();
+                }
             });
         this.resultList = $('<div>').addClass('jqcSearch-resultList');
         this.el.attr($.jqcBaseElement.JQC_ELEMENT_TYPE, this.typeName)
@@ -82,6 +97,7 @@
     };
     $.jqcSearch.prototype.renderResultList = function () {
         var _this = this;
+        this.index = 0;
         this.resultList.empty();
         var _val = this.input.val().trim();
         if (!_val) {
@@ -89,7 +105,7 @@
         } else {
             this.result = this.data.filter(item => (item.label.indexOf(_val) > -1 || item.pinyin.indexOf(_val) > -1));
         }
-        this.result.forEach(function(item) {
+        this.result.forEach(function(item, index) {
             var resultItem = $('<div>' + item.label + '</div>')
             .addClass('jqcSearch-resultItem')
             .click(function () {
@@ -98,7 +114,18 @@
                 if (_this.options.onSelect) {
                     _this.options.onSelect(item);
                 }
+            }).mouseenter(function () {
+                _this.index = index + 1;
+                $(this).addClass('jqcSearch-resultItem-active')
+                    .siblings()
+                    .removeClass('jqcSearch-resultItem-active');
+            }).mouseleave(function () {
+                _this.index = 0;
+                $(this).removeClass('jqcSearch-resultItem-active')
+                    .siblings()
+                    .removeClass('jqcSearch-resultItem-active');
             });
+            
             _this.resultList.append(resultItem);
         });
         if (!this.result.length) {
@@ -108,6 +135,14 @@
         }
         this.resultList.show();
     };
+    $.jqcSearch.prototype.chooseItem = function () {
+        var _this = this;
+        this.resultList.find('.jqcSearch-resultItem')
+            .removeClass('jqcSearch-resultItem-active')
+            .eq(_this.index - 1)
+            .addClass('jqcSearch-resultItem-active');
+    };
+    
     function getChildAndAddPinYin(data, $pinyin) {
         var _arr = [];
         data.forEach(item => {
