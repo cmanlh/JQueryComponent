@@ -1,6 +1,5 @@
 @charset 'utf-8';
 .jqcTabHeaderBox {
-    height: 32px;
     background: #f3f3f3;
     position: relative;
     -webkit-user-select: none;
@@ -10,6 +9,12 @@
 }
 .jqcTabHeader-main{
     position: relative;
+}
+.jqcTabHeader-container{
+    background: #fff;
+}
+.jqcTabHeader-container > div{
+    display: none;
 }
 .jqcTabHeaderBox .jqcTabHeader-middleBox{
     overflow: hidden;

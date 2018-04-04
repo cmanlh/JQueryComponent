@@ -43,18 +43,6 @@
             $.jqcTabHeader.prototype.render = function () {
                 var _this = this;
                 if (!this.el) { throw new Error('argument(elemtnt) expect a jquery object.') }
-                if (this.options.search) {
-                    this.el.css('padding-right', 200);
-                    this.searchBox = $('<div>')
-                        .addClass('jqcTabHeader-search');
-                    this.el.append(_this.searchBox);
-                    var search = new $.jqcSearch(Object.assign(_this.options.search, {
-                        element: _this.searchBox,
-                        onSelect: function (data) {
-                            _this.addTab(data);
-                        }
-                    }));
-                }
                 this.slideBox = $('<div></div>')
                     .addClass('jqcTabHeader-slideBox');
                 this.middleBox = $('<div></div>')
@@ -75,20 +63,39 @@
                     .append(this.middleBox)
                     .append(this.prev)
                     .append(this.next);
+                this.container = $('<div>')
+                    .addClass('jqcTabHeader-container');
                 this.el
                     .attr($.jqcBaseElement.JQC_ELEMENT_TYPE, this.typeName)
                     .attr($.jqcBaseElement.JQC_ELEMENT_ID, this.elementId)
                     .addClass('jqcTabHeaderBox')
-                    .append(this.box);
+                    .append(this.box)
+                    .append(this.container);
+                if (this.options.search) {
+                    this.searchBox = $('<div>')
+                        .addClass('jqcTabHeader-search');
+                    this.el.append(_this.searchBox);
+                    var search = new $.jqcSearch(Object.assign(_this.options.search, {
+                        element: _this.searchBox
+                    }));
+                    this.box.css('margin-right', 200);
+                }
                 if (this.options.defaultTab) {
-                    this.addTab(this.options.defaultTab);
+                    this.addTab(this.options.defaultTab.tabName, this.options.defaultTab.html);
                 }
             };
-            $.jqcTabHeader.prototype.addTab = function (tab) {
+            $.jqcTabHeader.prototype.hasTab = function (tabName) {
                 var _this = this;
-                var isExsit = this.tabs.filter(item => (item.label == tab.label)).length;
-                if (!isExsit) {
-                    this.tabs.push(tab);
+                return this.tabs.filter(item => item === tabName).length ? true : false;
+            };
+            $.jqcTabHeader.prototype.addTab = function (tabName, html) {
+                var _this = this;
+                if (!tabName) {
+                    return;
+                }
+                if (!this.hasTab(tabName)) {
+                    this.tabs.push(tabName);
+                    var _uuid = uuid(8);
                     var _closeBtn = $('<span></span>')
                         .addClass('jqcIcon jqcIcon-close')
                         .click(function (e) {
@@ -108,9 +115,8 @@
                                         .trigger('click');
                                 }
                             }
-                            if (_this.options.onClose) {
-                                _this.options.onClose(tab);
-                            }
+                            _this.container.find('[data-uid='+ _uuid +']')
+                                .remove();
                             var _width = _item.width() + 31;
                             _this.width -= _width;
                             var _left = parseInt(_this.slideBox.css('left'));
@@ -121,10 +127,11 @@
                             }
                             _item.remove();
                             _this.slide();
-                            _this.tabs = _this.tabs.filter(item => (item.label != tab.label));
+                            _this.tabs = _this.tabs.filter(item => (item != tabName));
                         });
-                    var _tab = $('<div>' + tab.label + '</div>')
-                        .attr('data-label', tab.label)
+                    var _tab = $('<div>' + tabName + '</div>')
+                        .attr('data-label', tabName)
+                        .attr('data-uid', _uuid)
                         .addClass('jqcTabHeader-item jqcTabHeader-item-active')
                         .append(_closeBtn)
                         .click(function (e) {
@@ -132,22 +139,27 @@
                                 .addClass('jqcTabHeader-item-active')
                                 .siblings()
                                 .removeClass('jqcTabHeader-item-active');
-                            if (_this.options.onSelect) {
-                                _this.options.onSelect(tab);
-                            }
-                            _this.slideToActive(tab.label);
+                            _this.container.find('[data-uid=' + _uuid + ']')
+                                .show()
+                                .siblings()
+                                .hide();
+                            _this.slideToActive(tabName);
                         });
                     this.slideBox.append(_tab);
+                    var _container = $('<div>')
+                        .attr('data-uid', _uuid)
+                        .append($(html));
+                    this.container.append(_container);
+                    _container.show()
+                        .siblings()
+                        .hide();
                     var _width = _this.slideBox.width();
                     this.width += _tab.width() + 31;
                     this.slideBox.css('width', _width + _this.width);
                     this.slide();
-                    if (this.options.onAddTab) {
-                        this.options.onAddTab(tab);
-                    }
                     _tab.trigger('click');
                 } else {
-                    _this.toAppointed(tab.label);
+                    _this.showTab(tabName);
                 }
             };
             $.jqcTabHeader.prototype.toPrev = function () {
@@ -182,8 +194,8 @@
                     this.slideBox.css('left', _left - _move);
                 }
             };
-            $.jqcTabHeader.prototype.toAppointed = function (label) {
-                var _appointed = this.middleBox.find('[data-label=' + label + ']')
+            $.jqcTabHeader.prototype.showTab = function (tabName) {
+                this.middleBox.find('[data-label=' + tabName + ']')
                     .trigger('click');
             };
             $.jqcTabHeader.prototype.slide = function () {
@@ -197,7 +209,14 @@
                 }
             };
             $.jqcTabHeader.prototype.slideToActive = function (label) {
-                var _appointed = this.middleBox.find('[data-label=' + label + ']');
+                var _this = this;
+                var _appointed;
+                if (label) {
+                    _appointed = this.middleBox.find('[data-label=' + label + ']');
+                } else {
+                    _this.slide();
+                    _appointed = this.middleBox.find('.jqcTabHeader-item-active');
+                }
                 if (!_appointed.length) {
                     return this;
                 }
@@ -215,6 +234,12 @@
                     this.slideBox.css('left', _left - _moveRight);
                 }
             };
-
+            function uuid(len) {
+                var arr = [];
+                for (var index = 0; index < len; index++) {
+                    arr.push((Math.random() * 16 | 0).toString(16));
+                }
+                return arr.join('');
+            }
         });
 }(jQuery));

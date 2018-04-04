@@ -14,24 +14,8 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
             var tab = new $.jqcTabHeader({
                 element: $('#div1'),
                 defaultTab: {
-                    label: 'test1',
-                    id: 1
-                },
-                onSelect: function (data) {
-                    $('#div2').find('[data-id='+data.id+']')
-                        .show()
-                        .siblings()
-                        .hide();   
-                },
-                onClose: function (data) {
-                    $('#div2').find('[data-id='+data.id+']')
-                        .remove();
-                },
-                onAddTab: function (data) {
-                    var _tabContainer = $('<div>')
-                        .attr('data-id', data.id)
-                        .text(data.label);
-                    $('#div2').append(_tabContainer);
+                    tabName: 'test1',
+                    html: '<span>123</span>'
                 },
                 search: {
                     data: [{
@@ -44,14 +28,32 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                         label: 'test3',
                         id: 3
                     }],
-                    placeholder: 'test123'
+                    placeholder: 'test123',
+                    onSelect: function (data) {
+                        if (!tab.hasTab(data.label)) {
+                            tab.addTab(data.label, '<span>' + data.label + '</span>');
+                        } else {
+                            tab.showTab(data.label);
+                        }
+                    }
                 },
             });
             $('#btn').click(function () {
-                tab.addTab({
-                    label: $('#input').val(),
-                    id: Math.random() * 100 | 0
-                });
+                var _tabName = $('#input').val();
+                if (!tab.hasTab(_tabName)) {
+                    tab.addTab(_tabName, '<div>' + _tabName + '</div>');
+                } else {
+                    tab.showTab(_tabName);
+                }
             });
+            var flag = true;
+            $('#btn2').click(function () {
+                if (flag) {
+                    $('body').css('padding-left', 200);
+                } else {
+                    $('body').css('padding-left', 0)
+                }
+                flag = !flag;
+            })
         });
     });
