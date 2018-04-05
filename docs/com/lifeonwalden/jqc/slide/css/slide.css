@@ -1,0 +1,41 @@
+.jqcSlideMask {
+    position: absolute;
+    top: 0;
+    z-index: 5;
+}
+
+.jqcSlideContainer {
+    position: relative;
+}
+
+.jqcSlide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    line-height: 0;
+}
+
+.jqcSlide img {
+    width: 100%;
+}
+
+.jqcSlidePageCtrlRight {
+    position: absolute;
+    right: 0;
+    z-index: 9;
+}
+
+.jqcSlidePageCtrlPage {
+    width: 16px;
+    height: 16px;
+    background-color: #FFFFFF;
+    margin: 6px 8px;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+.jqcSlidePageCtrlActive {
+    background-color: #e31f26;
+}
