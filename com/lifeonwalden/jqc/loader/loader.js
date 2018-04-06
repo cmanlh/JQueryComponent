@@ -133,7 +133,11 @@
         this.cmpStack = [];
         this.jsStack = [];
         this.cssStack = [];
-        this.resources = [];
+        this.resources = {
+            greenPath: [],
+            normal: []
+        };
+        this.loadingCount = 0;
     }
 
     Loader.prototype.registerModule = function (m) {
@@ -200,28 +204,48 @@
     };
 
     Loader.prototype.execute = function (fun, param) {
+        var resources = this.resources.normal;
+        packageResources.call(this, resources, fun, param);
+    };
+
+    Loader.prototype.executeNow = function (fun, param) {
+        var resources = this.resources.greenPath;
+        packageResources.call(this, resources, fun, param);
+    };
+
+    function packageResources(resources, fun, param) {
         if (fun) {
-            this.resources.unshift({
+            resources.unshift({
                 fun: fun,
                 type: TYPE_FUN,
                 param: param
             });
         }
         for (var js = this.jsStack.shift(); js; js = this.jsStack.shift()) {
-            this.resources.unshift(js);
+            resources.unshift(js);
         }
         for (var css = this.cssStack.shift(); css; css = this.cssStack.shift()) {
-            this.resources.unshift(css);
+            resources.unshift(css);
         }
         for (var cmp = this.cmpStack.shift(); cmp; cmp = this.cmpStack.shift()) {
-            this.resources.unshift(cmp);
+            resources.unshift(cmp);
         }
 
-        loadResource(this.resources);
-    };
+        if (0 < this.loadingCount) {
+            return;
+        }
+        this.loadingCount += 1;
+        loadResource.call(this);
+    }
 
-    function loadResource(resources) {
-        var resource = resources.shift();
+    function loadResource() {
+        var _this = this;
+        var resource = null;
+        if (_this.resources.greenPath.length > 0) {
+            resource = _this.resources.greenPath.shift();
+        } else {
+            resource = _this.resources.normal.shift();
+        }
         if (resource) {
             if (TYPE_JS == resource.type || TYPE_CMP == resource.type) {
                 var script = document.createElement("script");
@@ -232,7 +256,7 @@
                     if (TYPE_CMP == resource.type) {
                         resource.cmp.toLoaded();
                     }
-                    loadResource(resources);
+                    loadResource.call(_this);
                 };
                 script.addEventListener('load', fun);
                 document.getElementsByTagName('head')[0].appendChild(script);
@@ -243,14 +267,17 @@
                 css.type = "text/css";
                 var fun = function () {
                     css.removeEventListener('load', fun);
-                    loadResource(resources);
+                    loadResource.call(_this);
                 };
                 css.addEventListener('load', fun);
                 document.getElementsByTagName('head')[0].appendChild(css);
             } else {
                 resource.fun(resource.param);
+                loadResource.call(_this);
             }
+            this.loadingCount += 1;
         }
+        this.loadingCount -= 1;
     }
 
     var jqcLoader = new Loader();
