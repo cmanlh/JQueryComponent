@@ -1,2 +1,2 @@
 rd /s /q docs\com
-xcopy com docs\com /i /s /exclude:exclude.txt
+xcopy com docs\jqc\com /i /s /exclude:exclude.txt

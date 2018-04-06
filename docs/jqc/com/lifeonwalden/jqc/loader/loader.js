@@ -67,6 +67,17 @@
         return this;
     };
 
+    Module.prototype.registerComponents = function (names, version) {
+        var _this = this;
+        if (Array.isArray(names)) {
+            names.forEach(function (value, index, array) {
+                _this.registerComponent(value, version);
+            });
+        }
+
+        return this;
+    };
+
     Module.prototype.getComponent = function (name) {
         return this.componentMap.get(name);
     };
