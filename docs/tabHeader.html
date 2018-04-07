@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/component.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/prettify.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.search.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.tabHeader.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/highlight.css">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+    </style>
+    <title>tabHeader - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">tabHeader</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>tab标签添加</li>
+            <li>tab标签切换</li>
+            <li>tab标签关闭</li>
+            <li>tab多出实现滑动效果</li>
+            <li>支持搜索</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>element</td>
+                    <td>jQuery Object</td>
+                    <td>是</td>
+                    <td>合法的jQuery对象</td>
+                    <td></td>
+                    <td>标签栏</td>
+                </tr>
+                <tr>
+                    <td>defaultTab</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td>合法的对象</td>
+                    <td></td>
+                    <td>默认生成标签栏时，添加的第一个标签。</td>
+                </tr>
+                <tr>
+                    <td>search</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td>合法的search参数对象</td>
+                    <td></td>
+                    <td>显示搜索框，参考search组件参数data,placeholder，onSelect</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <!--方法-->
+    <section>
+        <div class="sectionTitle">方法</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="128px">方法名</th>
+                <th width="300px">参数说明</th>
+                <th width="64px">返回值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>addTab</td>
+                    <td>参数1：标签名，参数2：html文本</td>
+                    <td></td>
+                    <td>添加标签，如果标签已存在，则直接显示</td>
+                </tr>
+                <tr>
+                    <td>hasTab</td>
+                    <td>标签名</td>
+                    <td>Boolean</td>
+                    <td>组件是否存在该标签，主要用于异步加载</td>
+                </tr>
+                <tr>
+                    <td>showTab</td>
+                    <td>标签名</td>
+                    <td></td>
+                    <td>显示已存在的标签</td>
+                </tr>
+            </tbody>
+        </table>        
+    </section>
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">带有默认标签的标签栏</div>
+            <div id="div1"></div>
+            <button id="btn1">添加标签</button>
+            <pre class="prettyprint linenums">
+var tab1 = new $.jqcTabHeader({
+    element: $('#div1'),
+    defaultTab: {
+        tabName: 'test1',
+        html: '&ltspan&gttest1&lt/span&gt'
+    }
+});
+
+$('#btn1').click(function () {
+    var _tabName = (Math.random() * 10000000 | 0).toString(16);
+    tab1.addTab(_tabName, '&ltspan&gt'+ _tabName +'&lt/span&gt');
+});
+            </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">带搜索功能的标签栏</div>
+            <div id="div2"></div>
+            <pre class="prettyprint linenums">
+var tab2 = new $.jqcTabHeader({
+    element: $('#div2'),
+    search: {
+        data: [{
+            label: 'test1',
+            id: 1
+        }, {
+            label: 'test2',
+            id: 2
+        }, {
+            label: 'test3',
+            id: 3
+        }],
+        placeholder: '标签栏带搜索框',
+        onSelect: function (data) {
+            tab2.addTab(data.label, '&ltspan&gt'+ data.label +'&lt/span&gt');
+        }
+    }
+});
+            </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">异步请求加载的tab</div>
+            <style>
+                #list li{
+                    list-style: none;
+                    width: 200px;
+                    height: 30px;
+                    line-height: 30px;
+                    background: #ccc;
+                    text-align: center;
+                    margin-bottom: 5px;
+                    cursor: pointer;
+                }
+                #tab_container div{
+                    height: 50px;
+                    line-height: 50px;
+                    text-align: center;
+                    margin: 5px;
+                    background: #ccc;
+                }
+            </style>
+            <ul id="list">
+                <li data-uid="1">test1</li>
+                <li data-uid="2">test2</li>
+                <li data-uid="3">test3</li>
+                <li data-uid="4">test4</li>
+                <li data-uid="5">test5</li>
+            </ul>
+            <div id="div3"></div>
+            <div id="tab_container"></div>
+            <pre class="prettyprint linenums">
+var tab3 = new $.jqcTabHeader({
+    element: $('#div3'),
+    defaultTab: {
+        tabName: 'test1',
+        html: '&ltspan&gttest1&lt/span&gt'
+    }
+});
+$('#list li').click(function () {
+    var _tabName = $(this).text();
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    if (tab3.hasTab(_tabName)) {
+        tab3.showTab(_tabName);
+    } else {
+        //在异步请求成功的回调函数里调用 addTab方法，带搜索的异步添加onSelect中同此处代码；
+        tab3.addTab(_tabName, '&ltspan&gt'+ _tabName +'&lt/span&gt');
+    }
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+});
+            </pre>
+        </section>
+    </section>
+    <script src="js/run_prettify.js"></script>
+    <script src="js/jquery-3.1.1.js "></script>
+    <script src="js/version.js"></script>
+    <script src="js/keycode.js"></script>
+    <script src="jqc-js/jqc.lang.js"></script>
+    <script src="jqc-js/jqc.baseElement.js"></script>
+    <script src="jqc-js/jqc.uniqueKey.js"></script>
+    <script src="jqc-js/jqc.pinyin.js"></script>
+    <script src="jqc-js/jqc.search.js"></script>
+    <script src="jqc-js/jqc.tabHeader.js"></script>
+    <script src="exampleJs/tabHeader.js"></script>
+</body>
+
+</html>

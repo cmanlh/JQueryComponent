@@ -1,0 +1,89 @@
+@charset 'utf-8';
+.jqcTabHeaderBox {
+    background: #f3f3f3;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.jqcTabHeader-main{
+    position: relative;
+}
+.jqcTabHeader-container{
+    background: #fff;
+}
+.jqcTabHeader-container > div{
+    display: none;
+}
+.jqcTabHeaderBox .jqcTabHeader-middleBox{
+    overflow: hidden;
+    height: 32px;
+    margin: 0 20px;
+    z-index: 1;
+    position: relative;
+}
+.jqcTabHeaderBox .jqcTabHeader-search{
+    position: absolute!important;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 32px;
+} 
+.jqcTabHeader-prev,
+.jqcTabHeader-next{
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 12px solid transparent;
+    top: 5px;
+    cursor: pointer;
+    display: none;
+}
+.jqcTabHeader-slideBox{
+    height: 32px;
+    position: relative;
+    transition: left 0.2s;
+}
+.jqcTabHeaderBox .jqcTabHeader-item{
+    float: left;
+    background: #e6e6e6;
+    height: 32px;
+    line-height: 28px;
+    box-sizing: border-box;
+    padding: 0 20px 0 10px;
+    position: relative;
+    margin-right: 1px;
+    border-top: 2px solid #e6e6e6;
+    cursor: pointer;
+}
+.jqcTabHeaderBox .jqcTabHeader-item:hover{
+    border-top: 2px solid #C4161C;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.jqcTabHeaderBox .jqcTabHeader-item-active{
+    border-top: 2px solid #C4161C;
+    background: #fff;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.jqcIcon {
+    background-image: url('./images/ui-icons_555555_256x240.png');
+}
+.jqcIcon-close{
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    right: 3px;
+    top: 8px;
+    background-position: -95px -130px;
+}
+.jqcIcon-prev{
+    left: -8px;
+    border-right-color: #000;
+}
+.jqcIcon-next{
+    right: -8px;
+    border-left-color: #000;
+}

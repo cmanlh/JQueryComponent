@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/component.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/prettify.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.contextmenu.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/highlight.css">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+    </style>
+    <title>ContextMenu - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">contextmenu</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>自定义右击菜单</li>
+            <li>最多支持三级菜单</li>
+            <li>菜单高度可定制，默认为5，多出显示滚动条</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;" id="argumentsTable">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr argument-name="element">
+                    <td>element</td>
+                    <td>jQuery Object</td>
+                    <td>是</td>
+                    <td>jQuery对象</td>
+                    <td></td>
+                    <td>添加右击菜单对象的父级jQuery对象，如table下tr需要添加右击菜单，则$('table')。</td>
+                </tr>
+                <tr argument-name="operations">
+                    <td>operations</td>
+                    <td>Array JSON</td>
+                    <td>是</td>
+                    <td>合法的数组数据</td>
+                    <td></td>
+                    <td>右击菜单中的选项，最多支持三级菜单。格式如下代码：</td>
+                </tr>
+                <tr argument-name="selector">
+                    <td>selector</td>
+                    <td>String</td>
+                    <td>是</td>
+                    <td>字符串</td>
+                    <td></td>
+                    <td>需要添加右击菜单的标签的标签名、类名。如：'tr'、'.el'、'li'。</td>
+                </tr>
+                <tr argument-name="selectorId">
+                    <td>selectorId</td>
+                    <td>String</td>
+                    <td>是</td>
+                    <td>合法的html行间属性名称</td>
+                    <td>false</td>
+                    <td>标签的行间属性名称，对应的值需要唯一，用于取该元素的唯一标识符，执行相关操作。</td>
+                </tr>
+                <tr argument-name="max">
+                    <td>max</td>
+                    <td>Number</td>
+                    <td></td>
+                    <td>正整数</td>
+                    <td></td>
+                    <td>右击菜单最多显示行数，多出的显示滚动条，滚动条可拖动，滚轮可滑动。不设置即无滚动条。</td>
+                </tr>
+                <tr argument-name="onSelect">
+                    <td>onSelect</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td>可执行的函数</td>
+                    <td></td>
+                    <td>菜单选中后执行的回调，参数为被选中的data：{selectorId: '1', eventId: 2 } selectorId为元素的唯一标识，eventId，为实例化对象时operations内对应的操作Id。</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <!--方法-->
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">表格</div>
+            <p>右击参数表格查看</p>
+            <input type="text" id="input1" style="width: 300px;" placeholder="请右击参数表格">
+            <pre class="prettyprint linenums">
+//这里是用argument-name记录唯一标识的，实例化对象中selectorId需要保持一致。
+&lttr argument-name="唯一标识"&gt&lt/tr&gt
+
+// example
+var example_data = [{
+    label: 'example1',
+    id: 1,
+    child: [{
+        label: 'example2',
+        id: 11,
+        child: [{
+            label: 'example3',
+            id: 111
+        }]
+    }]
+}];
+
+
+function create_data() {
+    var create_three = function (num) {
+        return new Array(10).fill(1).map((item, index) => ({
+            label: '三级菜单' + num + index,
+            id: num.toString() + index
+        }));
+    };
+    var create_two = function (num) {
+        return new Array(10).fill(1).map((item, index) => ({
+            label: '二级菜单' + num + index,
+            id: num.toString() + index,
+            child: create_three(num.toString() + index)
+        }));
+    };
+    return new Array(10).fill(1).map((item, index) => ({
+        label: '一级菜单' + index,
+        id: index,
+        child: create_two(index)
+    }));
+}
+
+//实例化
+new $.jqcContextMenu({
+    element: $('#argumentsTable'),
+    selector: 'tr',
+    selectorId: 'argument-name',
+    onSelect: function (data) {
+        $('#input1').val(JSON.stringify(data));     
+    },
+    operations: create_data()
+});
+            </pre>
+        </section>
+    </section>
+    <script src="js/run_prettify.js"></script>
+    <script src="js/jquery-3.1.1.js "></script>
+    <script src="js/version.js"></script>
+    <script src="js/keycode.js"></script>
+    <script src="jqc-js/jqc.lang.js"></script>
+    <script src="jqc-js/jqc.baseElement.js"></script>
+    <script src="jqc-js/jqc.uniqueKey.js"></script>
+    <script src="jqc-js/jqc.contextmenu.js"></script>
+    <script src="exampleJs/contextmenu.js"></script>
+</body>
+
+</html>

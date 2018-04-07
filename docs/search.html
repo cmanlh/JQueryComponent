@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/component.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/prettify.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.search.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/highlight.css">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .search_box{
+            width: 200px;
+            height: 40px;
+        }
+    </style>
+    <title>Search - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">search</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>本地数据搜索；</li>
+            <li>支持拼音首字母搜索；</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>element</td>
+                    <td>jQuery Object</td>
+                    <td>是</td>
+                    <td>可选的jQuery对象</td>
+                    <td></td>
+                    <td>搜索框的容器，决定搜索框的大小。</td>
+                </tr>
+                <tr>
+                    <td>placeholder</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>合法的字符串</td>
+                    <td></td>
+                    <td>搜索框内的提示文字</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>Array Object</td>
+                    <td>是</td>
+                    <td>合法的数组对象</td>
+                    <td></td>
+                    <td>搜索的数据</td>
+                </tr>
+                <tr>
+                    <td>onSelect</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td>可执行的函数</td>
+                    <td></td>
+                    <td>搜索后选中搜索结果执行的函数,参数为对应的data数据</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">简单的数据格式</div>
+            <div id="div1" class="search_box"></div>
+            <pre class="prettyprint linenums">
+var simpleData = [{
+    label: '测试1',
+    id: 1
+}, {
+    label: '测试2',
+    id: 2   
+}, {
+    label: '拼音3',
+    id: 3   
+}];
+
+new $.jqcSearch({
+    element: $('#div1'),
+    placeholder: '我是搜索框1',
+    data: simpleData,
+    onSelect: function (data) {
+        console.log(data);
+    }
+});
+            </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">带有层级的数据</div>
+            <div id="div2" class="search_box"></div>
+            <pre class="prettyprint linenums">
+var data = [{
+    label: '测试1',
+    child: [{
+        label: '测试1-1',
+        id: 1
+    }]
+}, {
+    label: '测试2',
+    id: 2
+}, {
+    label: '拼音',
+    child: [{
+        label: '拼音1',
+        id: 3
+    }, {
+        label: '拼音2',
+        id: 4
+    }]
+}];
+
+new $.jqcSearch({
+    element: $('#div2'),
+    placeholder: 'I am div2.',
+    data: data,
+    onSelect: function (data) {
+        console.log(data);
+    }
+});
+            </pre>
+        </section>
+    </section>
+    <script src="js/run_prettify.js"></script>
+    <script src="js/jquery-3.1.1.js "></script>
+    <script src="js/version.js"></script>
+    <script src="js/keycode.js"></script>
+    <script src="jqc-js/jqc.lang.js"></script>
+    <script src="jqc-js/jqc.baseElement.js"></script>
+    <script src="jqc-js/jqc.uniqueKey.js"></script>
+    <script src="jqc-js/jqc.pinyin.js"></script>
+    <script src="jqc-js/jqc.search.js"></script>
+    <script src="exampleJs/search.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+@charset 'utf-8';
+/* menu */
+.jqcMenuBox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background: #414042;
+    z-index: 1;
+}
+.jqcMenu-main-btn {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    background: #C4161C;
+    cursor: pointer;
+}
+.jqcMenu-main-btn span{
+    position: absolute;
+    width: 24px;
+    height: 3px;
+    border-radius: 2px;
+    background: #fff;
+    left: 18px;
+    top: 20px;
+}
+.jqcMenu-main-btn span:nth-child(2){
+    top: 28px;
+}
+.jqcMenu-main-btn span:nth-child(3){
+    top: 36px;
+}
+.jqcMenuImg{
+    height: 60px;
+    background-color: #C4161C;
+    background-image: url('./images/logo.png');
+    background-repeat: no-repeat;
+    background-size: 116px 31px;
+    background-position: 25px 15px;
+    cursor: pointer;
+}
+.jqcMenuImg2{
+    font-size: 0;
+    cursor: pointer;
+}
+.jqcMenuImg2 img{
+    width: 100%;
+}
+.jqcMenuContainer{
+    padding-top: 30px;
+}
+.jqcMenuContainer div{
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+.jqcMenuContainer > div{
+    overflow: hidden;
+    height: 52px;
+    line-height: 52px;
+    font-size: 16px;
+    color: #fff;
+    text-indent: 50px;
+    box-sizing: border-box;
+}
+.jqcMenuContainer div.isCollapes{
+    height: auto;
+}
+.jqcMenuContainer > div.hasChild{
+    position: relative;
+}
+.jqcMenuContainer > div:hover{
+    background: #818285;
+}
+.jqcMenuContainer > div.isCollapes{
+    background: #818285;
+}
+.jqcMenuContainer > div > div{
+    background: #333;
+    color: #818285;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+    text-indent: 60px;
+}
+.jqcMenuContainer > div > div > div{
+    background: #333;
+    color: #818285;
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+    text-indent: 75px;
+}
+.jqcMenuContainer > div > div:hover{
+    color: #fff;
+}
+.jqcMenuContainer > div > div > div:hover{
+    color: #fff;
+}
+.jqcMenuContainer > div.jqcMenu-active{
+    background-color: #818285;
+}
+.jqcMenuContainer > div > div.jqcMenu-active{
+    color: #fff;
+    font-size: 14px;
+    background: #666;
+}
+.jqcMenuContainer > div > div > div.jqcMenu-active{
+    color: #fff;
+    background: #555;
+}
+.jqcMenuContainer > div > div.isCollapes{
+    color: #fff;
+    background: #666;
+}
