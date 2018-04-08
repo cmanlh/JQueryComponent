@@ -60,6 +60,120 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 label: '一级菜单05',
                 child: [{
                     label: '二级菜单05-01'
+                }, {
+                    label: '二级菜单01-01',
+                    age: 15
+                }, {
+                    label: '二级菜单01-02',
+                    href: 'http://www.jd.com'
+                }, {
+                    label: '二级菜单01-03',
+                    zid: 18,
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
+                }, {
+                    label: '二级菜单01-01',
+                    age: 15
+                }, {
+                    label: '二级菜单01-02',
+                    href: 'http://www.jd.com'
+                }, {
+                    label: '二级菜单01-03',
+                    zid: 18,
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
+                }, {
+                    label: '二级菜单01-01',
+                    age: 15
+                }, {
+                    label: '二级菜单01-02',
+                    href: 'http://www.jd.com'
+                }, {
+                    label: '二级菜单01-03',
+                    zid: 18,
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
+                }, {
+                    label: '二级菜单01-01',
+                    age: 15
+                }, {
+                    label: '二级菜单01-02',
+                    href: 'http://www.jd.com'
+                }, {
+                    label: '二级菜单01-03',
+                    zid: 18,
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
+                }, {
+                    label: '二级菜单01-01',
+                    age: 15
+                }, {
+                    label: '二级菜单01-02',
+                    href: 'http://www.jd.com'
+                }, {
+                    label: '二级菜单01-03',
+                    zid: 18,
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
+                }, {
+                    label: '二级菜单01-02',
+                    href: 'http://www.jd.com'
+                }, {
+                    label: '二级菜单01-03',
+                    zid: 18,
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
+                }, {
+                    label: '二级菜单01-02',
+                    href: 'http://www.jd.com'
+                }, {
+                    label: '二级菜单01-03',
+                    zid: 18,
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
+                }, {
+                    label: '二级菜单01-02',
+                    href: 'http://www.jd.com'
+                }, {
+                    label: '二级菜单01-03',
+                    zid: 18,
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
+                }, {
+                    label: '二级菜单01-02',
+                    href: 'http://www.jd.com'
+                }, {
+                    label: '二级菜单01-03',
+                    zid: 18,
+                    eid: 20,
+                    child: [{
+                        label: '三级菜单01-03-01',
+                        href: 'http://www.qq.com'
+                    }]
                 }]
             }];
             var menu = new $.jqcMenu({

@@ -1,123 +1,102 @@
-@charset 'utf-8';
-/* menu */
+.jqcMenu {
+    font-size: 14px;
+    color: #333;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(223, 220, 220, 0.8);
+}
+
 .jqcMenuBox {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200px;
-    height: 100%;
-    background: #414042;
-    z-index: 1;
-}
-.jqcMenu-main-btn {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 60px;
-    height: 60px;
-    background: #C4161C;
-    cursor: pointer;
-}
-.jqcMenu-main-btn span{
-    position: absolute;
-    width: 24px;
-    height: 3px;
-    border-radius: 2px;
-    background: #fff;
-    left: 18px;
-    top: 20px;
-}
-.jqcMenu-main-btn span:nth-child(2){
-    top: 28px;
-}
-.jqcMenu-main-btn span:nth-child(3){
-    top: 36px;
-}
-.jqcMenuImg{
-    height: 60px;
-    background-color: #C4161C;
-    background-image: url('./images/logo.png');
-    background-repeat: no-repeat;
-    background-size: 116px 31px;
-    background-position: 25px 15px;
-    cursor: pointer;
-}
-.jqcMenuImg2{
-    font-size: 0;
-    cursor: pointer;
-}
-.jqcMenuImg2 img{
-    width: 100%;
-}
-.jqcMenuContainer{
-    padding-top: 30px;
-}
-.jqcMenuContainer div{
-    cursor: pointer;
-    margin: 0;
+    list-style: none;
     padding: 0;
-    -webkit-transition: all 0.2s;
-    -moz-transition: all 0.2s;
-    transition: all 0.2s;
+    margin: 5px 0;
+    cursor: pointer;
+    width: 100%;
+    background-color: white;
 }
-.jqcMenuContainer > div{
-    overflow: hidden;
-    height: 52px;
-    line-height: 52px;
-    font-size: 16px;
-    color: #fff;
-    text-indent: 50px;
-    box-sizing: border-box;
+
+.jqcMenuBox>li {
+    padding: 5px 1em 5px .5em;
 }
-.jqcMenuContainer div.isCollapes{
-    height: auto;
-}
-.jqcMenuContainer > div.hasChild{
+
+.jqcMenuItem {
     position: relative;
 }
-.jqcMenuContainer > div:hover{
-    background: #818285;
+
+.jqcMenuItem>ul,
+.jqcMenu {
+    border: 1px solid #DEDEDE;
+    border-radius: 5px;
 }
-.jqcMenuContainer > div.isCollapes{
-    background: #818285;
+
+.jqcMenuItem>ul {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
 }
-.jqcMenuContainer > div > div{
-    background: #333;
-    color: #818285;
-    font-size: 14px;
-    height: 40px;
-    line-height: 40px;
-    position: relative;
-    text-indent: 60px;
+
+.jqcMenuItem:hover {
+    background-image: url('images/expand-right.png');
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    background-position: right center;
 }
-.jqcMenuContainer > div > div > div{
-    background: #333;
-    color: #818285;
+
+.jqcMenuLeaf:hover,
+.jqcMenuConfigLeaf:hover {
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+}
+
+.jqcMenuSetting {
+    border-bottom: 1px solid #DEDEDE;
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
+}
+
+.jqcMenuSetting>span {
+    background-image: url('images/setting.png');
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+
+.jqcMenuSettingPanel {
+    display: flex;
+    flex-flow: row wrap;
+    color: #333;
     font-size: 12px;
-    height: 40px;
-    line-height: 40px;
-    position: relative;
-    text-indent: 75px;
 }
-.jqcMenuContainer > div > div:hover{
-    color: #fff;
+
+.jqcMenuConfigItem {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
 }
-.jqcMenuContainer > div > div > div:hover{
-    color: #fff;
+
+.jqcMenuSettingPanel>ul {
+    padding: 15px 8px;
 }
-.jqcMenuContainer > div.jqcMenu-active{
-    background-color: #818285;
-}
-.jqcMenuContainer > div > div.jqcMenu-active{
-    color: #fff;
+
+.jqcMenuSettingPanel>ul>li>div {
     font-size: 14px;
-    background: #666;
 }
-.jqcMenuContainer > div > div > div.jqcMenu-active{
-    color: #fff;
-    background: #555;
+
+.jqcMenuConfigItem>ul {
+    padding-left: 12px;
 }
-.jqcMenuContainer > div > div.isCollapes{
-    color: #fff;
-    background: #666;
+
+.jqcMenuConfigItem>div,
+.jqcMenuConfigLeaf>div {
+    display: flex;
+    padding: 6px;
+    justify-content: space-between;
+}
+
+.jqcMenuConfigLeaf {
+    cursor: pointer;
+    font-weight: normal;
 }

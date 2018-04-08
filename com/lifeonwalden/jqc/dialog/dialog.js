@@ -294,7 +294,7 @@
                 }
                 that.zindex = $.jqcZindex.popupMgr.fetchIndex();
                 that.container.css('z-index', that.zindex);
-                that.container.show();
+                that.container.fadeIn();
                 if (that.options.afterOpen) {
                     that.options.afterOpen();
                 }
