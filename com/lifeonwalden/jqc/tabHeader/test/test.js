@@ -30,11 +30,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                     }],
                     placeholder: 'test123',
                     onSelect: function (data) {
-                        if (!tab.hasTab(data.label)) {
-                            tab.addTab(data.label, '<span>' + data.label + '</span>');
-                        } else {
-                            tab.showTab(data.label);
-                        }
+                        tab.addTab(data.label, '<span>' + data.label + '</span>');
                     }
                 },
             });
@@ -53,6 +49,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 } else {
                     $('body').css('padding-left', 0)
                 }
+                tab.slideToActive();
                 flag = !flag;
             })
         });
