@@ -17,64 +17,62 @@
  * Tab
  */
 (function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'lang', 'selectbox', 'zindex'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'lang', 'zindex'])
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'tab').concat('css/tab.css'))
         .execute(function () {
             $.jqcTab = function (params) {
                 const DEFAULT_OPTIONS = {
-                    data: null, // menu data
-                    speed: 200, //animate speed :ms
-                    width: 150, // menu item width
-                    position: 'fixed',
-                    top: 0, // top of position
-                    left: 0, // left of position
-                    adapter: {
-                        id: 'id',
-                        label: 'label',
-                        child: 'child'
-                    },
-                    displayed: true, // displayed after render
-                    allowedConfig: false,
-                    configurableMenuData: null, // configurable menu data source
-                    onRemoveMenu: null, // call back for remove menu in configuration
-                    onAddMenu: null, // call back for add menu in configuration
-                    onSelect: null, //call back function for leaf menu be selected
+                    element: null, // container for tabF
+                    position: 'relative'
                 };
                 if (arguments.length > 0) {
                     $.jqcBaseElement.apply(this, arguments);
                 }
                 this.options = $.extend(true, {}, DEFAULT_OPTIONS, params);
-                this.typeName = 'jqcMenu';
+                this.typeName = 'jqcTab';
                 this.elementId = 'jqc'.concat($.jqcUniqueKey.fetchIntradayKey());
-                if (this.options.allowedConfig) {
-                    if (!this.options.data[0].hasOwnProperty(this.options.adapter.id)) {
-                        throw new Error("Configuration menu require [id] property in the menu object.");
-                    }
-                }
-                this.menuIndex = new Map();
-                render.call(this);
-                eventBind.call(this);
+
+                this.el = this.options.element;
+                this.el.attr($.jqcBaseElement.JQC_ELEMENT_TYPE, this.typeName);
+                this.el.attr($.jqcBaseElement.JQC_ELEMENT_ID, this.elementId);
+                this.el.css('position', this.options.position);
+
+                initRender.call(this);
             };
 
-            $.jqcMenu.prototype = new $.jqcBaseElement();
-            $.jqcMenu.prototype.constructor = $.jqcMenu;
-            $.jqcMenu.prototype.show = function () {
-                if (this.options.position == 'fixed') {
-                    this.container.animate({
-                        left: 0
-                    }, this.options.speed);
-                } else {
-                    this.container.fadeIn();
-                }
-            };
-            $.jqcMenu.prototype.hide = function () {
-                if (this.options.position == 'fixed') {
-                    this.container.animate({
-                        left: -1 * this.options.width
-                    }, this.options.speed);
-                } else {
-                    this.container.fadeOut();
-                }
-            };
+            $.jqcTab.prototype = new $.jqcBaseElement();
+            $.jqcTab.prototype.constructor = $.jqcTab;
+
+            function initRender() {
+                var _this = this;
+                _this.container = $('<div>').addClass('jqcTabContainer');
+                _this.moreBtn = $('<span>').addClass('jqcTabMoreContainer');
+                _this.moreContainer = $('<div>').addClass('jqcTabMoreContainer');
+
+                _this.container.append(_this.moreBtn).append(_this.moreContainer);
+            }
+
+            function TabPanel(param) {
+                this.id = param.id;
+                this.tab = $('<span>').addClass('jqcTabInactive').addClass('jqcTabActive').text(param.title);
+                this.close = $('<span>').addClass('jqcTabClose');
+                this.tab.append(this.close);
+                this.panel = $('<div>').addClass('jqcTabPanel');
+            }
+
+            TabPanel.prototype.remove = function () {
+                this.tab.remove();
+                this.panel.remove();
+            }
+
+            TabPanel.prototype.inactive = function () {
+                this.tab.removeClass('jqcTabActive');
+                this.panel.fadeOut();
+            }
+
+            TabPanel.prototype.active = function () {
+                this.tab.addClass('jqcTabActive');
+                this.panel.fadeIn();
+            }
         });
 }(jQuery));
