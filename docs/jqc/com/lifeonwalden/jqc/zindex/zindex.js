@@ -27,9 +27,10 @@
 (function ($) {
     $.jqcZindex = {};
     $.jqcZindex.popup = 100;
-    $.jqcZindex.selectbox = 200;
-    $.jqcZindex.notification = 300;
-    $.jqcZindex.waiting = 400;
+    $.jqcZindex.menu = 200;
+    $.jqcZindex.selectbox = 300;
+    $.jqcZindex.notification = 400;
+    $.jqcZindex.waiting = 500;
 
     var popupZindexStack = [];
     $.jqcZindex.popupMgr = {
