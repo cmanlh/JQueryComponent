@@ -6,10 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
     <meta name="description" content="jQuery Component : 基于jQuery的组件库">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/component.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/prettify.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.menu.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/highlight.css">
     <style>
         section>div>input {
             padding: 8px 8px;
@@ -28,7 +24,10 @@
     <section>
         <div class="sectionTitle">功能</div>
         <ul>
-            <li>菜单</li>
+            <li>菜单组件</li>
+            <li>支持三级菜单</li>
+            <li>可配置菜单选项</li>
+            <li>支持独立选项自动越级</li>
         </ul>
     </section>
     <section>
@@ -45,195 +44,347 @@
             <tbody>
                 <tr>
                     <td>data</td>
-                    <td>JSON Array,<br/>JSON Object</td>
+                    <td>Array Object</td>
                     <td>是</td>
-                    <td>合法的数据类型</td>
                     <td></td>
-                    <td>菜单数据源</td>
+                    <td></td>
+                    <td>该参数为菜单的数据</td>
                 </tr>
                 <tr>
-                    <td>img</td>
-                    <td>String</td>
+                    <td>adapter</td>
+                    <td>Object</td>
                     <td></td>
-                    <td>合法的图片路径</td>
                     <td></td>
-                    <td>菜单顶部图片</td>
+                    <td>{id:'id', label:'label', child:'child'}</td>
+                    <td>适配data数据格式</td>
                 </tr>
                 <tr>
-                    <td>speed</td>
-                    <td>Number</td>
+                    <td>autoSkip</td>
+                    <td>Boolean</td>
                     <td></td>
-                    <td>正整数</td>
-                    <td>200</td>
-                    <td>菜单动画过渡时长，单位毫秒</td>
+                    <td></td>
+                    <td>true</td>
+                    <td>单菜单是否自动越级</td>
                 </tr>
                 <tr>
-                    <td>show</td>
-                    <td>Booble</td>
+                    <td>displayed</td>
+                    <td>Boolean</td>
+                    <td></td>
+                    <td></td>
+                    <td>true</td>
+                    <td>菜单渲染后是否立即显示</td>
+                </tr>
+                <tr>
+                    <td>allowedConfig</td>
+                    <td>Boolean</td>
                     <td></td>
                     <td></td>
                     <td>false</td>
-                    <td>组件生成时是否显示菜单</td>
+                    <td>是否允许配置菜单，需配合configurableMenuData一起使用</td>
                 </tr>
                 <tr>
-                    <td>defaultLabel</td>
+                    <td>configurableMenuData</td>
+                    <td>Array Object</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>可配置的菜单选项数据源，格式同data,且包含data。</td>
+                </tr>
+                <tr>
+                    <td>configBoxWidth</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td></td>
+                    <td>500</td>
+                    <td>配置框宽度</td>
+                </tr>
+                <tr>
+                    <td>speed</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td></td>
+                    <td>200</td>
+                    <td>菜单滑入，划出动画时长，单位:ms</td>
+                </tr>
+                <tr>
+                    <td>width</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td></td>
+                    <td>150</td>
+                    <td>菜单宽度，单位:px</td>
+                </tr>
+                <tr>
+                    <td>position</td>
                     <td>String</td>
                     <td></td>
-                    <td>data对象内label属性值</td>
+                    <td>'static','relative','absolute','fixed'</td>
+                    <td>'fixed'</td>
+                    <td>菜单定位方式，同CSS定位方式值</td>
+                </tr>
+                <tr>
+                    <td>top</td>
+                    <td>Number(int)</td>
                     <td></td>
-                    <td>组件生成时的默认值，具有选中效果。</td>
+                    <td></td>
+                    <td>0</td>
+                    <td>菜单定位top值</td>
+                </tr>
+                <tr>
+                    <td>left</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>菜单定位left值</td>
                 </tr>
                 <tr>
                     <td>onSelect</td>
-                    <td>function</td>
+                    <td>Function</td>
                     <td></td>
-                    <td>可执行的函数</td>
                     <td></td>
-                    <td>菜单选中后执行的回调，参数为被选中的data</td>
+                    <td></td>
+                    <td>选中菜单选项触发的回调函数，回调参数为对应的data数据</td>
                 </tr>
             </tbody>
         </table>
     </section>
-    <!--方法-->
     <section>
         <div class="sectionTitle">方法</div>
         <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
             <tr>
-                <th width="128px">方法名</th>
-                <th width="300px">参数说明</th>
+                <th width="64px">方法名</th>
+                <th width="128px">参数说明</th>
                 <th width="64px">返回值</th>
-                <th>说明</th>
+                <th>效果及作用</th>
             </tr>
             <tbody>
                 <tr>
-                    <td>showMenu</td>
+                    <td>show</td>
                     <td></td>
                     <td></td>
-                    <td>划出菜单</td>
+                    <td>展示菜单</td>
                 </tr>
                 <tr>
-                    <td>hideMenu</td>
+                    <td>hide</td>
                     <td></td>
                     <td></td>
-                    <td>收起菜单</td>
-                </tr>
-                <tr>
-                    <td>setCurrentLabel</td>
-                    <td>传入需要选中菜单对应的label</td>
-                    <td></td>
-                    <td>菜单自动展开并定位到该选项，并触发onSelect事件。</td>
+                    <td>隐藏菜单</td>
                 </tr>
             </tbody>
-        </table>        
+        </table>
     </section>
+
     <section>
         <div class="sectionTitle">示例</div>
         <section>
-            <div class="exampleTitle">data数据格式</div>
+            <div class="exampleTitle">标准数据模型，无需适配参数。</div>
+            <button class="basic_btn_1">生成菜单</button>
+            <button class="basic_btn_2">隐藏菜单</button>
+            <button class="basic_btn_3">展示菜单</button>
             <pre class="prettyprint linenums">
-var data = [{
-    label: '一级菜单',
-    child: [{
-        label: '二级菜单01-01',
-        age: 15
-    }, {
-        label: '二级菜单01-02',
-        href: 'http://www.jd.com'
-    }, {
-        label: '二级菜单01-03',
-        zid: 18,
-        eid: 20,
-        child: [{
-            label: '三级菜单01-03-01',
-            href: 'http://www.qq.com'
-        }]
-    }]
+var basicData = [{
+    id: '1',
+    label: '一级菜单01',
 }, {
+    id: '2',
     label: '一级菜单02',
-    child: [{
-        label: '二级菜单02-01',
-        href: 'http://www.baidu.com',
-        img: 'a.jpg'
-    }, {
-        label: '二级菜单02-02',
-        href: 'http://www.baidu.com',
-        audio: 'b.mp3'
-    }, {
-        label: '二级菜单02-03'
-    }]
 }, {
+    id: '3',
     label: '一级菜单03',
-    child: [{
-        label: '二级菜单03-01',
-        child: [{
-            label: '三级菜单03-01-01'
-        }, {
-            label: '三级菜单03-01-02'
-        }, {
-            label: '三级菜单03-01-03'
-        }]
-    }, {
-        label: '二级菜单03-02',
-        href: 'http://www.baidu.com'
-    }]
 }, {
-    label: '一级菜单04'
-}, {
-    label: '一级菜单05',
-    child: [{
-        label: '二级菜单05-01'
-    }]
+    id: '4',
+    label: '一级菜单04',
 }];
-            </pre>
-        </section>
-        <section>
-            <div id="div1">我是div1</div>
-            <div class="exampleTitle">基本菜单栏</div>
-            <div>
-                <button id="btn_create">生成菜单</button>
-                <button id="btn_show">展开菜单</button>
-                <button id="btn_hide">隐藏菜单</button>
-                <button id="btn_select">展开并选中‘三级菜单03-01-02’</button>
-            </div>
-            <pre class="prettyprint linenums">
-var menu;
 
-$('#btn_create').one('click', function () {
-    menu = new $.jqcMenu({
-        data: data,
-        onSelect: function (data) {
-            $('#div1').text(JSON.stringify(data));
-        }
+var menu1;
+$('.basic_btn_1').one('click', function () {
+    menu1 = new $.jqcMenu({
+        data: basicData
     });
 });
-
-$('#btn_show').click(function () {
-    if (menu) {
-        menu.showMenu();
-    }
+$('.basic_btn_2').click(function () {
+    menu1 && menu1.hide();
 });
-$('#btn_hide').click(function () {
-    if (menu) {
-        menu.hideMenu();
-    }
-});
-$('#btn_select').click(function () {
-    if (menu) {
-        menu.showMenu();
-        menu.setCurrentLabel('三级菜单03-01-02');
-    }
+$('.basic_btn_3').click(function () {
+    menu1 && menu1.show();
 });
         </pre>
         </section>
+        <section>
+            <div class="exampleTitle">非标准数据模型，使用适配参数</div>
+            <button class="atypical_btn_1">生成菜单</button>
+            <pre class="prettyprint linenums">
+var atypicalData = [{
+    uid: '1',
+    name: '菜单二01',
+}, {
+    uid: '2',
+    name: '菜单二02',
+}, {
+    uid: '3',
+    name: '菜单二03',
+}, {
+    uid: '4',
+    name: '菜单二04',
+}];
+
+$('.atypical_btn_1').one('click', function () {
+    var menu2 = new $.jqcMenu({
+        data: atypicalData,
+        adapter: {
+            id: 'uid',
+            label: 'name',
+            child: 'child'
+        },
+        left: 200
+    });
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">带有子菜单的菜单栏，及不自动跳级菜单</div>
+            <button class="default_btn">生成默认菜单</button>
+            <button class="noskip_btn">生成不跳级菜单</button>
+            <pre class="prettyprint linenums">
+var data2 = [{
+    id: 1,
+    label: '菜单三01',
+    child: [{
+        id: 11,
+        label: '菜单三01-01',
+        child: [{
+            id: 111,
+            label: '菜单三01-01-01'
+        }]
+    }]
+}];
+
+$('.default_btn').one('click', function () {
+    new $.jqcMenu({
+        data: data2,
+        left: 500
+    })
+});
+$('.noskip_btn').one('click', function () {
+    new $.jqcMenu({
+        data: data2,
+        left: 700,
+        autoSkip: false,
+    })
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">可配置菜单</div>
+            <button class="setting_btn">生成可配置菜单</button>
+            <pre class="prettyprint linenums">
+var data4 = [{
+    id: '1',
+    label: '菜单四01',
+    child: [{
+        id: '2',
+        label: '菜单四01-01',
+        age: 15
+    }, {
+        id: '3',
+        label: '菜单四01-02',
+    }]
+}, {
+    id: '11',
+    label: '菜单四07',
+    child: [{
+        id: '111',
+        label: '菜单四07-01',
+    },]
+}];
+
+var configurableMenuData = [{
+    id: '1',
+    label: '菜单四01',
+    child: [{
+        id: '2',
+        label: '菜单四01-01',
+    }, {
+        id: '3',
+        label: '菜单四01-02',
+    }, {
+        id: '4',
+        label: '菜单四01-03',
+        child: [{
+            id: '5',
+            label: '菜单四01-03-01',
+        }]
+    }]
+}, {
+    id: '6',
+    label: '菜单四02',
+    child: [{
+        id: '61',
+        label: '菜单四02-01',
+    }]
+}, {
+    id: '7',
+    label: '菜单四03',
+    child: [{
+        id: '71',
+        label: '菜单四03-01',
+    }]
+}, {
+    id: '8',
+    label: '菜单四04'
+}, {
+    id: '9',
+    label: '菜单四05',
+    child: [{
+        id: '91',
+        label: '菜单四05-01',
+    }]
+}, {
+    id: '10',
+    label: '菜单四06',
+    child: [{
+        id: '101',
+        label: '菜单四06-01',
+    }, {
+        id: '102',
+        label: '菜单四06-02',
+    }, {
+        id: '103',
+        label: '菜单四06-03',
+        child: [{
+            id: '1031',
+            label: '菜单四06-03-01',
+        }, {
+            id: '1032',
+            label: '菜单四06-03-02',   
+        }]
+    }]
+}, {
+    id: '11',
+    label: '菜单四07',
+    child: [{
+        id: '111',
+        label: '菜单四07-01',
+    }, {
+        id: '112',
+        label: '菜单四07-02',
+    }]
+}];
+
+$('.setting_btn').one('click', function () {
+    new $.jqcMenu({
+        data: data4,
+        allowedConfig: true,
+        configurableMenuData: configurableMenuData,
+        top: 200
+    });
+});
+        </pre>
     </section>
-    <script src="js/run_prettify.js"></script>
-    <script src="js/jquery-3.1.1.js "></script>
-    <script src="js/version.js"></script>
-    <script src="js/keycode.js"></script>
-    <script src="jqc-js/jqc.lang.js"></script>
-    <script src="jqc-js/jqc.baseElement.js"></script>
-    <script src="jqc-js/jqc.uniqueKey.js"></script>
-    <script src="jqc-js/jqc.menu.js"></script>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
     <script src="exampleJs/menu.js"></script>
 </body>
 
