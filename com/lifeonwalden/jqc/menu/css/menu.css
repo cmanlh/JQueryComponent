@@ -110,12 +110,8 @@
 
 .jqcMenuConfigItem>div,
 .jqcMenuConfigLeaf>div {
-    /*display: flex;*/
     padding: 0 6px;
-    /*align-items: center;*/
-    /*justify-content: space-between;*/
 }
-
 
 .jqcMenuConfigLeaf {
     cursor: pointer;
@@ -126,6 +122,7 @@
     position: relative;
     line-height: 30px;
 }
+
 .jqcMenuSettingPanel li div span{
     position: absolute;
     top: 7px;
