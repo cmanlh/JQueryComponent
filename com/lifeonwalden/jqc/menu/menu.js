@@ -322,7 +322,7 @@
                         reRender.call(_this);
                     }, 200);
                 }
-                item.append($('<div>').text(data[_this.options.adapter.label]).append('<input type="checkbox" data-id=' + id + ''.concat(_this.menuIndex.has(id) ? ' checked="checked"' : '').concat('>')));
+                item.append($('<div>').text(data[_this.options.adapter.label]).append('<input type="checkbox" data-id=' + id + ''.concat(_this.menuIndex.has(id) ? ' checked="checked"' : '').concat('>').concat('<span></span>')));
                 item.attr('menuConfigId', id);
 
                 var _child = _this.options.adapter.child;

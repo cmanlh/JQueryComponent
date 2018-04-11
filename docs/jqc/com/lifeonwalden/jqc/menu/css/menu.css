@@ -69,9 +69,24 @@
     color: #333;
     font-size: 12px;
 }
-.jqcMenuSettingPanel input {
-    width: 20px;
-    height: 20px;
+.jqcMenuSettingPanel input[type=checkbox] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 3px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    z-index: 1;
+    opacity: 0;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+.jqcMenuSettingPanel input[type=checkbox]:checked + span {
+    background-image: url('./images/ui-icons_555555_256x240.png');
+    background-position: -66px -147px;
 }
 
 .jqcMenuConfigItem {
@@ -95,14 +110,29 @@
 
 .jqcMenuConfigItem>div,
 .jqcMenuConfigLeaf>div {
-    display: flex;
+    /*display: flex;*/
     padding: 0 6px;
-    align-items: center;
-    justify-content: space-between;
+    /*align-items: center;*/
+    /*justify-content: space-between;*/
 }
 
 
 .jqcMenuConfigLeaf {
     cursor: pointer;
     font-weight: normal;
+}
+
+.jqcMenuSettingPanel li div{
+    position: relative;
+    line-height: 30px;
+}
+.jqcMenuSettingPanel li div span{
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #777;
+    border-radius: 2px;
+    background: #fff;
 }
