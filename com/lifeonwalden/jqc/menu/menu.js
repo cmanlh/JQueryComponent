@@ -122,7 +122,7 @@
                 _this.container.css('z-index', $.jqcZindex.menu);
                 if (_this.options.allowedConfig) {
                     _this.setting = $('<div>').addClass('jqcMenuSetting');
-                    _this.settingBtn = $('<span>').attr('title', $.jqcLang.SETTING);
+                    _this.settingBtn = $('<span>').attr('title', $.jqcLang.MENU_SETTING);
                     _this.setting.append(_this.settingBtn);
                     _this.container.append(_this.setting);
                 }
@@ -214,7 +214,7 @@
 
                 _this.settingStack = [];
                 _this.settingDialog = new $.jqcDialog({
-                    title: $.jqcLang.SETTING_CONFIG,
+                    title: $.jqcLang.MENU_SETTING_CONFIG,
                     content: _this.settingPanel,
                     modal: false,
                     width: _this.options.configBoxWidth,
