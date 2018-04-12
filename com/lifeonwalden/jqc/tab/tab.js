@@ -80,21 +80,26 @@
 
                 this.moreBtn.on('click.moreBtn', function (e) {
                     e.stopPropagation();
-                    _this.moreContainer.hide();
+                    _this.moreContainer.toggle();
                 });
 
                 this.moreBtn.on('mouseover.tab', function (e) {
-                    _this.moreContainer.fadeIn();
+                    _this.moreContainer.show();
                 });
             }
 
             function remove(id) {
-                this.index.get(id).remove();
-                var firstOne = this.container.find('>jqcTabInactive:first');
+                var toClosedOne = this.index.get(id);
+                var isActive = toClosedOne.getStatus();
+                toClosedOne.remove();
+                var firstOne = this.container.find('>.jqcTabInactive:first');
                 if (firstOne.length == 0) {
                     return;
                 } else {
-                    firstOne.active();
+                    if (isActive) {
+                        this.activeOne = this.index.get(firstOne.attr('tabId'));
+                        this.activeOne.active();
+                    }
                     layoutTabAfterRemove.call(this);
                 }
             }
@@ -103,8 +108,8 @@
                 this.activeOne.inactive();
                 this.activeOne = this.index.get(id);
                 this.activeOne.active();
-                if (this.activeOne.hasClass('jqcTabMoreContainer')) {
-                    this.container.prepend(this.activeOne);
+                if (this.activeOne.getTab().hasClass('jqcTabMoreContainer')) {
+                    this.container.prepend(this.activeOne.getTab());
                     layoutTabAfterAdd.call(this);
                 }
             };
@@ -146,7 +151,7 @@
             function initRender() {
                 var _this = this;
                 this.container = $('<div>').addClass('jqcTabContainer');
-                this.moreBtn = $('<span>').addClass('jqcTabMoreContainer').attr('title', $.jqcLang.TAB_MORE_CLOSE).hide();
+                this.moreBtn = $('<span>').addClass('jqcTabMoreBtn').attr('title', $.jqcLang.TAB_MORE_CLOSE).hide();
                 this.moreContainer = $('<div>').addClass('jqcTabMoreContainer').hide();
 
                 this.container.append(this.moreBtn).append(this.moreContainer);
@@ -186,12 +191,16 @@
                 this.isActive = true;
             };
 
-            TabPanel.prototype.isActive = function () {
+            TabPanel.prototype.getStatus = function () {
                 return this.isActive;
             };
 
             TabPanel.prototype.getPanel = function () {
                 return this.panel;
+            };
+
+            TabPanel.prototype.getTab = function () {
+                return this.tab;
             };
         });
 }(jQuery));
