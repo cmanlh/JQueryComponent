@@ -19,7 +19,8 @@
         DIALOG_MINIMIZE: "最小化",
         DIALOG_MOVE: "移动",
         DIALOG_MAXIMUN: "恢复窗口",
-        SETTING: "菜单配置",
-        SETTING_CONFIG: "菜单配置"
+        MENU_SETTING: "菜单配置",
+        MENU_SETTING_CONFIG: "菜单配置",
+        TAB_MORE_CLOSE: "点击关闭"
     };
 }(jQuery));

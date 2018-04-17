@@ -7,4 +7,5 @@ $JqcLoader.registerModule($JqcLoader.newModule('com.lifeonwalden.jqc', 'jqc/')
     .registerComponents(['loader', 'location', 'pinyin', 'resizeable', 'selectbox', 'slide', 'uniqueKey', 'slide', 'uniqueKey'])
     .registerComponents(['valHooks', 'zindex'])
     .registerComponents(['menu'])
-    .registerComponents(['loading']));
+    .registerComponents(['loading'])
+    .registerComponents(['formToolBar']));

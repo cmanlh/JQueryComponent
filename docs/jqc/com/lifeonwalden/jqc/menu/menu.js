@@ -22,7 +22,7 @@
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'menu').concat('css/menu.css'))
         .execute(function () {
             $.jqcMenu = function (params) {
-                var _this =this;
+                var _this = this;
                 const DEFAULT_OPTIONS = {
                     data: null, // menu data
                     speed: 200, //animate speed :ms
@@ -35,13 +35,12 @@
                         label: 'label',
                         child: 'child'
                     },
-                    configBoxWidth: 500,    // dialog width
+                    configBoxWidth: 500, // dialog width
                     displayed: true, // displayed after render
                     allowedConfig: false,
                     autoSkip: true,
                     configurableMenuData: null, // configurable menu data source
-                    //onRemoveMenu: null, // call back for remove menu in configuration
-                    //onAddMenu: null, // call back for add menu in configuration
+                    onResettingMenu: null, // call back for resetting menu
                     onSelect: null, //call back function for leaf menu be selected
                 };
                 if (arguments.length > 0) {
@@ -56,7 +55,6 @@
                     }
                     this.snapshot = null;
                 }
-                this.menuIndex = new Map();
                 render.call(this);
                 eventBind.call(this);
             };
@@ -119,12 +117,12 @@
                 _this.container = $('<div>').addClass('jqcMenu').css('position', _this.options.position)
                     .css('width', _this.options.width).css('left', _this.options.left).css('top', _this.options.top);
                 if (false == _this.options.displayed) {
-                    _this.container.css('left', -1 * _this.options.width - _this.options.left - 3);
+                    _this.hide();
                 }
                 _this.container.css('z-index', $.jqcZindex.menu);
                 if (_this.options.allowedConfig) {
                     _this.setting = $('<div>').addClass('jqcMenuSetting');
-                    _this.settingBtn = $('<span>').attr('title', $.jqcLang.SETTING);
+                    _this.settingBtn = $('<span>').attr('title', $.jqcLang.MENU_SETTING);
                     _this.setting.append(_this.settingBtn);
                     _this.container.append(_this.setting);
                 }
@@ -137,6 +135,7 @@
 
             function renderMenuBox(data) {
                 var _this = this;
+                this.menuIndex = new Map();
                 var menuBox = $('<ul>').addClass('jqcMenuBox');
                 data.forEach(function (value, index, array) {
                     var id = value[_this.options.adapter.id];
@@ -145,7 +144,7 @@
                             menuBox.append(renderMenu.call(_this, value));
                         }
                     } else {
-                        menuBox.append(renderMenu.call(_this, value));                        
+                        menuBox.append(renderMenu.call(_this, value));
                     }
                 });
 
@@ -182,7 +181,7 @@
 
                 return item;
             }
-            
+
             function simplifyData(data) {
                 var _this = this;
                 var child = [];
@@ -215,7 +214,7 @@
 
                 _this.settingStack = [];
                 _this.settingDialog = new $.jqcDialog({
-                    title: $.jqcLang.SETTING_CONFIG,
+                    title: $.jqcLang.MENU_SETTING_CONFIG,
                     content: _this.settingPanel,
                     modal: false,
                     width: _this.options.configBoxWidth,
@@ -271,11 +270,11 @@
                         }
                         gInput.eq(0).prop('checked', gFlag);
                     }
-                    reRender.call(_this);
+                    reRender.call(_this, true);
                 });
             }
 
-            function reRender() {
+            function reRender(realRerender) {
                 var _this = this;
                 var data = this.options.configurableMenuData;
                 var input = this.settingPanel.find('input');
@@ -292,6 +291,17 @@
                 this.mainMenu = renderMenuBox.call(_this, _this.options.configurableMenuData);
                 this.container.append(_this.mainMenu);
                 eventBind.call(this);
+
+                if (this.options.onResettingMenu && realRerender) {
+                    clearTimeout(this.reRenderCallBackHandler);
+                    this.reRenderCallBackHandler = setTimeout(function () {
+                        var idQ = [];
+                        _this.mainMenu.find('li').each(function (idx, el) {
+                            idQ.push($(el).attr('menuId'));
+                        })
+                        _this.options.onResettingMenu(idQ);
+                    }, 3000);
+                }
             }
 
             function renderConfig(data, parentId) {
@@ -342,27 +352,5 @@
 
                 return item;
             }
-
-            // function removeMenuBox(data) {
-            //     var _this = this;
-            //     if (Array.isArray(data)) {
-            //         data.forEach(function (value, index, array) {
-            //             removeMenu.call(_this, value);
-            //         });
-            //     } else {
-            //         removeMenu.call(_this, data);
-            //     }
-            // }
-
-            // function removeMenu(data) {
-            //     var _this = this;
-            //     var id = data[_this.options.adapter.id];
-            //     _this.menuIndex.delete(id);
-            //     _this.mainMenu.find('[menuId="'.concat(id).concat('"]')).remove();
-            //     var _child = _this.options.adapter.child;
-            //     if (data.hasOwnProperty(_child) && Array.isArray(data[_child]) && data[_child].length > 0) {
-            //         removeMenuBox.call(_this, data[_child]);
-            //     }
-            // }
         });
 }(jQuery));

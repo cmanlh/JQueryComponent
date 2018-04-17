@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+    <title>FormToolBar - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">formToolBar</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>表单搜索框</li>
+            <li>多行可展开，可收起</li>
+            <li>节约页面视图空间</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>element</td>
+                    <td>jQuery Object</td>
+                    <td>是</td>
+                    <td></td>
+                    <td></td>
+                    <td>组件container</td>
+                </tr>
+                <tr>
+                    <td>conditionHtml</td>
+                    <td>Html</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>条件区域（左侧）的html代码片段</td>
+                </tr>
+                <tr>
+                    <td>controlHtml</td>
+                    <td>Html</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>控制区域（右侧）的html代码片段</td>
+                </tr>
+                <tr>
+                    <td>height</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td></td>
+                    <td>36</td>
+                    <td>组件高度，超出该高度实现折叠功能，单位：px</td>
+                </tr>
+                <tr>
+                    <td>background</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>‘#ffffff’</td>
+                    <td>组件背景颜色</td>
+                </tr>
+                <tr>
+                    <td>afterRender</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>组件渲染之后的回调函数</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <div class="sectionTitle">方法</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">方法名</th>
+                <th width="128px">参数说明</th>
+                <th width="64px">返回值</th>
+                <th>效果及作用</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>fold</td>
+                    <td></td>
+                    <td></td>
+                    <td>折叠组件</td>
+                </tr>
+                <tr>
+                    <td>spread</td>
+                    <td></td>
+                    <td></td>
+                    <td>展开组件</td>
+                </tr>
+                <tr>
+                    <td>resize</td>
+                    <td></td>
+                    <td></td>
+                    <td>组件内视图改变后调用该方法，确定是否需要折叠及显示‘展开按钮’</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">正常示例</div>
+            <button class="btn1">展开</button>
+            <button class="btn2">收起</button>
+            <button class="btn3">改变内部高度并重置</button>
+            <div id="div1" class="div1"></div>
+            <div style="height:50px;background:#ccc;line-height:50px;text-align:center;">我是bar下面的内容</div>
+            <pre class="prettyprint linenums">
+var bar1 = new $.jqcFormToolBar({
+    element: $('#div1'),
+    conditionHtml: '&ltdiv class="condition"&gt&ltlabel&gt&ltspan&gt姓名：&lt/span&gt&ltinput type="text"/&gt&lt/label&gt&ltlabel&gt&ltspan&gt姓名：&lt/span&gt&ltinput type="text"/&gt&lt/label&gt&ltlabel&gt&ltspan&gt姓名：&lt/span&gt&ltinput type="text"/&gt&lt/label&gt&ltlabel&gt&ltspan&gt姓名：&lt/span&gt&ltinput type="text"/&gt&lt/label&gt&ltlabel&gt&ltspan&gt姓名：&lt/span&gt&ltinput type="text"/&gt&lt/label&gt&ltlabel&gt&ltspan&gt姓名：&lt/span&gt&ltinput type="text"/&gt&lt/label&gt&ltlabel&gt&ltspan&gt姓名：&lt/span&gt&ltinput type="text"/&gt&lt/label&gt&ltlabel&gt&ltspan&gt姓名：&lt/span&gt&ltinput type="text"/&gt&lt/label&gt&lt/div&gt',
+    controlHtml: '&ltdiv&gt&ltbutton&gt测试1&lt/button&gt&ltbutton&gt测试2&lt/button&gt&ltbutton&gt测试3&lt/button&gt&lt/div&gt'
+});
+
+$('.btn1').click(function () {
+    bar1.spread();
+});
+
+$('.btn2').click(function () {
+    bar1.fold();
+});
+
+$('.btn3').click(function () {
+    var _height = $('.condition').height();
+    _height = _height === 36 ? 'auto' : 36;
+    $('.condition').height(_height);
+    bar1.resize();
+});
+        </pre>
+        </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/formToolBar.js"></script>
+</body>
+
+</html>
