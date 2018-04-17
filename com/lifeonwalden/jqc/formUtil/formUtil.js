@@ -29,7 +29,7 @@
              * @argument param the setup parameter
              * @argument data the form initial data
              */
-            $.formUtil.setup = function ($form, param, data) {
+            $.formUtil.init = function ($form, param, data) {
 
             };
 
