@@ -41,11 +41,16 @@
                 _date = date;
             }
 
-            if (_date instanceof(Date) && !isNaN(_date.valueOf())) {
+            if (_date instanceof (Date) && !isNaN(_date.valueOf())) {
                 return _date;
             } else {
                 throw new Error("invalid date parameter.");
             }
+        },
+        format: function (date, fmt) {
+            var dt = this.toDate(date);
+            fmt = fmt || 'yyyy-MM-dd';
+            return formatDate(dt, fmt);
         },
         plusHours: function (date, num, toMilliSeconds) {
             var milliseconds = this.toMilliSeconds(date) + num * ONE_HOUR_IN_MILLISECONDS;
@@ -119,4 +124,31 @@
             return (this.toMilliSeconds(date2, true) - this.toMilliSeconds(date1, true)) / ONE_DAY_IN_MILLISECONDS;
         }
     };
+
+    function formatDate(date, fmt) {
+        if (!fmt) {
+            throw new Error('fmt cannot null');
+        }
+        var o = {
+            'y+': date.getFullYear(),
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'H+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds(),
+            'S+': date.getMilliseconds()
+        };
+        for (var i in o) {
+            var re = new RegExp('(' + i + ')');
+            if (re.exec(fmt)) {
+                var m = RegExp.$1.length;
+                var v = String(o[i]).slice(-m);
+                while (v.length < m) {
+                    v = '0' + v;
+                }
+                fmt = fmt.replace(RegExp.$1, v);
+            }
+        }
+        return fmt;
+    }
 }(jQuery));

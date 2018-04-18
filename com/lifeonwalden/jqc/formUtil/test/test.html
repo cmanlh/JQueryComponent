@@ -6,27 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>formUtil</title>
-    <link rel="stylesheet" href="../../../../../qunit/jquery.datetimepicker.css">
-    <script src="../../../../../qunit/jquery-3.1.1.js"></script>
-    <script src="../../../../../qunit/jquery.datetimepicker.full.js"></script>
+    <link rel="stylesheet" href="../../datetimepicker/css/datetimepicker.css">
+    <script src="../../loader/loader.js"></script>
+    <script src="test.js"></script>
 </head>
 
 <body>
-    <input type="text" name="" id="test">
-    <script>
-        // $.datepicker.setDefaults({
-        //     changeMonth: true,
-        //     changeYear: true,
-        //     dateFormat: "yy-mm-dd",
-        //     monthNamesShort: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
-        //     monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
-        //     dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
-        //     dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"],
-        //     dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
-        // });
-        $.datetimepicker.setLocale('zh');
-        $('#test').datetimepicker();
-    </script>
+<label>时间：</label><input type="text" datatype="date" databind="time"><br/>
+<label>字符串：</label><input type="text" databind="userName"><br/>
+<label>整数：</label><input type="text" databind="age" datatype="int"><br/>
+<label>小数：</label><input type="text" databind="height" datatype="number"><br/>
+<label>复选框：</label><label>足球</label><input type="checkbox" name="faverout" databind="faverout" value="足球">,<label>篮球</label><input type="checkbox" name="faverout" databind="faverout" value="篮球"><br/>
+<label>单选框：</label><label>男</label><input type="radio" value="man" name="sex" databind="sex">,
+<label>女</label><input type="radio" value="woman" name="sex" databind="sex"><br/>
+<script>
+    // $.datepicker.setDefaults({
+    //     changeMonth: true,
+    //     changeYear: true,
+    //     dateFormat: "yy-mm-dd",
+    //     monthNamesShort: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+    //     monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+    //     dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+    //     dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"],
+    //     dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
+    // });
+    // $.datetimepicker.setLocale('zh');
+    // $('#test').datetimepicker();
+</script>
 </body>
 
 </html>

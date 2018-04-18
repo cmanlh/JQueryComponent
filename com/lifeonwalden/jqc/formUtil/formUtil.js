@@ -18,8 +18,9 @@
  *
  */
 (function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker','dateUtil','tip'])
         .execute(function () {
+            $.formUtil = {};
             /**
              * init form
              *
@@ -48,7 +49,7 @@
                     throw new Error(`${$form} should be jQuery object`);
                 }
                 var data = {};
-                var speciType={};//保存radio、checkbox
+                var speciType = {};//保存radio、checkbox
                 $form.find('[databind]').each(function (idx, obj) {
                     var field = $(obj);
                     var prop = $.trim(field.attr('databind'));
@@ -76,6 +77,10 @@
                     switch (dataType) {
                         case 'int':
                             _val = window.parseInt(_val);
+                            if(isNaN(_val)){
+                                field.tip('非法值');
+                                throw new Error('非法值');
+                            }
                             var min = $.trim(field.attr('min'));
                             var max = $.trim(field.attr('max'));
                             if ($.isNumeric(min) && window.parseInt(min) > _val) {
@@ -89,6 +94,10 @@
                             break;
                         case 'number':
                             _val = window.parseFloat(_val);
+                            if(isNaN(_val)){
+                                field.tip('非法值');
+                                throw new Error('非法值');
+                            }
                             var min = $.trim(field.attr('min'));
                             var max = $.trim(field.attr('max'));
                             if ($.isNumeric(min) && window.parseFloat(min) > _val) {
@@ -103,21 +112,21 @@
                         case 'date':
                             var fv = _val;
                             _val = new Date(_val).getTime();
-                            if (!($.isNumeric(_val) && fv == $.format.data(_val, 'yyyy-MM-dd'))) {
+                            if (!($.isNumeric(_val) && fv == $.jqcDateUtil.format(_val, 'yyyy-MM-dd'))) {
                                 field.tip('非法日期参数，请更正');
                                 throw new RangeError('非法日期');
                             }
                             break;
                         case 'radio':
-                            if(field.is(':checked')){
-                                speciType[prop]=_val;
+                            if (field.is(':checked')) {
+                                speciType[prop] = _val;
                             }
-                            break;
+                            return;
                         case 'checkbox':
-                            if(field.is(':checked')){
-                                speciType[prop]=(speciType[prop]||[]).push(_val);
+                            if (field.is(':checked')) {
+                                (speciType[prop] = speciType[prop] || []).push(_val);
                             }
-                            break;
+                            return;
                         default:
                             var maxlength = $.trim(field.attr('maxlength'));
                             if ($.isNumeric(maxlength) && _val.length > maxlength) {
@@ -127,8 +136,8 @@
                     }
                     Object.assign(data, enChain(prop, _val));
                 });
-                for(var p in speciType) {
-                    Object.assign(data,enChain(p,speciType[p]));
+                for (var p in speciType) {
+                    Object.assign(data, enChain(p, speciType[p]));
                 }
                 return data;
             };
