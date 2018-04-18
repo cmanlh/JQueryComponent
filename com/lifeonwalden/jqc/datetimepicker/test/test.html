@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>formUtil</title>
+    <link rel="stylesheet" href="../css/datetimepicker.css">
+    <script src="../../../../../qunit/jquery-3.1.1.js"></script>
+    <script src="../datetimepicker.js"></script>
+</head>
+
+<body>
+    <input type="text" name="" id="test">
+    <script>
+        $.datetimepicker.setLocale('zh');
+        $('#test').datetimepicker({
+            defaultDate:'2018-11-12'
+        });
+    </script>
+</body>
+
+</html>
