@@ -18,7 +18,7 @@
  *
  */
 (function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker', 'dateUtil', 'tip'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker', 'dateUtil', 'inputNumber', 'tip'])
         .execute(function () {
             $.formUtil = {
                 validate: function ($form) {
@@ -42,9 +42,8 @@
              */
             $.formUtil.init = function ($form, param, data) {
                 this.validate($form);
-                $form.find('[databind]').each(function (idx, obj) {
-
-                });
+                _formatField($form);
+                this.fill($form, $.extend({}, data, param));
             };
 
             /**
@@ -55,6 +54,7 @@
              */
             $.formUtil.fill = function ($form, data) {
                 this.validate($form);
+                _formatField($form);
                 data = data || {};
                 var _this = this;
                 $form.find('[databind]').each(function (idx, obj) {
@@ -70,10 +70,13 @@
                     switch (dataType) {
                         case 'int':
                         case 'number':
-                        case 'date':
                         case 'string':
                         case 'text':
                             field.val(val);
+                            break;
+                        case 'date':
+                            if (val)
+                                field.val($.jqcDateUtil.format(val, 'yyyy-MM-dd'));
                             break;
                         case 'checkbox':
                             if (val && $.type(val) == 'array') {
@@ -82,7 +85,7 @@
                             break;
                         case 'radio':
                             if ($.trim(field.val()) == val) {
-                                field.attr('checked', true);
+                                (field.get(0) || {}).checked = true;
                             }
                             break;
                     }
@@ -175,6 +178,42 @@
                 }
                 return data;
             };
+
+            /**
+             * 格式化字段
+             * @param $form
+             */
+            function _formatField($form) {
+                $form.find('[databind]').each(function (idx, obj) {
+                    var field = $(obj), dataType = $.trim(field.attr('datatype')).toLowerCase();
+                    if (field.data('_formatField')) {
+                        return;
+                    }
+                    switch (dataType) {
+                        case 'int':
+                            new $.jqcInputNumber({
+                                element: field
+                            });
+                            break;
+                        case 'number':
+                            var dataScale = $.trim(field.attr('dataScale'));
+                            if (dataScale.length <= 0) {
+                                dataScale = 2;
+                            }
+                            new $.jqcInputNumber({
+                                element: field,
+                                decimals: dataScale
+                            });
+                            break;
+                        case 'date':
+                            field.datetimepicker();
+                            field.attr('placeholder', 'yyyy-MM-dd');
+                            break;
+                        default://string do nothing
+                    }
+                    field.data('_formatField', true);
+                });
+            }
 
             /**
              * 装配属性值
