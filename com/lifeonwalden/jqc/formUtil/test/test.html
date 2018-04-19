@@ -14,16 +14,17 @@
             width: 80px;
             display: inline-block;
         }
-        .label::after{
+
+        .label::after {
             content: ':';
-            float:right;
+            float: right;
             margin-right: 5px;
         }
     </style>
 </head>
 
 <body>
-<form id="ctx">
+<form id="ctx" onsubmit="return false">
     <label class="label">time</label><input type="text" datatype="date" databind="time"><br/>
     <label class="label">userName</label><input type="text" databind="userName" maxlength="5"><br/>
     <label class="label">int</label><input type="text" databind="age" datatype="int"><br/>
@@ -31,8 +32,23 @@
     <label class="label">faverout</label><label>足球</label><input type="checkbox" name="faverout" databind="faverout" value="足球">,<label>篮球</label><input type="checkbox" name="faverout" databind="faverout" value="篮球"><br/>
     <label class="label">sex</label><label>man</label><input type="radio" value="man" name="sex" databind="sex">,
     <label>woman</label><input type="radio" value="woman" name="sex" databind="sex"><br/>
+    列表：<br/>
+    <button id="add">添加一条</button>
+    <br/>
+    <div datagroup="group">
+        <label>item1:</label><input name="item1">
+        <label>item2:</label><input datatype="int" name="item2">
+        <label>item3:</label><input datatype="number" name="item3">
+        <label>item4:</label><input datatype="date" name="item4">
+        <label>item5:</label><input type="checkbox" value="1" name="item5">
+        <input type="checkbox" value="2" name="item5">
+        <label>item6:</label><input type="radio" value="a" name="item6">
+        <input type="radio" value="b" name="item6">
+    </div>
 </form>
-<button id="fetchData">获取数据</button><button id="fillData">填充数据</button>
+<button id="init">初始化</button>
+<button id="fetchData">获取数据</button>
+<button id="fillData">填充数据</button>
 <br/>
 <textarea id="txt" cols="50" rows="20"></textarea>
 </body>
