@@ -18,9 +18,19 @@
  *
  */
 (function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker','dateUtil','tip'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker', 'dateUtil', 'tip'])
         .execute(function () {
-            $.formUtil = {};
+            $.formUtil = {
+                validate: function ($form) {
+                    if (!($form && $form instanceof $)) {
+                        throw new Error(`${$form} should be jQuery object`);
+                    }
+                },
+                thwErr: function (field, msg) {
+                    field.tip(msg);
+                    throw new Error(msg);
+                }
+            };
             /**
              * init form
              *
@@ -31,7 +41,10 @@
              * @argument data the form initial data
              */
             $.formUtil.init = function ($form, param, data) {
+                this.validate($form);
+                $form.find('[databind]').each(function (idx, obj) {
 
+                });
             };
 
             /**
@@ -41,20 +54,50 @@
              * @argument data the form initial data
              */
             $.formUtil.fill = function ($form, data) {
-
+                this.validate($form);
+                data = data || {};
+                var _this = this;
+                $form.find('[databind]').each(function (idx, obj) {
+                    var field = $(obj), prop = $.trim(field.attr('databind'));
+                    var dataType = $.trim(field.attr('datatype')).toLowerCase();
+                    if (!prop) {
+                        _this.thwErr(field, 'databind属性不能为空');
+                    }
+                    if (!dataType) {
+                        dataType = $.trim(field.attr('type')) || 'string';
+                    }
+                    var val = deCahin(prop, data);
+                    switch (dataType) {
+                        case 'int':
+                        case 'number':
+                        case 'date':
+                        case 'string':
+                        case 'text':
+                            field.val(val);
+                            break;
+                        case 'checkbox':
+                            if (val && $.type(val) == 'array') {
+                                (field.get(0) || {}).checked = val.indexOf($.trim(field.val())) != -1;
+                            }
+                            break;
+                        case 'radio':
+                            if ($.trim(field.val()) == val) {
+                                field.attr('checked', true);
+                            }
+                            break;
+                    }
+                });
             };
 
             $.formUtil.fetch = function ($form) {
-                if (!($form && $form instanceof $)) {
-                    throw new Error(`${$form} should be jQuery object`);
-                }
-                var data = {};
+                this.validate($form);
+                var data = {}, _this = this;
                 var speciType = {};//保存radio、checkbox
                 $form.find('[databind]').each(function (idx, obj) {
                     var field = $(obj);
                     var prop = $.trim(field.attr('databind'));
                     if (0 == prop.length) {
-                        throw new Error(field.attr('id') + ' databind属性为空');
+                        _this.thwErr(field, field.attr('id') + ' databind属性为空');
                     }
                     var dataType = $.trim(field.attr('datatype'));
                     if (dataType.length <= 0) {
@@ -64,8 +107,7 @@
                     var _val = $.trim(field.val());
                     if (_val.length <= 0) {
                         if (field.attr('required')) {
-                            field.tip('必填字段，请输入相应的数据。');
-                            throw new Error('必填字段无输入值');
+                            _this.thwErr(field, '必填字段，请输入相应的数据。');
                         } else if (dataType == 'string') {
                             _val = '';
                         } else if (dataType == 'text') {
@@ -77,44 +119,37 @@
                     switch (dataType) {
                         case 'int':
                             _val = window.parseInt(_val);
-                            if(isNaN(_val)){
-                                field.tip('非法值');
-                                throw new Error('非法值');
+                            if (isNaN(_val)) {
+                                _this.thwErr(field, '非法值');
                             }
                             var min = $.trim(field.attr('min'));
                             var max = $.trim(field.attr('max'));
                             if ($.isNumeric(min) && window.parseInt(min) > _val) {
-                                field.tip('允许输入的最小值为：'.concat(min));
-                                throw new Error('非法值');
+                                _this.thwErr(field, '允许输入的最小值为：'.concat(min));
                             }
                             if ($.isNumeric(max) && window.parseInt(max) < _val) {
-                                field.tip('允许输入的最大值为：'.concat(max));
-                                throw new Error('非法值');
+                                _this.thwErr(field, '允许输入的最大值为：'.concat(max));
                             }
                             break;
                         case 'number':
                             _val = window.parseFloat(_val);
-                            if(isNaN(_val)){
-                                field.tip('非法值');
-                                throw new Error('非法值');
+                            if (isNaN(_val)) {
+                                _this.thwErr(field, '非法值');
                             }
                             var min = $.trim(field.attr('min'));
                             var max = $.trim(field.attr('max'));
                             if ($.isNumeric(min) && window.parseFloat(min) > _val) {
-                                field.tip('允许输入的最小值为：'.concat(min));
-                                throw new Error('非法值');
+                                this.thwErr('允许输入的最小值为：'.concat(min));
                             }
                             if ($.isNumeric(max) && window.parseFloat(max) < _val) {
-                                field.tip('允许输入的最大值为：'.concat(max));
-                                throw new Error('非法值');
+                                this.thwErr('允许输入的最大值为：'.concat(max));
                             }
                             break;
                         case 'date':
                             var fv = _val;
                             _val = new Date(_val).getTime();
                             if (!($.isNumeric(_val) && fv == $.jqcDateUtil.format(_val, 'yyyy-MM-dd'))) {
-                                field.tip('非法日期参数，请更正');
-                                throw new RangeError('非法日期');
+                                _this.thwErr(field, '非法日期参数，请更正');
                             }
                             break;
                         case 'radio':
@@ -130,8 +165,7 @@
                         default:
                             var maxlength = $.trim(field.attr('maxlength'));
                             if ($.isNumeric(maxlength) && _val.length > maxlength) {
-                                field.tip('输入超出了允许的字符数限制，最多允许输入'.concat(maxlength).concat('个字符。'));
-                                throw new Error('非法值');
+                                _this.thwErr(field, '输入超出了允许的字符数限制，最多允许输入'.concat(maxlength).concat('个字符。'));
                             }
                     }
                     Object.assign(data, enChain(prop, _val));
@@ -159,6 +193,22 @@
                         val = tmpVal;
                         tmpVal = {};
                     }
+                }
+                return val;
+            }
+
+            /**
+             * 解析字段的值
+             * @param prop
+             * @param data
+             * @returns {*}
+             */
+            function deCahin(prop, data) {
+                var propChain = prop.split('.'), size = propChain.length;
+                var val = null;
+                for (var i = 0; i < size; i++) {
+                    val = data[propChain[i]];
+                    data = val;
                 }
                 return val;
             }

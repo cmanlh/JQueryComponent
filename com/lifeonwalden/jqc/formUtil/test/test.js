@@ -6,5 +6,13 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
 
     $JqcLoader.importComponents('com.lifeonwalden.jqc', ['formUtil']).execute(function () {
         $('[datatype="date"]').datetimepicker();
+        var ctx = $('#ctx'), txt = $('#txt');
+        $('#fetchData').click(function () {
+            var data = $.formUtil.fetch(ctx);
+            txt.val(JSON.stringify(data));
+        });
+        $('#fillData').click(function () {
+            $.formUtil.fill(ctx, JSON.parse(txt.val()));
+        });
     });
 });
