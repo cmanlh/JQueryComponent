@@ -23,6 +23,7 @@
 		factory( jQuery );
 	}
 } ( function( $ ) {
+    $.ui=$.ui||{};
 return $.ui.keyCode = {
 	BACKSPACE: 8,
 	COMMA: 188,
