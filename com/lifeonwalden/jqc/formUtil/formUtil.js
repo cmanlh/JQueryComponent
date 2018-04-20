@@ -45,79 +45,9 @@
              */
             $.formUtil.init = function ($form, param, data) {
                 this.validate($form);
-                _formatField($form);
+                _format($form);
                 this.fill($form, $.extend({}, data, param));
             };
-
-            /**
-             * 获取datagroup属性
-             * @param $form
-             * @param callback
-             */
-            function collectGroupBind($form, callback) {
-                var beanMap = {};
-                $form.find('[datagroup]').each(function (idx, obj) {
-                    var field = $(obj), prop = $.trim(field.attr('datagroup'));
-                    var beans = [];
-                    field.find(':input').each(function (i, o) {
-                        var f = $(o), p = $.trim(f.attr('name')), type = ($.trim(f.attr('datatype')) || $.trim(f.attr('type')) || 'string').toLowerCase();
-                        if (p) {//没有name忽略
-                            if ($.type(callback) == 'function') {
-                                callback(f, p, type);
-                            }
-                            beans.push(new Bean(f, p, type));
-                        }
-                    });
-                    (beanMap[prop] = beanMap[prop] || []).push({target: field, beans: beans});
-                });
-                return beanMap;
-            }
-
-            /**
-             * 获取普通databind属性
-             * @param $form
-             * @param callback
-             * @returns {Array}
-             */
-            function collectBind($form, callback) {
-                var beans = [];
-                $form.find('[databind]').each(function (idx, obj) {
-                    var field = $(obj), prop = $.trim(field.attr('databind'));
-                    var dataType = ($.trim(field.attr('datatype')) || $.trim(field.attr('type')) || 'string').toLowerCase();
-                    if ($.type(callback) == 'function') {
-                        callback(field, prop, dataType);
-                    }
-                    beans.push(new Bean(field, prop, dataType));
-                });
-                return beans;
-            }
-
-            function _fillField(bean, data) {
-                var field = bean.getTarget(), prop = bean.getProp(), dataType = bean.getType();
-                var val = deCahin(prop, data);
-                switch (dataType) {
-                    case 'int':
-                    case 'number':
-                    case 'string':
-                    case 'text':
-                        field.val(val);
-                        break;
-                    case 'date':
-                        if (val)
-                            field.val($.jqcDateUtil.format(val, 'yyyy-MM-dd'));
-                        break;
-                    case 'checkbox':
-                        if (val && $.type(val) == 'array') {
-                            (field.get(0) || {}).checked = val.indexOf($.trim(field.val())) != -1;
-                        }
-                        break;
-                    case 'radio':
-                        if ($.trim(field.val()) == val) {
-                            (field.get(0) || {}).checked = true;
-                        }
-                        break;
-                }
-            }
 
             /**
              * fill the form with data
@@ -128,7 +58,7 @@
             $.formUtil.fill = function ($form, data = {}) {
                 this.validate($form);
                 //datagroup暂不格式化
-                _formatField($form, true, false);
+                _format($form, true, false);
                 var _this = this;
                 var beans = collectBind($form, function (field, prop, type) {
                     if (!prop) {
@@ -157,11 +87,41 @@
                     for (var i in fields) {
                         fields[i].find(':input').each(function (idx, obj) {
                             var f = $(obj), type = ($.trim(f.attr('datatype')) || $.trim(f.attr('type')) || 'string').toLowerCase();
-                            _format(f);
+                            _formatField(f);
                             _fillField(new Bean(f, $.trim(f.attr('name')), type), vals[i]);
                         });
                     }
                 }
+            };
+
+            $.formUtil.fetch = function ($form) {
+                this.validate($form);
+                var data = {}, _this = this;
+                var beans = collectBind($form, function (field, prop, dataType) {
+                    if (0 == prop.length) {
+                        _this.thwErr(field, field.attr('id') + ' databind属性为空');
+                    }
+                    if (field.attr('required') && !$.trim(field.val())) {
+                        _this.thwErr(field, '必填字段，请输入相应的数据。');
+                    }
+                });
+                //databind
+                data = wrapBeanToData(beans);//data 不会为null
+                //datagroup
+                var beanMap = collectGroupBind($form, function (field) {
+                    if (field.attr('required') && !$.trim(field.val())) {
+                        _this.thwErr(field, '必填字段，请输入相应的数据。');
+                    }
+                });
+                for (var prop in beanMap) {//beanMap[prop]={[target:xx,beans:xx]}
+                    var groupBeans = beanMap[prop];
+                    for (var i in groupBeans) {//groupBeans[i]是一个数组
+                        var gp = groupBeans[i];
+                        (data[prop] = data[prop] || []).push(wrapBeanToData(gp.beans));
+                    }
+                }
+
+                return data;
             };
 
             function Bean(target, prop, type) {
@@ -180,7 +140,7 @@
                 return this.type;
             };
 
-            function wrapBean(beans) {
+            function wrapBeanToData(beans) {
                 var _this = $.formUtil;
                 var data = {}, speciType = {};//保存radio、checkbox
                 for (var i in beans) {
@@ -260,33 +220,7 @@
                 return data;
             }
 
-            $.formUtil.fetch = function ($form) {
-                this.validate($form);
-                var data = {}, _this = this;
-                var beans = collectBind($form, function (field, prop, dataType) {
-                    if (0 == prop.length) {
-                        _this.thwErr(field, field.attr('id') + ' databind属性为空');
-                    }
-                    if (field.attr('required') && !$.trim(field.val())) {
-                        _this.thwErr(field, '必填字段，请输入相应的数据。');
-                    }
-                });
-                //databind
-                data = wrapBean(beans);//data 不会为null
-                //datagroup
-                var beanMap = collectGroupBind($form);
-                for (var prop in beanMap) {//beanMap[prop]={[target:xx,beans:xx]}
-                    var groupBeans = beanMap[prop];
-                    for (var i in groupBeans) {//groupBeans[i]是一个数组
-                        var gp = groupBeans[i];
-                        (data[prop] = data[prop] || []).push(wrapBean(gp.beans));
-                    }
-                }
-
-                return data;
-            };
-
-            function _format(field, dataType) {
+            function _formatField(field, dataType) {
                 if (field.data('_formatField')) {
                     return;
                 }
@@ -322,14 +256,14 @@
              * 格式化字段
              * @param $form
              */
-            function _formatField($form, b = true, g = true) {
+            function _format($form, b = true, g = true) {
                 if (b)
                     collectBind($form, function (field, prop, dataType) {
-                        _format(field, dataType);
+                        _formatField(field, dataType);
                     });
                 if (g)
                     collectGroupBind($form, function (field, prop, dataType) {
-                        _format(field, dataType);
+                        _formatField(field, dataType);
                     });
             }
 
@@ -369,5 +303,76 @@
                 }
                 return val;
             }
+
+            /**
+             * 获取datagroup属性
+             * @param $form
+             * @param callback
+             */
+            function collectGroupBind($form, callback) {
+                var beanMap = {};
+                $form.find('[datagroup]').each(function (idx, obj) {
+                    var field = $(obj), prop = $.trim(field.attr('datagroup'));
+                    var beans = [];
+                    field.find(':input').each(function (i, o) {
+                        var f = $(o), p = $.trim(f.attr('name')), type = ($.trim(f.attr('datatype')) || $.trim(f.attr('type')) || 'string').toLowerCase();
+                        if (p) {//没有name忽略
+                            if ($.type(callback) == 'function') {
+                                callback(f, p, type);
+                            }
+                            beans.push(new Bean(f, p, type));
+                        }
+                    });
+                    (beanMap[prop] = beanMap[prop] || []).push({target: field, beans: beans});
+                });
+                return beanMap;
+            }
+
+            /**
+             * 获取普通databind属性
+             * @param $form
+             * @param callback
+             * @returns {Array}
+             */
+            function collectBind($form, callback) {
+                var beans = [];
+                $form.find('[databind]').each(function (idx, obj) {
+                    var field = $(obj), prop = $.trim(field.attr('databind'));
+                    var dataType = ($.trim(field.attr('datatype')) || $.trim(field.attr('type')) || 'string').toLowerCase();
+                    if ($.type(callback) == 'function') {
+                        callback(field, prop, dataType);
+                    }
+                    beans.push(new Bean(field, prop, dataType));
+                });
+                return beans;
+            }
+
+            function _fillField(bean, data) {
+                var field = bean.getTarget(), prop = bean.getProp(), dataType = bean.getType();
+                var val = deCahin(prop, data);
+                switch (dataType) {
+                    case 'int':
+                    case 'number':
+                    case 'string':
+                    case 'text':
+                        field.val(val);
+                        break;
+                    case 'date':
+                        if (val)
+                            field.val($.jqcDateUtil.format(val, 'yyyy-MM-dd'));
+                        break;
+                    case 'checkbox':
+                        if (val && $.type(val) == 'array') {
+                            (field.get(0) || {}).checked = val.indexOf($.trim(field.val())) != -1;
+                        }
+                        break;
+                    case 'radio':
+                        if ($.trim(field.val()) == val) {
+                            (field.get(0) || {}).checked = true;
+                        }
+                        break;
+                }
+            }
+
         });
 }(jQuery));

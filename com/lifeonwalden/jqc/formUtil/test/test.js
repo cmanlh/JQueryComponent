@@ -9,14 +9,20 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
     $JqcLoader.importComponents('com.lifeonwalden.jqc', ['formUtil']).execute(function () {
         var ctx = $('#ctx'), txt = $('#txt');
         $('#init').click(function () {
-            $.formUtil.init(ctx);
+            var json = {};
+            if (txt.val())
+                json = JSON.parse(txt.val());
+            $.formUtil.init(ctx, {userName: 'init', age: 100}, json);
         });
         $('#fetchData').click(function () {
             var data = $.formUtil.fetch(ctx);
             txt.val(JSON.stringify(data));
         });
         $('#fillData').click(function () {
-            $.formUtil.fill(ctx, JSON.parse(txt.val()));
+            var json = {};
+            if (txt.val())
+                json = JSON.parse(txt.val());
+            $.formUtil.fill(ctx, json);
         });
         $('#add').click(function () {
             var group = $('[datagroup]:last');
