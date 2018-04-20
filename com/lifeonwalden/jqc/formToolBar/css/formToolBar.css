@@ -2,7 +2,7 @@
 
 .jqcFormToolBar {
     display: flex;
-    /*justify-content: space-between;*/
+    justify-content: space-between;
     position: relative;
     background: #fff;
     overflow: hidden;
@@ -12,12 +12,11 @@
 }
 .jqcFormToolBar-controlBox {
     flex-shrink: 0;
-    max-width: 50%;
-    flex-grow: 10;
+    /*max-width: 50%;*/
 }
 
 .jqcFormToolBar-conditionBox {
-    /*width: 100%;*/
+    width: 100%;
 }
 
 .jqcFormToolBar-showMore {

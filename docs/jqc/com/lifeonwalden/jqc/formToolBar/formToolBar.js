@@ -145,15 +145,24 @@
                 $(window).resize(function () {
                     _this.resize();
                 });
+                var _doing = false;
+                var _moveIn = false;
                 this.el.on('mousemove', function (e) {
+                    _moveIn = true;
                     if (_this.showMore.hasClass('jqcFormToolBar-showMore-visible')) {
                         _this.showMore.show();
                     }
                 }).on('mouseleave', function (e) {
+                    _moveIn = false;
+                    if (_doing) {
+                        return;
+                    }
+                    _doing = true;
                     setTimeout(function () {
-                        if (_this.status === 'fold' && _this.showMore.hasClass('jqcFormToolBar-showMore-visible')) {
+                        if (_this.status === 'fold' && _this.showMore.hasClass('jqcFormToolBar-showMore-visible') && !_moveIn) {
                             _this.showMore.hide();
                         }
+                        _doing = false;
                     }, 1200);
                 })
             }

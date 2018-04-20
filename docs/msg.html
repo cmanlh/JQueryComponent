@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+    <title>Msg - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">msg</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>提醒框</li>
+            <li>多条可滚动</li>
+            <li>可删除，可添加</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>element</td>
+                    <td>jQuery Object</td>
+                    <td>是</td>
+                    <td></td>
+                    <td></td>
+                    <td>组件container</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>Array Object</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>每条提示框内数据</td>
+                </tr>
+                <tr>
+                    <td>width</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td></td>
+                    <td>800</td>
+                    <td>组件宽度，单位：px</td>
+                </tr>
+                <tr>
+                    <td>speed</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td>1-10</td>
+                    <td>1</td>
+                    <td>组件滚动时的速度</td>
+                </tr>
+                <tr>
+                    <td>adapter</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td>{text:'text'}</td>
+                    <td>提示框内的文本适配data数据</td>
+                </tr>
+                <tr>
+                    <td>click</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>点击触发事件</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <div class="sectionTitle">方法</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">方法名</th>
+                <th width="128px">参数说明</th>
+                <th width="64px">返回值</th>
+                <th>效果及作用</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>add</td>
+                    <td>Object || Array</td>
+                    <td></td>
+                    <td>添加数据，可单个添加，也可以多个一起添加</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">正常示例</div>
+            <div id="div1"></div>
+            <input type="text" id="input1">
+            <button class="btn1">添加一条</button>
+            <button class="btn2">添加多条</button>
+            <pre class="prettyprint linenums">
+var msg = new $.jqcMsg({
+    element: $('#div1'),
+    data: [{
+        label: '11111111',
+    }, {
+        label: '22222222',
+    }],
+    adapter: {
+        text: 'label'
+    },
+    width: 500,
+    click: function (data) {
+        alert(data.label);
+    }
+});
+
+$('.btn1').click(function () {
+    var _val = $('#input1').val();
+    if (_val) {
+        msg.add({
+            label: _val
+        });
+        $('#input1').val('');
+    }
+});
+
+$('.btn2').click(function () {
+    msg.add([{
+        label: '多条1'
+    }, {
+        label: '多条2'
+    }, {
+        label: '多条3'
+    }, {
+        label: '多条4'
+    }]);
+});
+        </pre>
+        </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/msg.js"></script>
+</body>
+
+</html>
