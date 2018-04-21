@@ -49,8 +49,8 @@
         },
         format: function (date, fmt) {
             var dt = this.toDate(date);
-            fmt = fmt || 'yyyy-MM-dd';
-            return formatDate(dt, fmt);
+            var _fmt = fmt || 'yyyy-MM-dd';
+            return formatDate(dt, _fmt);
         },
         plusHours: function (date, num, toMilliSeconds) {
             var milliseconds = this.toMilliSeconds(date) + num * ONE_HOUR_IN_MILLISECONDS;

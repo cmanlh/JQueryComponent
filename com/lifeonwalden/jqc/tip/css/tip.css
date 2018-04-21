@@ -1,4 +1,4 @@
-.oscTip {
+.jqcTip {
     display: none;
     position: absolute;
     display: table;
@@ -6,7 +6,7 @@
     background-color: transparent;
 }
 
-.oscTipTriangle {
+.jqcTipTriangle {
     width: 6px;
     height: 6px;
     box-shadow: 0 0 3px rgba(73, 73, 73, 0.6);
@@ -17,7 +17,7 @@
     left: 6px;
 }
 
-.oscTipContentBlock {
+.jqcTipContentBlock {
     display: table;
     position: relative;
     top: -3px;
@@ -27,7 +27,7 @@
     border-radius: 5px;
 }
 
-.oscTipIcon {
+.jqcTipIcon {
     float: left;
     margin-right: 5px;
     width: 14px;
@@ -38,7 +38,7 @@
     top: 1px;
 }
 
-.oscTipIcon::before {
+.jqcTipIcon::before {
     content: '!';
     position: absolute;
     top: -1px;

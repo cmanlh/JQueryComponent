@@ -29,9 +29,14 @@
     <label class="label">userName</label><input type="text" databind="userName" maxlength="5"><br/>
     <label class="label">int</label><input type="text" databind="age" datatype="int"><br/>
     <label class="label">number</label><input type="text" databind="height" datatype="number"><br/>
-    <label class="label">faverout</label><label>足球</label><input type="checkbox" name="faverout" databind="faverout" value="足球">,<label>篮球</label><input type="checkbox" name="faverout" databind="faverout" value="篮球"><br/>
+    <label class="label">faverout</label><label>足球</label><input type="checkbox" name="faverout" databind="faverout" value="football">,<label>篮球</label><input type="checkbox" name="faverout" databind="faverout" value="basketball"><br/>
     <label class="label">sex</label><label>man</label><input type="radio" value="man" name="sex" databind="sex">,
     <label>woman</label><input type="radio" value="woman" name="sex" databind="sex"><br/>
+    <label class="label">mobile</label><input type="text" datatype="textNumber" databind="mobile" maxlength="11"><br/>
+    <label class="label">能力</label><select databind="ability">
+        <option value="1">游泳</option>
+        <option value="2">长跑</option>
+    </select><br/>
     列表：<br/>
     <button id="add">添加一条</button>
     <br/>
