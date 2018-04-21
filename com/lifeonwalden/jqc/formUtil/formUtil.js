@@ -18,31 +18,17 @@
  *
  */
 (function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker', 'dateUtil', 'inputNumber', 'tip'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker', 'dateUtil', 'inputNumber', 'tip', 'lang', 'uniqueKey'])
         .execute(function () {
-            $.formUtil = {
-                validate: function ($form) {
-                    if (!($form && $form instanceof $)) {
-                        throw new Error(`${$form} should be jQuery object`);
-                    }
-                },
-                thwErr: function (field, msg) {
-                    field.tip(msg);
-                    throw new Error(msg);
-                }
-            };
+            $.formUtil = {};
             /**
-             * init form
-             *
-             * if passed data, and then fill form
+             * format fields
              *
              * @argument $form the form container
-             * @argument data the form initial data
              */
-            $.formUtil.init = function ($form, data) {
-                this.validate($form);
+            $.formUtil.format = function ($form) {
+                checkForm($form);
                 _format($form);
-                this.fill($form, $.extend({}, data));
             };
 
             /**
@@ -52,73 +38,75 @@
              * @argument data the form initial data
              */
             $.formUtil.fill = function ($form, data = {}) {
-                this.validate($form);
+                checkForm($form);
                 //datagroup暂不格式化
                 _format($form, true, false);
                 var _this = this;
-                var beans = bindProcess($form, true, function (field, prop, type) {
+                bindProcess($form, false, function (field, prop, type) {
                     if (!prop) {
-                        _this.thwErr(field, 'databind属性不能为空');
+                        showError(field, $.jqcLang.FORM_UTIL_INVALID_DATABIND);
                     }
+                    _fillField(field, prop, type, data);
                 });
-                for (var i in beans) {
-                    _fillField(beans[i], data);
-                }
-                var beanMap = collectGroupBind($form);
-                for (var prop in beanMap) {
-                    var groups = beanMap[prop];
+                var beanMap = groupBindProcess($form, true);
+                beanMap.forEach((groupFields, prop, map) => {
                     var fields = [];
-                    for (var g in groups) {
-                        var group = groups[g],
-                            gf = group.target;
-                        fields.push(gf);
+                    for (var i in groupFields) {
+                        var groupField = groupFields[i];
+                        fields.push(groupField.target);
                     }
+                    var radioName = new Map();
+                    fields[0].find('input[type=radio]').each(function (idx, el) {
+                        radioName.set($(el).attr('name'), true);
+                    });
 
                     var vals = decodeChain(prop, data) || [];
                     while (vals.length > fields.length) {
                         var cloneNode = fields[0].clone();
+                        if (radioName.size > 0) {
+                            radioName.forEach((val, key, map) => {
+                                cloneNode.find('input[type=radio][name='.concat(key).concat(']')).attr('name', 'jqc'.concat($.jqcUniqueKey.fetchIntradayKey()));
+                            });
+                        }
                         fields[fields.length - 1].after(cloneNode);
                         fields.push(cloneNode);
                     }
-                    //vals.length==fields.length
                     for (var i in fields) {
-                        fields[i].find(':input').each(function (idx, obj) {
+                        fields[i].find('[gdatabind]').each(function (idx, obj) {
                             var f = $(obj),
                                 type = ($.trim(f.attr('datatype')) || $.trim(f.attr('type')) || 'string').toLowerCase();
                             _formatField(f);
-                            _fillField(new Bean(f, $.trim(f.attr('name')), type), vals[i]);
+                            _fillField(f, $.trim(f.attr('gdatabind')), type, vals[i]);
                         });
                     }
-                }
+                });
             };
 
             $.formUtil.fetch = function ($form) {
-                this.validate($form);
-                var data = {},
-                    _this = this;
+                checkForm($form);
+                var data = {};
                 var beans = bindProcess($form, true, function (field, prop, dataType) {
                     if (0 == prop.length) {
-                        _this.thwErr(field, field.attr('id') + ' databind属性为空');
+                        showError(field, $.jqcLang.FORM_UTIL_INVALID_DATABIND);
                     }
                     if (field.attr('required') && !$.trim(field.val())) {
-                        _this.thwErr(field, '必填字段，请输入相应的数据。');
+                        showError(field, $.jqcLang.FORM_UTIL_INVALID_REQUIRED);
                     }
                 });
                 //databind
                 data = wrapBeanToData(beans); //data 不会为null
-                //datagroup
-                var beanMap = collectGroupBind($form, function (field) {
+
+                var beanMap = groupBindProcess($form, true, function (field) {
                     if (field.attr('required') && !$.trim(field.val())) {
-                        _this.thwErr(field, '必填字段，请输入相应的数据。');
+                        showError(field, $.jqcLang.FORM_UTIL_INVALID_REQUIRED);
                     }
                 });
-                for (var prop in beanMap) { //beanMap[prop]={[target:xx,beans:xx]}
-                    var groupBeans = beanMap[prop];
-                    for (var i in groupBeans) { //groupBeans[i]是一个数组
-                        var gp = groupBeans[i];
-                        (data[prop] = data[prop] || []).push(wrapBeanToData(gp.beans));
+                beanMap.forEach((groupFields, prop, map) => {
+                    for (var i in groupFields) {
+                        var groupField = groupFields[i];
+                        (data[prop] = data[prop] || []).push(wrapBeanToData(groupField.beans));
                     }
-                }
+                });
 
                 return data;
             };
@@ -140,55 +128,52 @@
             };
 
             function wrapBeanToData(beans) {
-                var _this = $.formUtil;
                 var data = {},
                     speciType = {}; //保存radio、checkbox
                 for (var i in beans) {
                     var bean = beans[i],
                         field = bean.getTarget();
-                    var dataType = bean.getType().toLowerCase(),
+                    var dataType = bean.getType(),
                         prop = bean.getProp();
                     var save = true; //针对checkbox,radio
                     var _val = $.trim(field.val());
-                    if (!_val) {
-                        if (!(dataType == 'string' || dataType == 'text')) {
-                            continue;
-                        }
+                    if (_val.length == 0 && !(dataType == 'string' || dataType == 'text')) {
+                        continue;
                     }
                     switch (dataType) {
                         case 'int':
                             _val = window.parseInt(_val);
-                            if (isNaN(_val)) {
-                                _this.thwErr(field, '非法值');
+                            if (!$.isNumeric(_val)) {
+                                showError(field, $.jqcLang.FORM_UTIL_INVALID_VALUE);
                             }
                             var min = $.trim(field.attr('min'));
-                            var max = $.trim(field.attr('max'));
                             if ($.isNumeric(min) && window.parseInt(min) > _val) {
-                                _this.thwErr(field, '允许输入的最小值为：'.concat(min));
+                                showError(field, $.jqcLang.FORM_UTIL_INVALID_MIN.concat(min));
                             }
+                            var max = $.trim(field.attr('max'));
                             if ($.isNumeric(max) && window.parseInt(max) < _val) {
-                                _this.thwErr(field, '允许输入的最大值为：'.concat(max));
+                                showError(field, $.jqcLang.FORM_UTIL_INVALID_MAX.concat(max));
                             }
                             break;
                         case 'number':
                             _val = window.parseFloat(_val);
-                            if (isNaN(_val)) {
-                                _this.thwErr(field, '非法值');
+                            if (!$.isNumeric(_val)) {
+                                showError(field, $.jqcLang.FORM_UTIL_INVALID_VALUE);
                             }
                             var min = $.trim(field.attr('min'));
-                            var max = $.trim(field.attr('max'));
                             if ($.isNumeric(min) && window.parseFloat(min) > _val) {
-                                this.thwErr('允许输入的最小值为：'.concat(min));
+                                showError(field, $.jqcLang.FORM_UTIL_INVALID_MIN.concat(min));
                             }
+                            var max = $.trim(field.attr('max'));
                             if ($.isNumeric(max) && window.parseFloat(max) < _val) {
-                                this.thwErr('允许输入的最大值为：'.concat(max));
+                                showError(field, $.jqcLang.FORM_UTIL_INVALID_MAX.concat(max));
                             }
                             break;
                         case 'date':
-                            var fv = _val;
-                            _val = new Date(_val).getTime();
-                            if (!($.isNumeric(_val) && fv == $.jqcDateUtil.format(_val, 'yyyy-MM-dd'))) {
-                                _this.thwErr(field, '非法日期参数，请更正');
+                            try {
+                                _val = $.jqcDateUtil.toMilliSeconds(_val, true);
+                            } catch (err) {
+                                showError(field, $.jqcLang.FORM_UTIL_INVALID_DATE);
                             }
                             break;
                         case 'string':
@@ -210,7 +195,7 @@
                         default:
                             var maxlength = $.trim(field.attr('maxlength'));
                             if ($.isNumeric(maxlength) && _val.length > maxlength) {
-                                _this.thwErr(field, '输入超出了允许的字符数限制，最多允许输入'.concat(maxlength).concat('个字符。'));
+                                showError(field, $.jqcLang.FORM_UTIL_INVALID_MAX_LENGTH.concat(maxlength));
                             }
                     }
                     if (save)
@@ -226,43 +211,54 @@
              * 格式化字段
              * @param $form
              */
-            function _format($form, b = true, g = true) {
-                if (b)
+            function _format($form, databind = true, groupbind = true) {
+                if (databind)
                     bindProcess($form, false, function (field, prop, dataType) {
                         _formatField(field, dataType);
                     });
-                if (g)
-                    collectGroupBind($form, function (field, prop, dataType) {
+                if (groupbind)
+                    groupBindProcess($form, false, function (field, prop, dataType) {
                         _formatField(field, dataType);
                     });
             }
+
             /**
              * 组字段处理
+             * 
+             * 暂不支持组嵌套
+             * 
              * @param {*}  
              * @param {*} collect 
              * @param {*} callback 
              */
-            function collectGroupBind($form, collect = true, callback) {
-                var beanMap = {};
-                $form.find('[datagroup]').each(function (idx, obj) {
-                    var field = $(obj),
-                        prop = $.trim(field.attr('datagroup'));
+            function groupBindProcess($form, collect = true, callback) {
+                var beanMap = new Map();
+                $form.find('[groupbind]').each(function (idx, obj) {
+                    var groupContainer = $(obj),
+                        prop = $.trim(groupContainer.attr('groupbind'));
                     var beans = [];
-                    field.find(':input').each(function (i, o) {
-                        var f = $(o),
-                            p = $.trim(f.attr('name')),
-                            type = ($.trim(f.attr('datatype')) || $.trim(f.attr('type')) || 'string').toLowerCase();
-                        if (p) { //没有name忽略
-                            if ($.type(callback) == 'function') {
-                                callback(f, p, type);
+                    groupContainer.find('[gdatabind]').each(function (idx, obj) {
+                        var field = $(obj),
+                            prop = $.trim(field.attr('gdatabind')),
+                            type = ($.trim(field.attr('datatype')) || $.trim(field.attr('type')) || 'string').toLowerCase();
+                        if (prop) {
+                            if (callback && $.type(callback) == 'function') {
+                                callback(field, prop, type);
                             }
-                            beans.push(new Bean(f, p, type));
+                            if (collect) {
+                                beans.push(new Bean(field, prop, type));
+                            }
                         }
                     });
-                    (beanMap[prop] = beanMap[prop] || []).push({
-                        target: field,
-                        beans: beans
-                    });
+                    if (collect) {
+                        if (!beanMap.has(prop)) {
+                            beanMap.set(prop, []);
+                        }
+                        beanMap.get(prop).push({
+                            target: groupContainer,
+                            beans: beans
+                        });
+                    }
                 });
                 return beanMap;
             }
@@ -379,10 +375,7 @@
                 field.data('_formatted', true);
             }
 
-            function _fillField(bean, data) {
-                var field = bean.getTarget(),
-                    prop = bean.getProp(),
-                    dataType = bean.getType();
+            function _fillField(field, prop, dataType, data) {
                 var val = decodeChain(prop, data);
                 switch (dataType) {
                     case 'date':
@@ -402,6 +395,18 @@
                     default:
                         field.val(val);
                 }
+            }
+
+
+            function checkForm($form) {
+                if (!($form && $form instanceof $)) {
+                    throw new Error(`${$form} should be jQuery object`);
+                }
+            }
+
+            function showError(field, msg) {
+                field.tip(msg);
+                throw new Error(msg);
             }
 
         });

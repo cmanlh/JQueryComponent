@@ -22,7 +22,7 @@
     const TIME_EXP_REGEXP = /^([-+]?\d+Y)?([-+]?\d+M)?([-+]?\d+D)?([-+]?\d+H)?$/i;
 
     $.jqcDateUtil = {
-        toMilliSeconds: function (date, onlyKeepDate) {
+        toMilliSeconds: function (date, onlyKeepDate = true) {
             var _date = this.toDate(date).getTime();
 
             if (onlyKeepDate) {
@@ -41,7 +41,7 @@
                 _date = date;
             }
 
-            if (_date instanceof (Date) && !isNaN(_date.valueOf())) {
+            if (_date instanceof(Date) && !isNaN(_date.valueOf())) {
                 return _date;
             } else {
                 throw new Error("invalid date parameter.");

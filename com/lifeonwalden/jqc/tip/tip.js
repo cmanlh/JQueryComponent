@@ -5,10 +5,10 @@
             var tipCache = [];
 
             function Tip() {
-                this.container = $('<div class="oscTip"></div>');
-                this.triangle = $('<div class="oscTipTriangle"></div>');
-                this.contentBlock = $('<div class="oscTipContentBlock"><span class="oscTipIcon"></span></div>');
-                this.content = $('<span class="oscTipContent"></span>');
+                this.container = $('<div class="jqcTip"></div>');
+                this.triangle = $('<div class="jqcTipTriangle"></div>');
+                this.contentBlock = $('<div class="jqcTipContentBlock"><span class="jqcTipIcon"></span></div>');
+                this.content = $('<span class="jqcTipContent"></span>');
                 this.contentBlock.append(this.content);
 
                 this.container.append(this.triangle);
