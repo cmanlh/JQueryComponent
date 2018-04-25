@@ -6,7 +6,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
         $JqcLoader.registerModule($JqcLoader.newModule('com.lifeonwalden.jqc', '../../../../../')
             .registerComponent('baseElement')
             .registerComponent('uniqueKey')
-            .registerComponent('toolkit')
+            .registerComponent('lang')
             .registerComponent('msg'));
 
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['msg']).execute(function () {
@@ -24,9 +24,9 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 }, {
                     text: '555555555555'
                 }],
-                width: 500,
-                click: function (data) {
+                onSelect: function (data, callback) {
                     alert(data.text);
+                    callback(true);
                 }
             });
 
