@@ -10,4 +10,5 @@ $JqcLoader.registerModule($JqcLoader.newModule('com.lifeonwalden.jqc', 'jqc/')
     .registerComponents(['menu'])
     .registerComponents(['loading'])
     .registerComponents(['formToolBar'])
+    .registerComponents(['apisBox'])
     .registerComponents(['msg']));
