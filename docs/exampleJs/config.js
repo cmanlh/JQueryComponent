@@ -8,6 +8,8 @@ $JqcLoader.registerModule($JqcLoader.newModule('com.lifeonwalden.jqc', 'jqc/')
     .registerComponents(['valHooks', 'zindex'])
     .registerComponents(['toolkit'])
     .registerComponents(['menu'])
+    .registerComponents(['contextmenu'])
     .registerComponents(['loading'])
     .registerComponents(['formToolBar'])
+    .registerComponents(['apisBox'])
     .registerComponents(['msg']));

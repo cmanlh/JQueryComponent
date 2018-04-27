@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+    <title>Toolkit - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">toolkit</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>为全局添加'$.jqcToolkit'工具库</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">方法</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">方法名</th>
+                <th width="256px">参数说明</th>
+                <th width="64px">返回值</th>
+                <th>效果及作用</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>uuid</td>
+                    <td>Number(int)默认为8</td>
+                    <td>16进制随机数字符串</td>
+                    <td>传入一个正整数，返回该长度的16进制随机字符串。</td>
+                </tr>
+                <tr>
+                    <td>rawType</td>
+                    <td>Any</td>
+                    <td>数据类型</td>
+                    <td>传入一个数据，返回该数据的原生类型如：Array Object Function ...。</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">uuid</div>
+            <pre class="prettyprint linenums">
+
+$.jqcToolkit.uuid();    // '0a5cc415'
+
+$.jqcToolkit.uuid(6);    // 'b457da'
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">rawType</div>
+            <pre class="prettyprint linenums">
+
+$.jqcToolkit.rawType([]);    // 'Array'
+
+$.jqcToolkit.rawType({});    // 'Object'
+        </pre>
+        </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/msg.js"></script>
+</body>
+
+</html>

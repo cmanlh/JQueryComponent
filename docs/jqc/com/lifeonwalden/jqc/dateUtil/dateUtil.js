@@ -22,7 +22,7 @@
     const TIME_EXP_REGEXP = /^([-+]?\d+Y)?([-+]?\d+M)?([-+]?\d+D)?([-+]?\d+H)?$/i;
 
     $.jqcDateUtil = {
-        toMilliSeconds: function (date, onlyKeepDate) {
+        toMilliSeconds: function (date, onlyKeepDate = true) {
             var _date = this.toDate(date).getTime();
 
             if (onlyKeepDate) {
@@ -46,6 +46,11 @@
             } else {
                 throw new Error("invalid date parameter.");
             }
+        },
+        format: function (date, fmt) {
+            var dt = this.toDate(date);
+            var _fmt = fmt || 'yyyy-MM-dd';
+            return formatDate(dt, _fmt);
         },
         plusHours: function (date, num, toMilliSeconds) {
             var milliseconds = this.toMilliSeconds(date) + num * ONE_HOUR_IN_MILLISECONDS;
@@ -119,4 +124,31 @@
             return (this.toMilliSeconds(date2, true) - this.toMilliSeconds(date1, true)) / ONE_DAY_IN_MILLISECONDS;
         }
     };
+
+    function formatDate(date, fmt) {
+        if (!fmt) {
+            throw new Error('fmt cannot null');
+        }
+        var o = {
+            'y+': date.getFullYear(),
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'H+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds(),
+            'S+': date.getMilliseconds()
+        };
+        for (var i in o) {
+            var re = new RegExp('(' + i + ')');
+            if (re.exec(fmt)) {
+                var m = RegExp.$1.length;
+                var v = String(o[i]).slice(-m);
+                while (v.length < m) {
+                    v = '0' + v;
+                }
+                fmt = fmt.replace(RegExp.$1, v);
+            }
+        }
+        return fmt;
+    }
 }(jQuery));

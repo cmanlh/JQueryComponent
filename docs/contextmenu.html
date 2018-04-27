@@ -6,18 +6,39 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
     <meta name="description" content="jQuery Component : 基于jQuery的组件库">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/component.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/prettify.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.contextmenu.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/highlight.css">
     <style>
         section>div>input {
             padding: 8px 8px;
             border: 1px solid #e5e5e5;
             border-radius: 5px;
         }
+        #div1,
+        #div2,
+        #div3,
+        #div4,
+        #div5,
+        #div6,
+        #div7{
+            width: 100px;
+            height: 30px;
+            background: #ccc;
+            line-height: 30px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        #orderList{
+            list-style: none;
+            width: 500px;
+        }
+        #orderList li{
+            height: 32px;
+            background: #ccc;
+            line-height: 32px;
+            margin-bottom: 5px;
+            text-indent: 2em;
+        }
     </style>
-    <title>ContextMenu - jQuery Component</title>
+    <title>Contextmenu - jQuery Component</title>
 </head>
 
 <body>
@@ -29,13 +50,16 @@
         <div class="sectionTitle">功能</div>
         <ul>
             <li>自定义右击菜单</li>
-            <li>最多支持三级菜单</li>
-            <li>菜单高度可定制，默认为5，多出显示滚动条</li>
+            <li>可设置最大显示个数，多出以滚动方式展示</li>
+            <li>可动态设置需要显示的菜单项目</li>
+            <li>默认子菜单唯一自动越级显示</li>
+            <li>最多支持三级</li>
+            <li>可设置单个菜单宽高</li>
         </ul>
     </section>
     <section>
         <div class="sectionTitle">参数</div>
-        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;" id="argumentsTable">
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
             <tr>
                 <th width="64px">参数</th>
                 <th width="128px">参数类型</th>
@@ -45,125 +69,358 @@
                 <th>说明</th>
             </tr>
             <tbody>
-                <tr argument-name="element">
-                    <td>element</td>
-                    <td>jQuery Object</td>
+                <tr>
+                    <td>menus</td>
+                    <td>Array Object</td>
                     <td>是</td>
-                    <td>jQuery对象</td>
                     <td></td>
-                    <td>添加右击菜单对象的父级jQuery对象，如table下tr需要添加右击菜单，则$('table')。</td>
-                </tr>
-                <tr argument-name="operations">
-                    <td>operations</td>
-                    <td>Array JSON</td>
-                    <td>是</td>
-                    <td>合法的数组数据</td>
                     <td></td>
-                    <td>右击菜单中的选项，最多支持三级菜单。格式如下代码：</td>
+                    <td>完整的menus数据</td>
                 </tr>
-                <tr argument-name="selector">
-                    <td>selector</td>
-                    <td>String</td>
-                    <td>是</td>
-                    <td>字符串</td>
-                    <td></td>
-                    <td>需要添加右击菜单的标签的标签名、类名。如：'tr'、'.el'、'li'。</td>
-                </tr>
-                <tr argument-name="selectorId">
-                    <td>selectorId</td>
-                    <td>String</td>
-                    <td>是</td>
-                    <td>合法的html行间属性名称</td>
-                    <td>false</td>
-                    <td>标签的行间属性名称，对应的值需要唯一，用于取该元素的唯一标识符，执行相关操作。</td>
-                </tr>
-                <tr argument-name="max">
-                    <td>max</td>
-                    <td>Number</td>
-                    <td></td>
-                    <td>正整数</td>
-                    <td></td>
-                    <td>右击菜单最多显示行数，多出的显示滚动条，滚动条可拖动，滚轮可滑动。不设置即无滚动条。</td>
-                </tr>
-                <tr argument-name="onSelect">
+                <tr>
                     <td>onSelect</td>
                     <td>Function</td>
                     <td></td>
-                    <td>可执行的函数</td>
                     <td></td>
-                    <td>菜单选中后执行的回调，参数为被选中的data：{selectorId: '1', eventId: 2 } selectorId为元素的唯一标识，eventId，为实例化对象时operations内对应的操作Id。</td>
+                    <td></td>
+                    <td>选中菜单时执行的回调函数，参数唯一</td>
+                </tr>
+                <tr>
+                    <td>max</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td>正整数</td>
+                    <td></td>
+                    <td>菜单最大显示条数，多出以滚动显示，默认无最大高度限制</td>
+                </tr>
+                <tr>
+                    <td>adapter</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td>{id:'id',text:'text',child:'child',valid:'valid'}</td>
+                    <td>menus数据适配器</td>
+                </tr>
+                <tr>
+                    <td>autoSkip</td>
+                    <td>Boolean</td>
+                    <td></td>
+                    <td></td>
+                    <td>true</td>
+                    <td>是否自动越级</td>
+                </tr>
+                <tr>
+                    <td>width</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td></td>
+                    <td>160</td>
+                    <td>单个菜单选项的宽度，单位：px</td>
+                </tr>
+                <tr>
+                    <td>height</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td></td>
+                    <td>32</td>
+                    <td>单个菜单选项的高度，单位：px</td>
                 </tr>
             </tbody>
         </table>
     </section>
-    <!--方法-->
+    <section>
+        <div class="sectionTitle">方法</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">方法名</th>
+                <th width="256px">参数说明</th>
+                <th width="64px">返回值</th>
+                <th>效果及作用</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>show</td>
+                    <td>参数唯一,不传参数默认显示所有</td>
+                    <td></td>
+                    <td>以自定义条件显示</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
     <section>
         <div class="sectionTitle">示例</div>
         <section>
-            <div class="exampleTitle">表格</div>
-            <p>右击参数表格查看</p>
-            <input type="text" id="input1" style="width: 300px;" placeholder="请右击参数表格">
+            <div class="exampleTitle">menus标准数据示例</div>
+            <div id="div1">右击我显菜单</div>
             <pre class="prettyprint linenums">
-//这里是用argument-name记录唯一标识的，实例化对象中selectorId需要保持一致。
-&lttr argument-name="唯一标识"&gt&lt/tr&gt
-
-// example
-var example_data = [{
-    label: 'example1',
-    id: 1,
+/**
+*   每条菜单属性如下
+*   id: 唯一操作id,可适配,父菜单非必须
+*   text: 菜单名称，可适配，必须
+*   child: 子菜单，可适配，非必须
+*   valid: 是否可用，可适配，非必须，如果没有默认始终显示，可选值Boolean || Function(参数为show方法传入的参数) 返回值须为Boolean值
+*/
+var data1 = [{
+    text: '一级菜单01',
     child: [{
-        label: 'example2',
-        id: 11,
+        id: 1,
+        text: '二级菜单01'
+    }, {
+        id: 2,
+        text: '二级菜单02'
+    }],
+    valid: function (showData) {
+        return showData === 1;
+    }
+}, {
+    text: '一级菜单02',
+    child: [{
+        id: 3,
+        text: '二级菜单03'
+    }, {
+        id: 4,
+        text: '二级菜单04'
+    }],
+    valid: function (showData) {
+        return showData > 1;
+    }
+}, {
+    text: '一级菜单03',
+    child: [{
+        id: 5,
+        text: '二级菜单05'
+    }, {
+        id: 6,
+        text: '二级菜单06'
+    }],
+    valid: function (showData) {
+        return showData > 1;
+    }
+}];
+
+var menus1 = new $.jqcContextMenu({
+    menus: data1
+});
+
+$('#div1').on('contextmenu', function (e) {
+    e.preventDefault();
+    menus1.show();
+});              
+        </pre>
+        </section>
+
+        <section>
+            <div class="exampleTitle">依据条件显示菜单</div>
+            <div id="div2">show(1)</div>
+            <div id="div3">show(2)</div>
+            <pre class="prettyprint linenums">   
+$('#div2').on('contextmenu', function (e) {
+    e.preventDefault();
+    menus1.show(1);
+});    
+$('#div3').on('contextmenu', function (e) {
+    e.preventDefault();
+    menus1.show(2);
+});             
+        </pre>
+        </section>
+
+        <section>
+            <div class="exampleTitle">限制高度显示滚动条</div>
+            <div id="div4">带滚动条</div>
+            <pre class="prettyprint linenums">   
+// 带滚动条
+var data2 = [{
+    text:'test'
+}, {
+    text:'test'
+}, {
+    text:'test'
+}, {
+    text:'test'
+}, {
+    text:'test'
+}, {
+    text:'test'
+}, {
+    text:'test'
+}, {
+    text:'test'
+}, {
+    text:'test'
+}, {
+    text:'test'
+}];
+
+var menus2 = new $.jqcContextMenu({
+    menus: data2,
+    max: 5
+});
+
+$('#div4').on('contextmenu', function (e) {
+    e.preventDefault();
+    menus2.show();
+});            
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">自动越级</div>
+            <div id="div5">默认自动越级</div>
+            <div id="div6">未自动越级</div>
+            <pre class="prettyprint linenums">   
+// 自动越级 因演示省略id
+var data3 = [{
+    text: '我是一级',
+    child: [{
+        text: '我是二级',
         child: [{
-            label: 'example3',
-            id: 111
+            text: '我是三级'
         }]
     }]
 }];
 
-
-function create_data() {
-    var create_three = function (num) {
-        return new Array(10).fill(1).map((item, index) => ({
-            label: '三级菜单' + num + index,
-            id: num.toString() + index
-        }));
-    };
-    var create_two = function (num) {
-        return new Array(10).fill(1).map((item, index) => ({
-            label: '二级菜单' + num + index,
-            id: num.toString() + index,
-            child: create_three(num.toString() + index)
-        }));
-    };
-    return new Array(10).fill(1).map((item, index) => ({
-        label: '一级菜单' + index,
-        id: index,
-        child: create_two(index)
-    }));
-}
-
-//实例化
-new $.jqcContextMenu({
-    element: $('#argumentsTable'),
-    selector: 'tr',
-    selectorId: 'argument-name',
-    onSelect: function (data) {
-        $('#input1').val(JSON.stringify(data));     
-    },
-    operations: create_data()
+var autoSkip = new $.jqcContextMenu({
+    menus: data3
 });
-            </pre>
+
+var noAutoSkip = new $.jqcContextMenu({
+    menus: data3,
+    autoSkip: false
+});
+
+$('#div5').on('contextmenu', function (e) {
+    e.preventDefault();
+    autoSkip.show();
+});
+
+$('#div6').on('contextmenu', function (e) {
+    e.preventDefault();
+    noAutoSkip.show();
+});           
+        </pre>
         </section>
-    </section>
-    <script src="js/run_prettify.js"></script>
-    <script src="js/jquery-3.1.1.js "></script>
-    <script src="js/version.js"></script>
-    <script src="js/keycode.js"></script>
-    <script src="jqc-js/jqc.lang.js"></script>
-    <script src="jqc-js/jqc.baseElement.js"></script>
-    <script src="jqc-js/jqc.uniqueKey.js"></script>
-    <script src="jqc-js/jqc.contextmenu.js"></script>
+        <section>
+            <div class="exampleTitle">设置宽高</div>
+            <div id="div7">大号menu</div>
+            <pre class="prettyprint linenums">   
+var big = new $.jqcContextMenu({
+    menus: data1,
+    width: 240,
+    height: 48
+});
+
+$('#div7').on('contextmenu', function (e) {
+    e.preventDefault();
+    big.show();
+});         
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">实例操作</div>
+            <ul id="orderList">
+                <li data-orderId = '1' data-status = '1'>1号订单，状态：已支付</li>
+                <li data-orderId = '2' data-status = '2'>2号订单，状态：待支付</li>
+                <li data-orderId = '3' data-status = '3'>3号订单，状态：已发货</li>
+                <li data-orderId = '4' data-status = '4'>4号订单，状态：已取消</li>
+                <li data-orderId = '5' data-status = '5'>5号订单，状态：已收货</li>
+                <li data-orderId = '6' data-status = '6'>6号订单，状态：已完成</li>
+            </ul>
+            <pre class="prettyprint linenums">   
+/*
+    &ltul id="#orderList"&gt
+        &ltli data-orderId="1" status="1"&gt&lt/li&gt
+    &lt/ul&gt
+*/
+//订单示例，status 1：已支付  2：未支付  3: 已发货   4：已取消   5：已收货   6:已完成
+
+//菜单数据
+var orderMenus = [{
+    id: 1,
+    text: '支付订单',
+    valid: function (showData) {
+        return showData.status === 2;                           //未支付时显示
+    }
+}, {
+    id: 2,
+    text: '确认收货',
+    valid: function (showData) {
+        return showData.status === 3;                           //已发货时显示
+    }
+}, {
+    id: 3,
+    text: '取消订单',
+    valid: function (showData) {
+        return showData.status === 2 || showData.status === 1 || showData.status === 3;         //已支付，未支付，已发货时显示
+    }
+}, {
+    id: 4,
+    text: '完成订单',
+    valid: function (showData) {
+        return showData.status === 5;                           //已收货时显示
+    }
+},{
+    id: 5,
+    text: '删除订单',
+    valid: function (showData) {
+        return showData.status === 2 || showData.status === 4 || showData.status === 6;         //未支付，已取消，已完成时显示
+    }
+}];
+//实例化菜单
+var orderMenu = new $.jqcContextMenu({
+    menus: orderMenus,
+    onSelect: function (data) {
+        manageOrder(data);              //data.menu 触发该事件的menu信息  data.showData 显示菜单时传入的参数
+    }
+});
+
+//动态显示菜单
+$('#orderList > li').on('contextmenu', function (e) {
+    e.preventDefault();                 //阻止浏览器右击默认事件
+    var orderId = +$(this).attr('data-orderId');
+    var status = +$(this).attr('data-status');
+    orderMenu.show({
+        orderId,                        //当前订单的id
+        status                          //当前订单的状态
+    });
+});
+
+//管理订单
+function manageOrder(data) {
+    var orderId = data.showData.orderId; 
+    var menuId = data.menu.id;      //菜单id
+    var $element = $('#orderList li[data-orderId='+ orderId +']');
+    switch (menuId) {
+        case 1:      //支付订单
+            $element.attr('data-status', 1)
+                .text(`${orderId}号订单，状态：已支付`);
+            break;
+        case 2:      //确认收货
+            $element.attr('data-status', 5)
+                .text(`${orderId}号订单，状态：已收货`);
+            break;
+        case 3:     //取消订单
+            $element.attr('data-status', 4)
+                .text(`${orderId}号订单，状态：已取消`);
+            break;
+        case 4:     //完成订单
+            $element.attr('data-status', 6)
+                .text(`${orderId}号订单，状态：已完成`);
+            break;
+        case 5:     //删除订单
+            $element.remove();
+            break;
+    }
+}       
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">全尺寸任意位置动态定位展示</div>
+            <div id="div8" style="height:100vh;background:#ccc;text-align:center;line-height:100vh;">右击我</div>
+        </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
     <script src="exampleJs/contextmenu.js"></script>
 </body>
 

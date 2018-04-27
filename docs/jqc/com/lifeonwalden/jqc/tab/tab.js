@@ -20,11 +20,11 @@
     $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'lang'])
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'tab').concat('css/tab.css'))
         .execute(function () {
+            const DEFAULT_OPTIONS = {
+                element: null, // container for tabF
+                position: 'relative'
+            };
             $.jqcTab = function (params) {
-                const DEFAULT_OPTIONS = {
-                    element: null, // container for tabF
-                    position: 'relative'
-                };
                 if (arguments.length > 0) {
                     $.jqcBaseElement.apply(this, arguments);
                 }
