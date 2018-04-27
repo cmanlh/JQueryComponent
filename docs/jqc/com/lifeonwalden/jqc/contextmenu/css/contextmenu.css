@@ -1,4 +1,94 @@
 @charset 'utf-8';
+.jqcContextMenu {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    position: absolute;
+    z-index: 100;
+}
+.jqcContextMenu-fakeScrollBox {
+    overflow: hidden;
+    width: 158px;
+    background: #fff;
+    border: 1px solid #c9c9c9;
+    position: absolute;
+}
+
+.jqcContextMenu .jqcContextMenu-fakeScrollBox:nth-child(2) {
+    left: 159px;
+}
+
+.jqcContextMenu .jqcContextMenu-fakeScrollBox:nth-child(3) {
+    left: 318px;
+}
+
+.jqcContextMenu.to-left .jqcContextMenu-fakeScrollBox {
+    left: -160px;
+}
+
+.jqcContextMenu.to-top .jqcContextMenu-fakeScrollBox:nth-child(1) {
+    bottom: 0;
+}
+
+.jqcContextMenu.to-left .jqcContextMenu-fakeScrollBox:nth-child(2) {
+    left: -319px;
+}
+
+.jqcContextMenu.to-left .jqcContextMenu-fakeScrollBox:nth-child(3) {
+    left: -478px;
+}
+.jqcContextMenu-item {
+    width: 158px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    color: #333;
+    text-indent: 20px;
+    position: relative;
+    cursor: pointer;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+.jqcContextMenu-item:hover {
+    background: #F2F2F2;
+}
+.jqcContextMenu-active {
+    background: #F2F2F2;
+}
+.jqcContextMenu-slide {
+    width: 5px;
+    height: 40px;
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+    left: 152px;
+    background: #d8d8d8;    
+}
+.jqcContextMenu-scrollBox{
+    width: 200px;
+    overflow-y: scroll;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .jqcContextMenuBox {
     position: absolute;
     z-index: 100;
@@ -7,36 +97,45 @@
     user-select: none;
     display: none;
 }
-.jqcContextMenuBox .fakeScrollBox{
+
+.jqcContextMenuBox .fakeScrollBox {
     overflow: hidden;
     width: 158px;
     background: #fff;
     border: 1px solid #c9c9c9;
     position: absolute;
 }
-.jqcContextMenuBox .fakeScrollBox2{
+
+.jqcContextMenuBox .fakeScrollBox2 {
     left: 159px;
 }
-.jqcContextMenuBox .fakeScrollBox3{
+
+.jqcContextMenuBox .fakeScrollBox3 {
     left: 318px;
 }
-.jqcContextMenuBox.to-left .fakeScrollBox{
+
+.jqcContextMenuBox.to-left .fakeScrollBox {
     left: -160px;
 }
-.jqcContextMenuBox.to-top .fakeScrollBox1{
+
+.jqcContextMenuBox.to-top .fakeScrollBox1 {
     bottom: 0;
 }
-.jqcContextMenuBox.to-left .fakeScrollBox2{
+
+.jqcContextMenuBox.to-left .fakeScrollBox2 {
     left: -319px;
 }
-.jqcContextMenuBox.to-left .fakeScrollBox3{
+
+.jqcContextMenuBox.to-left .fakeScrollBox3 {
     left: -478px;
 }
-.jqcContextMenuBox .jqcContextMenuScrollBox{
+
+.jqcContextMenuBox .jqcContextMenuScrollBox {
     width: 200px;
     overflow-y: scroll;
     position: relative;
 }
+
 .jqcContextMenuBox div.jqcContextMenu-item {
     width: 158px;
     height: 32px;
@@ -50,18 +149,21 @@
     -moz-transition: all 0.2s;
     transition: all 0.2s;
 }
+
 .jqcContextMenuBox div.jqcContextMenu-item:hover {
     background: #F2F2F2;
 }
+
 .jqcContextMenuBox div.jqcContextMenu-active {
     background: #F2F2F2;
 }
-.jqcContextMenuBox .slide{
+
+.jqcContextMenuBox .slide {
     width: 5px;
     height: 40px;
     border-radius: 2px;
     position: absolute;
     top: 0;
-    left: 152px;    
+    left: 152px;
     background: #d8d8d8;
 }

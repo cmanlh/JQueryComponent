@@ -8,86 +8,88 @@
         body{
             height: 2000px;
         }
-        #div1 li{
-            background: #ccc;
-            width: 500px;
-            height: 32px;
-            margin-bottom: 10px;
-            list-style: none;
-        }
-        #div2 {
-            padding-top: 100px;
-        }
-        #div2 div{
-            float: left;
+        .fixed{
+            position: fixed;
             width: 100px;
             height: 100px;
-            line-height: 100px;
-            text-align: center;
             background: #ccc;
-            margin-right: 20px;
+        }
+        .left{
+            left: 0;
+        }
+        .right{
+            right: 0;
+        }
+        .top{
+            top: 0;
+        }
+        .bottom{
+            bottom: 0;
+        }
+        .center{
+            left: 50%;
+            top: 50%;
+            margin-left: -50px;
+            margin-top: -50px;
+        }
+        .box{
+            overflow: hidden;
+        }
+        .box1 > p {
+            float: left;
+            width: 100px;
+            height: 50px;
+            margin: 5px;
+            background: #ccc;
+            line-height: 50px;
+            text-align: center;
+        }
+        .box2 > p {
+            height: 36px;
+            line-height: 36px;
+            text-indent: 2em;
+            background: #ccc;
+            margin-bottom: 10px;
+            width: 80%;
+        }
+        .box3{
+            margin-top: 10px;
+            height: 1000px;
+            background: #ccc;
         }
     </style>
 </head>
 
 <body>
-    <div style="height: 50px"></div>
-    <div>
-        <table border="1" id="table1" style="width: 100%;height:100px;" cellspacing=0 cellpadding=0>
-            <tr>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-            </tr>
-            <tr targetId='1' operations="1,2">
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-            </tr>
-            <tr targetId='2' operations="1,2,3,4">
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-            </tr>
-            <tr targetId='3' operations="2,4">
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-            </tr>
-        </table>
+    <div class="box box1">
+        <p>show()</p>
+        <p>show(1)</p>
+        <p>show(2)</p>
+        <p>show(3)</p>
+        <p>show(4)</p>
+        <p>show(5)</p>
+        <p>show(6)</p>
+        <p>show(7)</p>
+        <p>show(8)</p>
+        <p>show(9)</p>
+        <p>show(10)</p>
+        <p>show(11)</p>
     </div>
-    <div id="div1">
-        <ul>
-            <li data-id="1">1</li>
-            <li data-id="2">2</li>
-            <li data-id="3">3</li>
-            <li data-id="4">4</li>
-            <li data-id="5">5</li>
-            <li data-id="6">6</li>
-            <li data-id="7">7</li>
-            <li data-id="8">8</li>
-            <li data-id="9">9</li>
-            <li data-id="10">10</li>
-        </ul>
+    <div class="box box2">
+        <p>显示全部</p>
+        <p data-id = '1' data-status = '1'>1.已支付</p>
+        <p data-id = '2' data-status = '2'>2.待支付</p>
+        <p data-id = '3' data-status = '3'>3.已发货</p>
+        <p data-id = '4' data-status = '4'>4.已取消</p>
+        <p data-id = '5' data-status = '5'>5.已收货</p>
+        <p data-id = '6' data-status = '6'>6.已完成</p>
     </div>
-    <div id="div2">
-        <div class="test" data-did="1">1</div>
-        <div class="test" data-did="2">2</div>
-        <div class="test" data-did="3">3</div>
-        <div class="test" data-did="4">4</div>
-        <div class="test" data-did="5">5</div>
-        <div class="test" data-did="6">6</div>
-        <div class="test" data-did="7">7</div>
-        <div class="test" data-did="8">8</div>
-        <div class="test" data-did="9">9</div>
-        <div class="test" data-did="10">10</div>
-        <div class="test" data-did="11">11</div>
-        <div class="test" data-did="12">12</div>
-    </div>
+    <div class="box3"></div>
+    <!--<div class="center fixed">实例1：全都显示奇数</div>
+    <div class="left top fixed">实例1：全都显示奇数</div>
+    <div class="left bottom fixed"></div>
+    <div class="right top fixed"></div>
+    <div class="right bottom fixed"></div>-->
     <script src="../../loader/loader.js"></script>
     <script src="test.js"></script>
 </body>

@@ -18,362 +18,327 @@
  * 
  */
 (function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'toolkit'])
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'contextmenu').concat('css/contextmenu.css'))
         .execute(function () {
-            var DEFAULT_OPTIONS = {
-                element: null,
-                selectorId: '',
-                selector: '',
+            var T = $.jqcToolkit;
+            var $body = $('body');
+            /**
+             * menus数据解析，为menu数组
+             * 
+             * {
+             *  id: optional,
+             *  text : requried,
+             *  valid : true, function(data) optional, default value: true
+             * }
+             */
+            const DEFAULT_OPTIONS = {
+                menus: [], // 构建菜单的数据
+                max: null,
                 onSelect: null,
+                adapter: {
+                    id: 'id',
+                    text: 'text',
+                    child: 'child',
+                    valid: 'valid'
+                },
+                autoSkip: true,
+                width: 160,
+                height: 32,
             };
-            var $window = $(window);
+
+            // /**
+            //  * 根据传入数据，弹性显示菜单项，并在菜单被选择时，将data作为参数，并上menu数据传回给onSelect
+            //  */
+            // $.jqcContextMenu.prototype.show = function (data) {};
+
+
+
             $.jqcContextMenu = function (params) {
-                if (arguments.length > 0) {
-                    $.jqcBaseElement.apply(this, arguments);
-                }
-                this.selectorId = '';
-                this.selector = null;
-                this.options = $.extend(true, {}, DEFAULT_OPTIONS, params);
-                this.el = this.options.element;
-                this.el.addClass('jqcContextMenu');
-                this.typeName = 'jqcContextMenu';
-                this.elementId = 'jqc'.concat($.jqcUniqueKey.fetchIntradayKey());
-                this.el.attr($.jqcBaseElement.JQC_ELEMENT_TYPE, this.typeName);
-                this.el.attr($.jqcBaseElement.JQC_ELEMENT_ID, this.elementId);
-                this.maxHeight = this.options.max ? this.options.max * 32 : 'auto';
-                var firstLevelLen = this.options.operations.length;
-                this.currentHeight = (this.options.max && firstLevelLen > this.options.max) ? this.maxHeight : firstLevelLen * 32;
-                this.screenHeight = $window.height();
-                this.screenWidth = $window.width();
+                this.options = Object.assign({}, DEFAULT_OPTIONS, params);
+                this.box = null;                        //view
+                this.level = 1;                         //菜单层级
+                this.needShowMenus = [];                //显示的菜单
+                this.pageWidth = window.innerWidth;     //页面可视宽度
+                this.pageHeight = window.innerHeight;   //页面可视高度
+                this.width = this.options.width;                       //单个菜单的宽度
+                this.height = this.options.height;                       //单个菜单的高度
+                this.scrollTop = $(window).scrollTop(); //页面上卷高度
+                this.data = null;                       //显示条件
+                this.toLeft = false;
+                this.toTop = false;
+                this.maxHeight = this.options.max ? this.options.max * this.height : 'auto';
+                var firstLevelLen = this.options.menus.length;
+                this.firstLevlHeight = (this.options.max && firstLevelLen > this.options.max) ? this.maxHeight : firstLevelLen * this.height;
+                bindEvent.call(this);
+            }
+            // 显示
+            $.jqcContextMenu.prototype.show = function (data) {
+                $body.find('.jqcContextMenu').remove();
+                var _this = this;
                 this.level = 1;
-                this.scrollTop = 0;
-                this.init();
-                
+                this.data = Array.prototype.slice.call(arguments);
+                var _menus = [].concat(_this.options.menus);
+                this.needShowMenus = getNeedShowMenus.call(_this, _menus, _this.data);
+                if (this.options.autoSkip) {
+                    this.needShowMenus = skip.call(_this, this.needShowMenus);
+                }
+                this.level = getLevel.call(_this);
+                setTimeout(function () {
+                    render.call(_this);
+                }, 0);
             };
-            $.jqcContextMenu.prototype = new $.jqcBaseElement();
-            $.jqcContextMenu.prototype.constructor = $.jqcContextMenu;
-            $.jqcContextMenu.prototype.init = function () {
-                this.getLevel();
-                this.renderFirstLevel();
-            };
-            $.jqcContextMenu.prototype.renderFirstLevel = function () {
+
+            // 绑定事件
+            function bindEvent() {
                 var _this = this;
-                this.contextMenuBox = $('<div class="jqcContextMenuBox"></div>')
-                    .attr('data-id', _this.elementId);
-                this.contextMenuFirstLevel = $('<div class="jqcContextMenuScrollBox"></div>').css('max-height', _this.maxHeight);
-                var _fakeScrollBox = $('<div class="fakeScrollBox fakeScrollBox1"></div>').css('max-height', _this.maxHeight);
-                _fakeScrollBox.append(_this.contextMenuFirstLevel);
-                this.contextMenuBox.append(_fakeScrollBox);
-                this.options.operations.forEach(function(element) {
-                    var _el = $('<div class="jqcContextMenu-item">' + element.label + '</div>');
-                    _el.attr('eventId', element.id);
-                    if (element.child) {
-                        _el.on('mouseenter', function (e) {
-                           e.stopPropagation();
-                           $(this).addClass('jqcContextMenu-active').siblings().removeClass('jqcContextMenu-active');
-                           _this.destroySecondLevel();
-                           _this.renderSecondLevel(element.child, $(this).offset().top);
-                        }).click(function (e) {
-                            e.stopPropagation();
-                        });
-                    } else {
-                        _el.click(function (e) {
-                            e.stopPropagation();
-                            if (_this.options.onSelect) {
-                                _this.options.onSelect.call(_this.selector, {
-                                    selectorId: _this.selectorId,
-                                    eventId: element.id
-                                });
-                                _this.contextMenuBox.hide();
-                                _this.selectorId = '';
-                            }
-                        }).on('mouseenter', function (e) {
-                            e.stopPropagation();
-                            _this.destroySecondLevel();
-                            _this.contextMenuBox.find('.jqcContextMenu-active').removeClass('jqcContextMenu-active');
-                        });
-                    }
-                    _this.contextMenuFirstLevel.append(_el);
+                $(window).resize(function () {
+                    _this.pageWidth = window.innerWidth;
+                    _this.pageHeight = window.innerHeight;
+                }).scroll(function () {
+                    _this.scrollTop = $(this).scrollTop();
                 });
-                if (this.options.operations.length > this.options.max) {
-                    this.slide1 = $('<span><span>').addClass('slide slide1');
-                    var _height = parseInt(_this.options.max * _this.maxHeight / this.options.operations.length) ;
-                    this.slide1.height(_height);
-                    _fakeScrollBox.append(_this.slide1);
-                }
-                if (this.slide1) {
-                    var _height = this.slide1.height();
-                    this.contextMenuFirstLevel.scroll(function (e) {
-                        e.stopPropagation();
-                        var _scrollTop = $(this).scrollTop();
-                        var _top = (_this.maxHeight + _scrollTop) * _this.maxHeight / 32 / _this.options.operations.length - _height;
-                        _this.slide1.css('top', _top);
-                    });
-                    this.slide1.on('mousedown click', function (e) {
-                        e.stopPropagation();
-                        var _parentOffsetTop = $(this).parent('.fakeScrollBox').offset().top;
-                        var _y = e.pageY;
-                        var _offsetTop = _this.slide1.offset().top - _parentOffsetTop;
-                        $(document).on('mousemove', function (e) {
-                            var _top = e.pageY - _y + _offsetTop;
-                            _top = _top < 0 ? 0 : _top;
-                            _top = _top + _height > _this.maxHeight ? _this.maxHeight - _height : _top;
-                            _this.slide1.css('top', _top); 
-                            var _scrollTop = (_top + _height) * _this.options.operations.length * 32 / _this.maxHeight - _this.maxHeight;
-                            _this.contextMenuFirstLevel.scrollTop(_scrollTop);
-                        });
-                    });
-                    $(document).on('mouseup', function () {
-                        $(this).off('mousemove');
-                    });
-                }
-                $('body').append(_this.contextMenuBox);
-                this.bindEvent();
-            };
-            $.jqcContextMenu.prototype.bindEvent = function () {
+                $(document).on('contextmenu click', function (e) {
+                    _this.pageX = e.pageX;
+                    _this.pageY = e.pageY;
+                }).on('mouseup', function () {
+                    $(this).off('mousemove');
+                }).click(function (e) {
+                    _this.box && _this.box.remove();
+                });
+            }
+
+            function render() {
                 var _this = this;
-                this.contextMenuBox.on('contextmenu', function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    _this.contextMenuBox.show();
-                });
-                this.el.on('contextmenu', _this.options.selector, function (e) {
-                    e.preventDefault();
-                    var _selectorId = $(this).attr(_this.options.selectorId);
-                    if (_selectorId === 0 || _selectorId) {
-                        _this.selectorId = _selectorId;
-                        _this.selector = e.currentTarget;
-                        _this.contextMenuShow(e);  
-                    } else  {
-                        _this.contextMenuBox.hide();
-                    }
-                });
-                $(window).on('resize', function (e) {
-                    _this.screenHeight = $window.height();
-                    _this.screenWidth = $window.width();
-                });
-                $(window).scroll(function () {
-                    _this.scrollTop = $(window).scrollTop();
-                });
-            };
-            $.jqcContextMenu.prototype.contextMenuShow = function (e) {
+                $body.append(createBox.call(_this));
+            }
+
+            function createBox() {
                 var _this = this;
-                this.destroySecondLevel();
-                this.contextMenuBox
-                    .find('.jqcContextMenu-active')
-                    .removeClass('jqcContextMenu-active');
-                var _offset = _this.el.offset().left + _this.el.width();
-                if (this.level > 1 && (e.pageX > (this.screenWidth - this.level * 160))) {
-                    this.contextMenuBox.addClass('to-left');
-                } else {
-                    this.contextMenuBox.removeClass('to-left');
-                }
-                console.log(e.pageY);
-                if (e.pageY - _this.scrollTop > _this.screenHeight - _this.currentHeight) {
-                    this.contextMenuBox.addClass('to-top');
-                } else {
-                    this.contextMenuBox.removeClass('to-top');
-                }
-                this.contextMenuBox
+                var _left = 0;
+                this.box = $('<div>')
+                    .addClass('jqcContextMenu')
                     .css({
-                        'left': e.pageX,
-                        'top': e.pageY
-                    }).show();
-                this.contextMenuFirstLevel.scrollTop(0);
-                this.slide1 && this.slide1.css('top', 0);
-                $(document).off('click');
-                $(document).on('click', function () {
-                    _this.contextMenuBox.hide();
-                });  
-            };
-            $.jqcContextMenu.prototype.destroySecondLevel = function () {
-                var _this = this;
-                this.destroyThirdLevel();
-                this.contextMenuBox
-                    .removeClass('jqcContextMenuDoubleSize')
-                    .find('.fakeScrollBox2')
-                    .remove();
-                this.contextMenuBox
-                    .find('.slide2')
-                    .remove();
-            };
-            $.jqcContextMenu.prototype.renderSecondLevel = function (child, offsetTop) {
-                var _this = this;
-                this.destroyThirdLevel();
-                this.contextMenuBox.addClass('jqcContextMenuDoubleSize');
-                this.contextMenuSecondLevel = $('<div class="jqcContextMenuScrollBox"></div>').css('max-height', _this.maxHeight);
-                var _fakeScrollBox = $('<div class="fakeScrollBox fakeScrollBox2"></div>').css('max-height', _this.maxHeight);
-                _fakeScrollBox.append(this.contextMenuSecondLevel);
-                if (offsetTop - _this.scrollTop + child.length * 32 + 20 > this.screenHeight) {
-                    _fakeScrollBox.css({
-                        'top': 'auto',
-                        'bottom': _this.contextMenuBox.offset().top - offsetTop - 33 + _this.scrollTop
+                        left: _this.pageX,
+                        top: _this.pageY
+                    }).click(function (e) {
+                        e.stopPropagation();
+                    }).on('contextmenu', function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
                     });
+                if (this.pageX + (this.level * this.width) > this.pageWidth) {
+                    this.box.addClass('to-left');
+                    this.toLeft = true;
+                    _left = -this.width;
                 } else {
-                    _fakeScrollBox.css({
-                        'top': offsetTop - _this.contextMenuBox.offset().top - 1 - _this.scrollTop,
-                        'bottom': 'auto'
-                    });
+                    this.box.removeClass('to-left');
+                    this.toLeft = false;
+                    _left = 0;
                 }
-                this.contextMenuBox.append(_fakeScrollBox);
-                child.forEach(function(data) {
-                    var _el = $('<div class="jqcContextMenu-item">' + data.label + '</div>');
-                    if (data.child) {
-                       _el.on('mouseenter', function (e) {
-                           e.stopPropagation();
-                           $(this).addClass('jqcContextMenu-active').siblings().removeClass('jqcContextMenu-active');
-                           _this.renderThirdLevel(data.child, $(this).offset().top);
+                if (this.pageY + this.firstLevlHeight - this.scrollTop > this.pageHeight) {
+                    this.box.addClass('to-top');
+                    this.toTop = true;
+                } else {
+                    this.box.removeClass('to-top');
+                    this.toTop = false;
+                }
+                this.box.append(createMenu.call(_this, _this.needShowMenus, 0, _left));
+                return this.box;  
+            }
+
+            function skip(data) {
+                var _this = this;
+                if (Array.isArray(data) && data.length === 1 && data[0]['__temp']) {
+                    return skip.call(_this, data[0]['__temp']);
+                } else {
+                    return data;
+                }
+            }
+
+            function createMenu(menu, offsetTop, left) {
+                var _this = this;
+                var _scrollBox = $('<div>')
+                    .addClass('jqcContextMenu-scrollBox')
+                    .css({
+                        'max-height': _this.maxHeight,
+                        'width': _this.width + 20
+                    });
+                menu.forEach(item => {
+                    if (_this.options.autoSkip) {
+                        item = simplifyData.call(_this, item);
+                    }
+                    var _item = $('<div>')
+                        .addClass('jqcContextMenu-item')
+                        .text(item[_this.options.adapter.text])
+                        .on('mouseenter', function (e) {
+                            e.stopPropagation();
+                            $(this).siblings()
+                                .removeClass('jqcContextMenu-active');
+                            var _parent = $(this).parents('.jqcContextMenu-fakeScrollBox');
+                            var _index = _parent.index();
+                            _this.box.find('.jqcContextMenu-fakeScrollBox:gt('+ _index +')').remove();
+                            if (Array.isArray(item['__temp']) && item['__temp'].length > 0) {
+                                $(this).addClass('jqcContextMenu-active');
+                                var _offsetTop = $(this).offset().top;
+                                _index ++;
+                                var _left = _this.toLeft ? -(_this.width * (_index + 1) - _index) : (_this.width * _index - _index);
+                                _this.box.append(createMenu.call(_this, item['__temp'], _offsetTop, _left));
+                            }
                         }).click(function (e) {
                             e.stopPropagation();
-                        }); 
-                    } else {
-                        _el.click(function (e) {
-                            e.stopPropagation();
-                            if (_this.options.onSelect) {
-                                _this.options.onSelect.call(_this.selector, {
-                                    selectorId: _this.selectorId,
-                                    eventId: data.id
+                            if (!Array.isArray(item['__temp']) || item['__temp'].length === 0) {
+                                _this.options.onSelect && _this.options.onSelect({
+                                    menu: item,
+                                    showData: menu.showData
                                 });
-                                _this.contextMenuBox.hide();
-                                _this.selectorId = '';
+                                _this.box.remove();
                             }
-                            _this.destroySecondLevel();
-                        }).on('mouseenter', function (e) {
+                        }).css({
+                            'height': _this.height,
+                            'width': _this.width - 2,
+                            'line-height': _this.height + 'px'
+                        });
+                    _scrollBox.append(_item);
+                });
+                var _fakeScrollBox = $('<div>')
+                    .addClass('jqcContextMenu-fakeScrollBox')
+                    .append(_scrollBox)
+                    .css({
+                        'max-height': _this.maxHeight,
+                        'width': _this.width - 2,
+                        'left': left
+                    });
+                // 是否限制最大个数
+                if (this.options.max && menu.length > _this.options.max) {
+                    var _height = parseInt(_this.options.max * _this.maxHeight / menu.length) ;
+                    var _slide = $('<span><span>')
+                        .addClass('jqcContextMenu-slide')
+                        .on('mousedown click', function (e) {
                             e.stopPropagation();
-                            _this.destroyThirdLevel();
-                            $(this).siblings().removeClass('jqcContextMenu-active');
-                        });
-                    }   
-                    _this.contextMenuSecondLevel.append(_el);
-                });
-                if (child.length > this.options.max) {
-                    this.slide2 = $('<span><span>').addClass('slide slide2');
-                    var _height = parseInt(_this.options.max * _this.maxHeight / child.length) ;
-                    this.slide2.height(_height);
-                    _fakeScrollBox.append(_this.slide2);
-                }
-                if (this.slide2) {
-                    var _height = this.slide2.height();
-                    this.contextMenuSecondLevel.scroll(function (e) {
-                        e.stopPropagation();
-                        var _scrollTop = $(this).scrollTop();
-                        var _top = (_this.maxHeight + _scrollTop) * _this.maxHeight / 32 / child.length - _height;
-                        _this.slide2.css('top', _top);
-                    });
-                    this.slide2.on('mousedown click', function (e) {
-                        e.stopPropagation();
-                        var _parentOffsetTop = $(this).parent('.fakeScrollBox').offset().top + 1;
-                        var _y = e.pageY;
-                        var _offsetTop = _this.slide2.offset().top - _parentOffsetTop;
-                        console.log(_offsetTop);
-                        $(document).on('mousemove', function (e) {
-                            var _top = e.pageY - _y + _offsetTop;
-                            _top = _top < 0 ? 0 : _top;
-                            _top = _top + _height > _this.maxHeight ? _this.maxHeight - _height : _top;
-                            _this.slide2.css('top', _top); 
-                            var _scrollTop = (_top + _height) * child.length * 32 / _this.maxHeight - _this.maxHeight;
-                            _this.contextMenuSecondLevel.scrollTop(_scrollTop);
-                        });
-                    });
-                    $(document).on('mouseup', function () {
-                        $(this).off('mousemove');
-                    });
-                }
-            };
-            $.jqcContextMenu.prototype.destroyThirdLevel = function () {
-                var _this = this;
-                this.contextMenuBox
-                    .removeClass('jqcContextMenuTrebleSize')
-                    .find('.fakeScrollBox3')
-                    .remove();
-                this.contextMenuBox
-                    .find('.slide3')
-                    .remove();
-            };
-            $.jqcContextMenu.prototype.renderThirdLevel = function (child, offsetTop) {
-                var _this = this;
-                this.contextMenuBox.addClass('jqcContextMenuTrebleSize');
-                this.contextMenuBox.find('.fakeScrollBox3').remove();
-                this.contextMenuBox.find('.slide3').remove();
-                this.contextMenuThirdLevel = $('<div class="jqcContextMenuScrollBox"></div>').css('max-height', _this.maxHeight);
-                var _fakeScrollBox = $('<div class="fakeScrollBox fakeScrollBox3"></div>').css('max-height', _this.maxHeight);
-                _fakeScrollBox.append(this.contextMenuThirdLevel);
-                if (offsetTop - _this.scrollTop + child.length * 32 + 20 > this.screenHeight) {
-                    _fakeScrollBox.css({
-                        'top': 'auto',
-                        'bottom': _this.contextMenuBox.offset().top - offsetTop - 33 + _this.scrollTop
-                    });
-                } else {
-                    _fakeScrollBox.css({
-                        'top': offsetTop - _this.contextMenuBox.offset().top - 1 - _this.scrollTop,
-                        'bottom': 'auto'
-                    });
-                }
-                this.contextMenuBox.append(_fakeScrollBox);
-                child.forEach(function(data) {
-                    var _el = $('<div class="jqcContextMenu-item">' + data.label + '</div>');
-                    _el.click(function (e) {
-                        e.stopPropagation();
-                        if (_this.options.onSelect) {
-                            _this.options.onSelect.call(_this.selector, {
-                                selectorId: _this.selectorId,
-                                eventId: data.id
+                            var _sibling = $(this).siblings('.jqcContextMenu-scrollBox');
+                            var _parentOffsetTop = $(this).parent().offset().top + 1;
+                            var _y = e.pageY;
+                            var _offsetTop = $(this).offset().top - _parentOffsetTop;
+                            $(document).on('mousemove', function (e) {
+                                var _top = e.pageY - _y + _offsetTop;
+                                _top = _top < 0 ? 0 : _top;
+                                _top = _top + _height > _this.maxHeight ? _this.maxHeight - _height : _top;
+                                _slide.css('top', _top); 
+                                var _scrollTop = (_top + _height) * menu.length * _this.height / _this.maxHeight - _this.maxHeight;
+                                _sibling.scrollTop(_scrollTop);
                             });
-                            _this.contextMenuBox.hide();
-                            _this.selectorId = '';
-                        }
-                        _this.destroySecondLevel();
-                    });
-                    _this.contextMenuThirdLevel.append(_el);
-                });
-                if (child.length > this.options.max) {
-                    this.slide3 = $('<span><span>').addClass('slide slide3');
-                    var _height = parseInt(_this.options.max * _this.maxHeight / child.length) ;
-                    this.slide3.height(_height);
-                    _fakeScrollBox.append(_this.slide3);
-                }
-                if (this.slide3) {
-                    var _height = this.slide3.height();
-                    this.contextMenuThirdLevel.scroll(function (e) {
+                        });
+                    _slide.height(_height);
+                    _fakeScrollBox.append(_slide);
+                    // 控制slide滚动
+                    _scrollBox.scroll(function (e) {
                         e.stopPropagation();
                         var _scrollTop = $(this).scrollTop();
-                        var _top = (_this.maxHeight + _scrollTop) * _this.maxHeight / 32 / child.length - _height;
-                        _this.slide3.css('top', _top);
-                    });
-                    this.slide3.on('mousedown click', function (e) {
-                        e.stopPropagation();
-                        var _parentOffsetTop = $(this).parent('.fakeScrollBox').offset().top + 1;
-                        var _y = e.pageY;
-                        var _offsetTop = _this.slide3.offset().top - _parentOffsetTop;
-                        $(document).on('mousemove', function (e) {
-                            var _top = e.pageY - _y + _offsetTop;
-                            _top = _top < 0 ? 0 : _top;
-                            _top = _top + _height > _this.maxHeight ? _this.maxHeight - _height : _top;
-                            _this.slide3.css('top', _top); 
-                            var _scrollTop = (_top + _height) * child.length * 32 / _this.maxHeight - _this.maxHeight;
-                            _this.contextMenuThirdLevel.scrollTop(_scrollTop);
-                        });
-                    });
-                    $(document).on('mouseup', function () {
-                        $(this).off('mousemove');
+                        var _top = (_this.maxHeight + _scrollTop) * _this.maxHeight / _this.height / menu.length - _height;
+                        _slide.css('top', _top);
                     });
                 }
-            };
-            $.jqcContextMenu.prototype.getLevel = function () {
+                if (offsetTop) {
+                    var _currentHeight = menu.length * _this.height;
+                    if (_this.options.max) {
+                        _currentHeight = menu.length > _this.options.max ? _this.options.max * _this.height : _currentHeight;
+                    }
+                    if (offsetTop - _this.scrollTop + _currentHeight + 20 > this.pageHeight) {
+                        _fakeScrollBox.css({
+                            'top': 'auto',
+                            'bottom': _this.box.offset().top - offsetTop - _this.height - 1 + _this.scrollTop
+                        });
+                    } else {
+                        _fakeScrollBox.css({
+                            'top': offsetTop - _this.box.offset().top - 1 - _this.scrollTop,
+                            'bottom': 'auto'
+                        });
+                    }
+                }
+                return _fakeScrollBox;
+            }
+
+            function getNeedShowMenus(menus, data) {
+                var _this = this;
+                var _menus = [];
+                var rest = [].concat(data);
+                var _data = null;
+                if (rest.length > 1) {
+                    _data = rest.shift();
+                } else {
+                    _data = rest[0];
+                }
+                _menus = menus.filter(item => {
+                    var _valid = item[_this.options.adapter.valid];
+                    var _child = item[_this.options.adapter.child];
+                    if (T.rawType(_valid) === 'Undefined') {
+                        if (_child) {
+                            // item[_this.options.adapter.child] = getNeedShowMenus.call(_this, _child, rest);
+                            item['__temp'] = getNeedShowMenus.call(_this, _child, rest);
+                        }
+                        return true;
+                    } else if (T.rawType(_valid) === 'Function') {
+                        if (_data === undefined || _valid(_data)) {
+                            if (_child) {
+                                // item[_this.options.adapter.child] = getNeedShowMenus.call(_this, _child, rest);
+                                item['__temp'] = getNeedShowMenus.call(_this, _child, rest);
+                            }
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else if (T.rawType(_valid) === 'Boolean') {
+                        if (_valid) {
+                            if (_child) {
+                                // item[_this.options.adapter.child] = getNeedShowMenus.call(_this, _child, rest);
+                                item['__temp'] = getNeedShowMenus.call(_this, _child, rest);
+                            }
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        throw new Error('jqcContextMenu: valid expects a Boolean or Function');
+                    }
+                });
+                _menus.showData = _data;
+                return _menus;
+            }
+
+            function getLevel() {
                 var _this = this;
                 var _child = [];
-                this.options.operations.forEach(function(item) {
-                    if (item.child) {
-                        _this.level = 2;
+                var _level = 1;
+                this.needShowMenus.forEach(function(item) {
+                    if (item['__temp']) {
+                        _level = 2;
                         _child = _child.concat(item.child);
                     }
                 });
                 _child.forEach(function (item) {
-                    if (item.child) {
-                        _this.level = 3;
+                    if (item['__temp']) {
+                        _level = 3;
                     }
                 });
+                return _level;
             };
+
+            function simplifyData(data) {
+                var _this = this;
+                var child = [];
+                var _child = '__temp';
+                if (!data.hasOwnProperty(_child) || !Array.isArray(data[_child]) || data[_child].length === 0) {
+                    return data;
+                }
+                child = data[_child];
+                var len = child.length;
+                if (len >= 2) {
+                    return data;
+                }
+                if (len === 1) {
+                    return simplifyData.call(_this, child[0]);
+                }
+            }
         });
 }(jQuery));
