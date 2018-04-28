@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        #div1,
+        #div2{
+            width: 1200px;
+        }
+    </style>
+    <title>ApisBox - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">apisBox</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>http api展示组件</li>
+            <li>支持数据层级关系</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>element</td>
+                    <td>JQuery Object</td>
+                    <td>是</td>
+                    <td></td>
+                    <td></td>
+                    <td>组件容器</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>Array Object</td>
+                    <td>是</td>
+                    <td></td>
+                    <td></td>
+                    <td>http api 数据</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <div class="sectionTitle">方法</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">方法名</th>
+                <th width="256px">参数说明</th>
+                <th width="64px">返回值</th>
+                <th>效果及作用</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>add</td>
+                    <td>data数据，对象或者数组</td>
+                    <td></td>
+                    <td>添加apis,视图会重新渲染</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">data数据格式示例</div>
+            <div id="div1"></div>
+            <pre class="prettyprint linenums">
+//参数与返回值的每条属性及对象添加一个新对象，对象名'__info__',
+/**
+*   __info__: {
+*       type: 'String',         该数据的类型
+*       required: true,         是否必须，可省略
+*       default: '默认值',       默认值，可省略
+*       description: '描述',     描述
+*       optional: '可选值',      可选值
+*       note: '说明'             说明，添加到标签title属性上，可省略
+*   }
+*
+*/
+var mock = {
+    api: '/api/login',                                                          //api
+    method: 'post',                                                             //api请求方式，不区分大小写
+    apiName: '登录',                                                            //api名称
+    note: '用户名和密码需要前端正则验证（规则详见@123456），以减少服务器压力。',       //api说明
+    params: {                                                                   //参数
+        username: {                                                            
+            __info__: {                                  
+                type: 'String',                                                 
+                required: true,                                                
+                description: '用户名',                                           
+                note: '用户名不能为空。'                                          
+            }
+        },
+        password: {
+            __info__: {
+                type: 'String',
+                required: true,
+                description: '密码',
+                note: '密码不能为空，最长20字符。'
+            }
+        }
+    },
+    response: {                                                                 //返回值
+        code: {
+            __info__: {
+                type: 'Number',
+                default: 0,                                                     
+                description: '状态码'
+            }
+        },
+        msg: {
+            __info__: {
+                type: 'String',
+                default: 'success',
+                description: '消息'
+            }
+        }
+    }
+}; 
+
+var apis1 = new $.jqcApisBox({
+    element: $('#div1'),
+    data: [mock]
+});               
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">data多层级数据示例</div>
+            <button class="btn1">添加一个api</button>
+            <button class="btn2">添加四个api</button>
+            <div id="div2"></div>
+            <pre class="prettyprint linenums">
+var _getMock = {
+    api: '/api/order/query',
+    method: 'get',
+    apiName: '查询订单',
+    note: '可以不传参数，status默认为0。',
+    params: {
+        status: {
+            __info__: {
+                type: 'Number',
+                default: 0,
+                optional: '0：全部；1：已完成；2：未完成；3：已交付；4：已取消。',
+                description: '订单状态'
+            }
+        }
+    },
+    response: {
+        code: {
+            __info__: {
+                type: 'Number',
+                default: 0,
+                description: '状态码'
+            }
+        },
+        msg: {
+            __info__: {
+                type: 'String',
+                default: 'success',
+                description: '消息'
+            }
+        },
+        result: {
+            __info__: {
+                type: 'Array Object',
+                default: '[]',
+                description: '查询结果',
+                note: '未查询到结果，返回空数组。'
+            },
+            status: {
+                __info__: {
+                    type: 'Number',
+                    description: '订单状态'
+                }
+            },
+            info: {
+                __info__: {
+                    type: 'Object',
+                    description: '订单信息'
+                },
+                count: {
+                    __info__: {
+                        type: 'Number',
+                        default: 1,
+                        description: '数量'
+                    }
+                },
+                size: {
+                    __info__: {
+                        type: 'String',
+                        default: 'S',
+                        description: '尺寸'
+                    }
+                }
+            }
+        }
+    }
+};
+
+var _putMock = {
+    api: '/api/order/update',
+    method: 'PuT',
+    apiName: '更新订单',
+    note: '更新订单数据。'
+};
+
+var _deleteMock = {
+    api: '/api/order/delete',
+    method: 'delete',
+    apiName: '删除订单',
+};
+
+var api2 = new $.jqcApisBox({
+    element: $('#div2'),
+    data: [_getMock, mock, _putMock, _deleteMock]
+});
+
+$('.btn1').click(function () {
+    api2.add(mock);
+});
+$('.btn2').click(function () {
+    api2.add([_getMock, mock, _putMock, _deleteMock]);
+});
+        </pre>
+        </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/apisBox.js"></script>
+</body>
+
+</html>
