@@ -293,15 +293,15 @@
                     continue;
                 } else {
                     var param = {};
-                    param[context.localstorage.primaryKey] = item[context.localstorage.primaryKey];
+                    param[context.options.localstorage.primaryKey] = item[context.options.localstorage.primaryKey];
                     $.ajax({
-                        url: context.localstorage.refreshUrl,
+                        url: context.options.localstorage.refreshUrl,
                         method: 'GET',
                         data: param,
                         async: false,
                         success: function (resp) {
-                            if (context.localstorage.parseFun) {
-                                var newItem = context.localstorage.parseFun(resp);
+                            if (context.options.localstorage.parseFun) {
+                                var newItem = context.options.localstorage.parseFun(resp);
                                 if (newItem) {
                                     need2BeRefreshed.push(newItem);
                                 }
@@ -314,7 +314,7 @@
                     });
                 }
             }
-            updateStore(context.options.name, context.localstorage.primaryKey, need2BeRefreshed);
+            updateStore(context.options.name, context.options.localstorage.primaryKey, need2BeRefreshed);
         }
 
         function initCacheWithRemoteData(context, callback, notNeedFullRemoteData) {
