@@ -50,7 +50,7 @@
                 this.typeName = 'jqcMenu';
                 this.elementId = 'jqc'.concat($.jqcUniqueKey.fetchIntradayKey());
                 if (this.options.allowedConfig) {
-                    if (!this.options.data[0].hasOwnProperty(this.options.adapter.id)) {
+                    if (!this.options.configurableMenuData[0].hasOwnProperty(this.options.adapter.id)) {
                         throw new Error("Configuration menu require [id] property in the menu object.");
                     }
                     this.snapshot = null;
@@ -126,7 +126,11 @@
                     _this.setting.append(_this.settingBtn);
                     _this.container.append(_this.setting);
                 }
-                _this.hasMenuId = _this.options.data[0].hasOwnProperty(_this.options.adapter.id);
+                if (this.options.allowedConfig) {
+                    _this.hasMenuId = _this.options.configurableMenuData[0].hasOwnProperty(_this.options.adapter.id);
+                } else {
+                    _this.hasMenuId = _this.options.data[0].hasOwnProperty(_this.options.adapter.id);
+                }
                 _this.mainMenu = renderMenuBox.call(_this, _this.options.data);
                 _this.container.append(_this.mainMenu);
 
