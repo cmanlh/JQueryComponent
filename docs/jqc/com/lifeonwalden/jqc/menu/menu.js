@@ -98,8 +98,11 @@
                 });
 
                 if (_this.options.allowedConfig) {
+                    _this.settingBtn.off();
                     _this.settingBtn.on('click.jqcMenu', function (e) {
                         if (_this.isSetting) {
+                            _this.settingDialog.close();
+                            e.stopPropagation();
                             return;
                         }
                         _this.isSetting = true;
@@ -228,6 +231,7 @@
                 });
                 _this.settingDialog.open();
 
+                _this.settingPanel.off();
                 _this.settingPanel.on('click.jqcMenu', '.jqcMenuConfigLeaf', function (e) {
                     if (e.target.tagName == 'INPUT') {
                         e.stopPropagation();

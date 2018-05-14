@@ -1,8 +1,7 @@
 @charset 'utf-8';
-
 .jqcMsg-box {
-    height: 36px;
-    line-height: 34px;
+    height: 32px;
+    line-height: 32px;
     font-size: 14px;
     overflow: hidden;
 }
@@ -23,19 +22,18 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
-    border-right: 1px solid #ddd;
     transition: all 0.2s;
 }
 
 .jqcMsg-item:hover {
     color: rgba(255, 255, 255, 1);
     background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 .jqcMsg-close {
     float: right;
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     background: url('./images/close.png') no-repeat center;
 }

@@ -47,24 +47,17 @@
                 height: 32,
             };
 
-            // /**
-            //  * 根据传入数据，弹性显示菜单项，并在菜单被选择时，将data作为参数，并上menu数据传回给onSelect
-            //  */
-            // $.jqcContextMenu.prototype.show = function (data) {};
-
-
-
             $.jqcContextMenu = function (params) {
                 this.options = Object.assign({}, DEFAULT_OPTIONS, params);
-                this.box = null;                        //view
-                this.level = 1;                         //菜单层级
-                this.needShowMenus = [];                //显示的菜单
-                this.pageWidth = window.innerWidth;     //页面可视宽度
-                this.pageHeight = window.innerHeight;   //页面可视高度
-                this.width = this.options.width;                       //单个菜单的宽度
-                this.height = this.options.height;                       //单个菜单的高度
+                this.box = null; //view
+                this.level = 1; //菜单层级
+                this.needShowMenus = []; //显示的菜单
+                this.pageWidth = window.innerWidth; //页面可视宽度
+                this.pageHeight = window.innerHeight; //页面可视高度
+                this.width = this.options.width; //单个菜单的宽度
+                this.height = this.options.height; //单个菜单的高度
                 this.scrollTop = $(window).scrollTop(); //页面上卷高度
-                this.data = null;                       //显示条件
+                this.data = null; //显示条件
                 this.toLeft = false;
                 this.toTop = false;
                 this.maxHeight = this.options.max ? this.options.max * this.height : 'auto';
@@ -72,7 +65,10 @@
                 this.firstLevlHeight = (this.options.max && firstLevelLen > this.options.max) ? this.maxHeight : firstLevelLen * this.height;
                 bindEvent.call(this);
             }
-            // 显示
+
+            /**
+             * 根据传入数据，弹性显示菜单项，并在菜单被选择时，将data作为参数，并上menu数据传回给onSelect
+             */
             $.jqcContextMenu.prototype.show = function (data) {
                 $body.find('.jqcContextMenu').remove();
                 var _this = this;
@@ -144,7 +140,7 @@
                     this.toTop = false;
                 }
                 this.box.append(createMenu.call(_this, _this.needShowMenus, 0, _left));
-                return this.box;  
+                return this.box;
             }
 
             function skip(data) {
@@ -177,11 +173,11 @@
                                 .removeClass('jqcContextMenu-active');
                             var _parent = $(this).parents('.jqcContextMenu-fakeScrollBox');
                             var _index = _parent.index();
-                            _this.box.find('.jqcContextMenu-fakeScrollBox:gt('+ _index +')').remove();
+                            _this.box.find('.jqcContextMenu-fakeScrollBox:gt(' + _index + ')').remove();
                             if (Array.isArray(item['__temp']) && item['__temp'].length > 0) {
                                 $(this).addClass('jqcContextMenu-active');
                                 var _offsetTop = $(this).offset().top;
-                                _index ++;
+                                _index++;
                                 var _left = _this.toLeft ? -(_this.width * (_index + 1) - _index) : (_this.width * _index - _index);
                                 _this.box.append(createMenu.call(_this, item['__temp'], _offsetTop, _left));
                             }
@@ -211,7 +207,7 @@
                     });
                 // 是否限制最大个数
                 if (this.options.max && menu.length > _this.options.max) {
-                    var _height = parseInt(_this.options.max * _this.maxHeight / menu.length) ;
+                    var _height = parseInt(_this.options.max * _this.maxHeight / menu.length);
                     var _slide = $('<span><span>')
                         .addClass('jqcContextMenu-slide')
                         .on('mousedown click', function (e) {
@@ -224,7 +220,7 @@
                                 var _top = e.pageY - _y + _offsetTop;
                                 _top = _top < 0 ? 0 : _top;
                                 _top = _top + _height > _this.maxHeight ? _this.maxHeight - _height : _top;
-                                _slide.css('top', _top); 
+                                _slide.css('top', _top);
                                 var _scrollTop = (_top + _height) * menu.length * _this.height / _this.maxHeight - _this.maxHeight;
                                 _sibling.scrollTop(_scrollTop);
                             });
@@ -310,7 +306,7 @@
                 var _this = this;
                 var _child = [];
                 var _level = 1;
-                this.needShowMenus.forEach(function(item) {
+                this.needShowMenus.forEach(function (item) {
                     if (item['__temp']) {
                         _level = 2;
                         _child = _child.concat(item.child);
