@@ -134,10 +134,7 @@
                 } else {
                     _this.hasMenuId = _this.options.data[0].hasOwnProperty(_this.options.adapter.id);
                 }
-<<<<<<< HEAD
                 this.menuIndex = new Map();
-=======
->>>>>>> 1c47d001f08a091291e9e320e0494c86c817acb0
                 _this.mainMenu = renderMenuBox.call(_this, _this.options.data);
                 _this.container.append(_this.mainMenu);
 
