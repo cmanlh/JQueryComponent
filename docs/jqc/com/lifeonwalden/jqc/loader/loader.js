@@ -142,6 +142,8 @@
 
     Loader.prototype.registerModule = function (m) {
         this.moduleMap.set(m.getName(), m);
+
+        return this;
     };
 
     Loader.prototype.importScript = function (url) {
