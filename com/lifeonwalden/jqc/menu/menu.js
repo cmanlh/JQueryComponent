@@ -126,7 +126,11 @@
                     _this.setting.append(_this.settingBtn);
                     _this.container.append(_this.setting);
                 }
-                _this.hasMenuId = _this.options.data[0].hasOwnProperty(_this.options.adapter.id);
+                if (this.options.allowedConfig) {
+                    _this.hasMenuId = _this.options.configurableMenuData[0].hasOwnProperty(_this.options.adapter.id);
+                } else {
+                    _this.hasMenuId = _this.options.data[0].hasOwnProperty(_this.options.adapter.id);
+                }
                 this.menuIndex = new Map();
                 _this.mainMenu = renderMenuBox.call(_this, _this.options.data);
                 _this.container.append(_this.mainMenu);
