@@ -108,7 +108,7 @@
                 this.activeOne.inactive();
                 this.activeOne = this.index.get(id);
                 this.activeOne.active();
-                if (this.activeOne.getTab().hasClass('jqcTabMoreContainer')) {
+                if (this.activeOne.getTab().parent().hasClass('jqcTabMoreContainer')) {
                     this.container.prepend(this.activeOne.getTab());
                     layoutTabAfterAdd.call(this);
                 }

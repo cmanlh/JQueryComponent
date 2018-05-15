@@ -50,7 +50,7 @@
                 this.typeName = 'jqcMenu';
                 this.elementId = 'jqc'.concat($.jqcUniqueKey.fetchIntradayKey());
                 if (this.options.allowedConfig) {
-                    if (!this.options.data[0].hasOwnProperty(this.options.adapter.id)) {
+                    if (!this.options.configurableMenuData[0].hasOwnProperty(this.options.adapter.id)) {
                         throw new Error("Configuration menu require [id] property in the menu object.");
                     }
                     this.snapshot = null;
@@ -98,8 +98,11 @@
                 });
 
                 if (_this.options.allowedConfig) {
+                    _this.settingBtn.off();
                     _this.settingBtn.on('click.jqcMenu', function (e) {
                         if (_this.isSetting) {
+                            _this.settingDialog.close();
+                            e.stopPropagation();
                             return;
                         }
                         _this.isSetting = true;
@@ -131,7 +134,10 @@
                 } else {
                     _this.hasMenuId = _this.options.data[0].hasOwnProperty(_this.options.adapter.id);
                 }
+<<<<<<< HEAD
                 this.menuIndex = new Map();
+=======
+>>>>>>> 1c47d001f08a091291e9e320e0494c86c817acb0
                 _this.mainMenu = renderMenuBox.call(_this, _this.options.data);
                 _this.container.append(_this.mainMenu);
 
@@ -229,6 +235,7 @@
                 });
                 _this.settingDialog.open();
 
+                _this.settingPanel.off();
                 _this.settingPanel.on('click.jqcMenu', '.jqcMenuConfigLeaf', function (e) {
                     if (e.target.tagName == 'INPUT') {
                         e.stopPropagation();
