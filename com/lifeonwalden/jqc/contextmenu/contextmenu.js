@@ -98,7 +98,7 @@
                     _this.pageX = e.pageX;
                     _this.pageY = e.pageY;
                 }).on('mouseup', function () {
-                    $(this).off('mousemove');
+                    $(this).off('mousemove.comtextmenu-slide');
                 }).click(function (e) {
                     _this.box && _this.box.remove();
                 });
@@ -216,7 +216,7 @@
                             var _parentOffsetTop = $(this).parent().offset().top + 1;
                             var _y = e.pageY;
                             var _offsetTop = $(this).offset().top - _parentOffsetTop;
-                            $(document).on('mousemove', function (e) {
+                            $(document).on('mousemove.comtextmenu-slide', function (e) {
                                 var _top = e.pageY - _y + _offsetTop;
                                 _top = _top < 0 ? 0 : _top;
                                 _top = _top + _height > _this.maxHeight ? _this.maxHeight - _height : _top;
