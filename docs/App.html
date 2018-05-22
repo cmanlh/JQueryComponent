@@ -183,6 +183,7 @@
 })(jQuery);
         </pre>
         </section>
+    </section>
     <section>
         <div class="sectionTitle">this.dxDataGrid数据示例</div>
         <section>
@@ -200,6 +201,8 @@ this.dxDataGrid = {
 };
         </pre>
         </section>
+    
+    </section>
     <section>
         <div class="sectionTitle">requestGet/requestPost示例</div>
         <section>
@@ -225,6 +228,7 @@ App.prototype.afterRender = function() {
 }
         </pre>
         </section>
+    </section>
     <section>
         <div class="sectionTitle">getFile方法示例</div>
         <section>
@@ -239,6 +243,7 @@ App.prototype.afterRender = function() {
 }
         </pre>
         </section>
+    </section>
     <section>
         <div class="sectionTitle">fetchDataAndFillDxDataGrid方法示例</div>
         <section>
@@ -252,6 +257,7 @@ App.prototype.afterRender = function() {
 }
         </pre>
         </section>
+    </section>
     <section>
         <div class="sectionTitle">insert,update,copy,detail方法示例(detail默认所有表单元素disabled)</div>
         <section>
@@ -279,6 +285,26 @@ App.prototype.afterRender = function() {
 }
         </pre>
         </section>
+    </section>
+    <section>
+        <div class="sectionTitle">如何快速创建一个dx表格</div>
+        <section>
+            <pre class="prettyprint linenums">
+//如何在一个指定的元素内快速生成一个dx表格
+&ltdiv id="div1"&gt&lt/div&gt
+
+var dx = new $.App();       //创建一个$.App实例
+    
+dx.dxDataGrid = {};         //配置dxDataGrid
+
+dx.contextmenu = {};        //配置dxDataGrid右击菜单
+
+dx.__mount($('#div1'));     //指定一个容易装载dx表格
+
+dx.fetchDataAndFillDxDataGrid('task/query');    //拉取数据并显示表格
+        </pre>
+        </section>
+    </section>
     <section>
         <div class="sectionTitle">完整示例</div>
         <section>
@@ -389,6 +415,7 @@ App.prototype.afterRender = function() {
 })(jQuery);
         </pre>
         </section>
+    </section>
     <script src="js/jquery-3.1.1.js"></script>
     <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
     <script src="exampleJs/config.js"></script>
