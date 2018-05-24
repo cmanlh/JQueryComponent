@@ -57,6 +57,14 @@
                     <td></td>
                     <td>dxDataGrid右击菜单的相关配置</td>
                 </tr>
+                <tr>
+                    <td>afterRender</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>页面渲染之后的回调函数</td>
+                </tr>
             </tbody>
         </table>
     </section>
@@ -113,45 +121,27 @@
                 </tr>
                 <tr>
                     <td>fillDxDataGrid</td>
-                    <td>需要填充的数据</td>
+                    <td>查询参数</td>
                     <td></td>
-                    <td>填充dxDataGrid</td>
+                    <td>根据参数查询数据并填充dxDataGrid</td>
                 </tr>
                 <tr>
                     <td>getDxDataGrid</td>
                     <td></td>
                     <td>dxDataGrid组件</td>
-                    <td>获取例内的dxDataGrid组件</td>
+                    <td>获取实例内的dxDataGrid组件</td>
                 </tr>
                 <tr>
-                    <td>fetchDataAndFillDxDataGrid</td>
-                    <td>arg1:api，arg2: query参数</td>
+                    <td>triggerQuery</td>
                     <td></td>
-                    <td>获取数据并填充dxDataGrid</td>
+                    <td></td>
+                    <td>触发toolbar的搜索事件然后根据参数填充数据，搜索按钮需要添加queryBtn类名</td>
                 </tr>
                 <tr>
-                    <td>insert</td>
-                    <td>配置参数</td>
+                    <td>dialog</td>
+                    <td>Object</td>
                     <td></td>
-                    <td>新建</td>
-                </tr>
-                <tr>
-                    <td>update</td>
-                    <td>配置参数</td>
-                    <td></td>
-                    <td>更新</td>
-                </tr>
-                <tr>
-                    <td>copy</td>
-                    <td>配置参数</td>
-                    <td></td>
-                    <td>复制</td>
-                </tr>
-                <tr>
-                    <td>detail</td>
-                    <td>配置参数</td>
-                    <td></td>
-                    <td>详情</td>
+                    <td>调用dialog组件显示模板数据</td>
                 </tr>
             </tbody>
         </table>
@@ -163,32 +153,26 @@
             <pre class="prettyprint linenums">
 ;(function($) {
 
-    function App () {       //当前App构造函数
+    var app = new $.App({
+        templatePath: './template.html',
+        dxDataGrid: {},
+        contextmenu: {},
+        afterRender: function() {}
+    });
 
-        $.App.call(this);   //必须，继承$.App的相关属性
-        
-        this.templatePath: './template.html';       //模板文件的相对路径
-
-        this.dxDataGrid = {};       //页面内dxDataGrid组件的相关配置
-
-        this.contextmenu = {};      //dxDataGrid右击菜单的相关配置
-    }
-
-    App.prototype.afterRender = function() {        //渲染之后自动执行的函数，业务逻辑代码在这里执行
-        console.log('渲染完成。')
-    };
-
-    $.setupApp(App);        //必须，实例化该App并进行缓存
+    $.setupApp(app);        //必须
 
 })(jQuery);
         </pre>
         </section>
     </section>
     <section>
-        <div class="sectionTitle">this.dxDataGrid数据示例</div>
+        <div class="sectionTitle">dxDataGrid数据示例</div>
         <section>
             <pre class="prettyprint linenums">
-this.dxDataGrid = {
+var dxDataGrid = {
+
+    fetchDataApi: 'task/query',         //填充该表格数据的api 必须
 
     exportProxyClassName: 'exportBtn',      //导出按钮的类名
 
@@ -207,7 +191,7 @@ this.dxDataGrid = {
         <div class="sectionTitle">requestGet/requestPost示例</div>
         <section>
             <pre class="prettyprint linenums">
-App.prototype.afterRender = function() {
+function afterRender() {
 
     this.requestGet('work/query', {
         
@@ -233,7 +217,7 @@ App.prototype.afterRender = function() {
         <div class="sectionTitle">getFile方法示例</div>
         <section>
             <pre class="prettyprint linenums">
-App.prototype.afterRender = function() {
+functio afterRender() {
 
     this.getFile('./template.html').then(res => {
         var _template = $(res);
@@ -245,44 +229,49 @@ App.prototype.afterRender = function() {
         </section>
     </section>
     <section>
-        <div class="sectionTitle">fetchDataAndFillDxDataGrid方法示例</div>
+        <div class="sectionTitle">dialog方法示例</div>
         <section>
             <pre class="prettyprint linenums">
-App.prototype.afterRender = function() {
+/**
+    * @param { String } title          dialog title
+    * @param { String } templatePath   模板文件的相对路径
+    * @param { String } api            用于添加，更新数据 触发网络请求的按钮需要添加类名'done' 且唯一
+    * @param { Number } width          dialog宽度 默认1080px
+    * @param { Array } disabled        需要设置为disabled的表单元素
+    * @param { Boolean } readOnly      是否只读，默认 false
+    * @param { Function } afterRender  dialog渲染之后的callback
+    * @param { Function } afterClose   dialog关闭之后的callback
+    * @param { Function } success      api请求成功之后的callback
+    */
 
-    this.fetchDataAndFillDxDataGrid('api/task/query', {
-        type: 1
-    });
+//添加-弹出框演示(复制同添加，需要设置defaultData = rowData)
+this.dialog({
+    title: '添加',
+    templatePath: './insert.html',
+    api: 'task/insert',
+    afterRender: function(root) {
+        //do somethong
+    }
+});
 
-}
-        </pre>
-        </section>
-    </section>
-    <section>
-        <div class="sectionTitle">insert,update,copy,detail方法示例(detail默认所有表单元素disabled)</div>
-        <section>
-            <pre class="prettyprint linenums">
-App.prototype.afterRender = function() {
+//假设存在rowData数据
 
-    this.insert({                           
+//更新-弹出框演示
+this.dialog({
+    title: '更新',
+    templatePath: './insert.html',
+    api： 'task/update',
+    disabled: ['sysId'],
+    defaultData: rowData,   
+});
 
-        templatePath: './insert.html',      //模板文件的相对路径
-
-        api: 'api/task/insert',             //添加数据的api
-
-        defaultData: {},                    //表单内的默认值
-
-        disabled: ['type'],                 //将表单内行间属性为databind="type"的表单元素设置为需disabled
-
-        afterRender: function(root){},      //dialog渲染之后执行的回调函数，参数为该dialog的content内容
-
-        beforeClose: function(){},          //dialog关闭之前的操作
-
-        success: function(){}               //api调用成功的操作，会自动关闭dialog
-
-    });
-
-}
+//详情-弹出框演示
+this.dialog({
+    title: '详情',
+    templatePath: './insert.html',
+    defaultData: rowData,
+    readOnly: true
+});
         </pre>
         </section>
     </section>
@@ -293,15 +282,13 @@ App.prototype.afterRender = function() {
 //如何在一个指定的元素内快速生成一个dx表格
 &ltdiv id="div1"&gt&lt/div&gt
 
-var dx = new $.App();       //创建一个$.App实例
-    
-dx.dxDataGrid = {};         //配置dxDataGrid
+var dx = new $.App({       //创建$.App实例
+    dxDataGrid: {},
+    contextmenu: {},
+});
 
-dx.contextmenu = {};        //配置dxDataGrid右击菜单
-
-dx.__mount($('#div1'));     //指定一个容易装载dx表格
-
-dx.fetchDataAndFillDxDataGrid('task/query');    //拉取数据并显示表格
+dx.mount($('#div1'));     //指定一个容易装载dx表格
+dx.fillDxDataGrid();        //填充表格
         </pre>
         </section>
     </section>
@@ -310,47 +297,61 @@ dx.fetchDataAndFillDxDataGrid('task/query');    //拉取数据并显示表格
         <section>
             <pre class="prettyprint linenums">
 ;(function($) {
-    function App () {
-        var _this = this;
-        $.App.call(this);
-        this.templatePath: './template.html';
-        this.dxDataGrid = {
-            exportProxyClassName: 'exportBtn',
-            searchProxyClassName: 'searchInput',
-            columns: [{
-                dataField: 'type',
-                caption: '类型'
-            }, {
-                dataField: 'name',
-                caption: '名称'
-            }]
-        };
-        this.contextmenu = {
-            menus: [{
-                text: '更新',
-                id: 'update'
-            }, {
-                text: '复制',
-                id: 'copy'
-            }, {
-                text: '详情',
-                id: 'detail'
-            }],
-            onSelect: function(data) {
-                control.call(_this, data);
-            }
+    //dxDataGrid表格配置
+    var dxDataGrid = {
+        fetchDataApi: 'task/query',
+        exportProxyClassName: 'exportBtn',
+        searchProxyClassName: 'searchInput',
+        columns: [{
+            dataField: 'type',
+            caption: '类型'
+        }, {
+            dataField: 'name',
+            caption: '名称'
+        }]
+    };
+
+    //右击菜单配置
+    var contextmenu = {
+        menus: [{
+            text: '更新',
+            id: 'update'
+        }, {
+            text: '复制',
+            id: 'copy'
+        }, {
+            text: '详情',
+            id: 'detail'
+        }],
+        onSelect: function(data) {
+            control.call(app, data);
         }
-    }
-    App.prototype.afterRender = function() {
+    };
+
+    //afterRender回调函数
+    function afterRender () {
         var _this = this;
         init.call(this);
         bindEvent.call(this);
     }
+/********** 关键性代码 **********/    
+    //实例化生成app
+    var app = new $.App({
+        templatePath: 'template.html',
+        dxDataGrid: dxDataGrid,
+        contextmenu: contextmenu,
+        afterRender: afterRender
+    });
 
+    //装载
     $.setupApp(App);
+/********************************/
 
+
+    //业务逻辑代码
     function init () {
-        this.fetchDataAndFillDxDataGrid('task/query');
+        this.triggerQuery();
+        this.fillDxDataGrid();
     }
 
     function bindEvent () {
@@ -359,58 +360,17 @@ dx.fetchDataAndFillDxDataGrid('task/query');    //拉取数据并显示表格
         var $query = this.root.find('#query');
         var $queryDataBox = this.root.find('#queryDataBox');
         $insert.click(function() {
-            _this.insert({
+            _this.dialog({
+                title: '添加',
                 templatePath: './insert.html',
-                api: 'task/insert',
-                defaultData: {
-                    type: 1
-                },
-                success: function() {
-                    _this.fetchDataAndFillDxDataGrid('task/query');
-                }
-            })
-        });
-        $query.click(function() {
-            var _data = $.formUnit.fetch($queryDataBox);
-            _this.fetchDataAndFillDxDataGrid('task/query', _data);
+                api: 'task/insert'
+            });
         });
     }
 
     function control (data) {
         var _this = this;
-
-        if (data.menu.id === 'update') {
-            _this.update({
-                templatePath: './insert.html',
-                api: 'task/update',
-                defaultData: data.showData,
-                disabled: ['name'],
-                success: function() {
-                    _this.fetchDataAndFillDxDataGrid('task/query');
-                }
-            });
-            return;
-        }
-
-        if (data.menu.id === 'copy') {
-            _this.copy({
-                templatePath: './insert.html',
-                api: 'task/insert',
-                defaultData: data.showData,
-                success: function() {
-                    _this.fetchDataAndFillDxDataGrid('task/query');
-                }
-            });
-            return;
-        }
-
-        if (data.menu.id === 'detail') {
-            _this.detail({
-                templatePath: './insert.html',
-                defaultData: data.showData
-            });
-            return;
-        }
+        //do something
     }
 })(jQuery);
         </pre>
