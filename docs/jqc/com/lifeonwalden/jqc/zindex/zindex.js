@@ -31,6 +31,7 @@
     $.jqcZindex.selectbox = 300;
     $.jqcZindex.notification = 400;
     $.jqcZindex.waiting = 500;
+    $.jqcZindex.notification = 550;
     $.jqcZindex.loading = 600;
 
     var popupZindexStack = [];
