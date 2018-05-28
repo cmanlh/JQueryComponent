@@ -100,6 +100,7 @@
                 }).on('mouseup', function () {
                     $(this).off('mousemove.comtextmenu-slide');
                 }).click(function (e) {
+                    _this.options.onCancel && _this.options.onCancel();
                     _this.box && _this.box.remove();
                 });
             }
