@@ -42,6 +42,14 @@
                     <td>需要生成页面的模板文件的相对路径，如'./template.html'</td>
                 </tr>
                 <tr>
+                    <td>stylePath</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>页面样式文件的相对路径，如'./style.css'</td>
+                </tr>
+                <tr>
                     <td>dxDataGrid</td>
                     <td>Object</td>
                     <td></td>
@@ -132,16 +140,22 @@
                     <td>获取实例内的dxDataGrid组件</td>
                 </tr>
                 <tr>
-                    <td>triggerQuery</td>
+                    <td>confirm</td>
+                    <td>Object</td>
                     <td></td>
-                    <td></td>
-                    <td>触发toolbar的搜索事件然后根据参数填充数据，搜索按钮需要添加queryBtn类名</td>
+                    <td>触发confirm弹框</td>
                 </tr>
                 <tr>
                     <td>dialog</td>
                     <td>Object</td>
                     <td></td>
                     <td>调用dialog组件显示模板数据</td>
+                </tr>
+                <tr>
+                    <td>delete</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td>触发删除弹框</td>
                 </tr>
             </tbody>
         </table>
@@ -155,6 +169,7 @@
 
     var app = new $.App({
         templatePath: './template.html',
+        stylePath: './style.css',
         dxDataGrid: {},
         contextmenu: {},
         afterRender: function() {}
@@ -172,7 +187,7 @@
             <pre class="prettyprint linenums">
 var dxDataGrid = {
 
-    fetchDataApi: 'task/query',         //填充该表格数据的api 必须
+    fetchDataApi: 'http://localhost:8020/ops/task/query',         //填充该表格数据的api 必须
 
     exportProxyClassName: 'exportBtn',      //导出按钮的类名
 
@@ -191,25 +206,22 @@ var dxDataGrid = {
         <div class="sectionTitle">requestGet/requestPost示例</div>
         <section>
             <pre class="prettyprint linenums">
-function afterRender() {
 
-    this.requestGet('work/query', {
-        
-        page: 1,
+this.requestGet('http://localhost:8020/ops/work/query', {
+    
+    page: 1,
 
-        size: 20
+    size: 20
 
-    }).then(res => {
+}).then(res => {
 
-        console.log(res);
+    console.log(res);
 
-    }).catch(err => {
+}).catch(err => {
 
-        throw new Error(err);
+    throw new Error(err);
 
-    });
-
-}
+});
         </pre>
         </section>
     </section>
@@ -248,7 +260,7 @@ functio afterRender() {
 this.dialog({
     title: '添加',
     templatePath: './insert.html',
-    api: 'task/insert',
+    api: 'http://localhost:8020/ops/task/insert',
     afterRender: function(root) {
         //do somethong
     }
@@ -260,7 +272,7 @@ this.dialog({
 this.dialog({
     title: '更新',
     templatePath: './insert.html',
-    api： 'task/update',
+    api： 'http://localhost:8020/ops/task/update',
     disabled: ['sysId'],
     defaultData: rowData,   
 });
@@ -272,6 +284,35 @@ this.dialog({
     defaultData: rowData,
     readOnly: true
 });
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">confirm方法示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+this.confirm({
+    title: 'title',                 //title NotRequired
+    content: 'content',             //content NotRequired  可以为文字或者jQuery选择器对象。
+    width: 500,                     //width  默认300
+    onConfirm: function() {},       //点击确认的回调函数
+    onCancel: function() {},        //点击取消的回调函数
+    onClose: function()             //关闭confirm弹框的回调函数
+});
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">delete方法示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+this.delete({                       
+    title: 'title',         
+    content: 'content',
+    api: 'http://localhost:8020/ops/task/delete',
+    data: {},                   //请求需要带上的数据
+    success: function() {}      //请求成功后的回调函数
+});         //点击确认按钮自动带上数据请求api。
         </pre>
         </section>
     </section>
