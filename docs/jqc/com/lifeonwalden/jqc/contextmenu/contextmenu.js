@@ -276,7 +276,7 @@
                         }
                         return true;
                     } else if (T.rawType(_valid) === 'Function') {
-                        if (_data === undefined || _valid(_data)) {
+                        if (_data === undefined || _valid.apply(this, data)) {
                             if (_child) {
                                 // item[_this.options.adapter.child] = getNeedShowMenus.call(_this, _child, rest);
                                 item['__temp'] = getNeedShowMenus.call(_this, _child, rest);
