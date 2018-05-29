@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+    <title>notification - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">notification</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>提示框</li>
+            <li>可自定义消失时间</li>
+            <li>多种状态可选</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>type</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>success|error|warn|info</td>
+                    <td></td>
+                    <td>icon样式</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>提示框的title</td>
+                </tr>
+                <tr>
+                    <td>content</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>提示框的内容</td>
+                </tr>
+                <tr>
+                    <td>duration</td>
+                    <td>Number(int)</td>
+                    <td></td>
+                    <td></td>
+                    <td>3000</td>
+                    <td>延迟消失时间，0表示不消失，单位毫秒。</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <button id="btn1">success</button>
+            <button id="btn2">error</button>
+            <button id="btn3">warn</button>
+            <button id="btn4">info</button>
+            <button id="btn5">不消失</button>
+            <pre class="prettyprint linenums">
+$('#btn1').click(function () {
+    $.jqcNotification({
+        type: 'success',
+        title: '我是title',
+        content: '内容内容内容内容内容内容内容'
+    });
+});
+
+$('#btn2').click(function () {
+    $.jqcNotification({
+        type: 'error',
+        title: '我是title',
+        content: '内容内容内容内容内容内容内容'
+    });
+});
+
+$('#btn3').click(function () {
+    $.jqcNotification({
+        type: 'warn',
+        title: '我是title',
+        content: '内容内容内容内容内容内容内容'
+    });
+});
+
+$('#btn4').click(function () {
+    $.jqcNotification({
+        type: 'info',
+        title: '我是title',
+        content: '内容内容内容内容内容内容内容'
+    });
+});
+
+$('#btn5').click(function () {
+    $.jqcNotification({
+        type: 'success',
+        title: '我不会主动消失',
+        content: '我需要点击关闭',
+        duration: 0
+    });
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/notification.js"></script>
+</body>
+
+</html>
