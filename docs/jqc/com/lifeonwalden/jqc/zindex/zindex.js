@@ -26,8 +26,8 @@
  */
 (function ($) {
     $.jqcZindex = {};
+    $.jqcZindex.menu = 50;
     $.jqcZindex.popup = 100;
-    $.jqcZindex.menu = 200;
     $.jqcZindex.selectbox = 300;
     $.jqcZindex.notification = 400;
     $.jqcZindex.waiting = 500;
