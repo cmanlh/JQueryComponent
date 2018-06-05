@@ -1,5 +1,5 @@
 .jqcTabContainer {
-    height: 30px;
+    height: 36px;
     width: 100%;
     border-radius: 2px;
     color: #333;
@@ -13,8 +13,9 @@
     border: 1px solid rgba(128, 128, 128, 0.1);
     background-color: rgba(128, 128, 128, 0.1);
     border-radius: 3px;
-    margin-right: 1px;
-    padding: 3px;
+    margin-right: 4px;
+    padding: 3px 5px 3px 15px;
+    line-height: 30px;
     cursor: pointer;
     position: relative;
 }
@@ -24,9 +25,10 @@
 }
 
 .jqcTabActive {
-    border-top: 1px solid red;
+    border-top: 2px solid red;
     border-bottom: 1px solid #FFFFFF;
     background-color: #FFFFFF;
+    line-height: 28px;
 }
 
 .jqcTabClose {
