@@ -83,7 +83,7 @@
                 this.sortedFilterCache = [];
                 this.filterIndex = new Map();
                 this.optionsCache = new Map();
-                this.undefinedOption = '<li value="'.concat(UNDEFINED_OPTION).concat('">无对应选项</li>');
+                this.undefinedOption = '<li class="none" value="'.concat(UNDEFINED_OPTION).concat('">无对应选项</li>');
                 if (this.option.supportPinYin && !(this.option.pinyinParser && this.option.pinyinParser.firstAlphabet)) {
                     throw new Error('Need a pinyin parser that supports firstAlphabet.');
                 }

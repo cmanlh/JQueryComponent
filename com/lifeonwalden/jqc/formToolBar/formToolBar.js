@@ -99,7 +99,10 @@
                     .addClass('jqcFormToolBar')
                     .append(createConditionBox.call(_this))
                     .append(createControlBox.call(_this))
-                    .css('background', _this.options.background);
+                    .css({
+                        'background': _this.options.background,
+                        'min-height': _this.options.height
+                    });
                 this.el.append(_this.box)
                     .append(createShowMore.call(_this));
                 var _height = this.box.height();

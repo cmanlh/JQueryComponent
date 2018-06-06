@@ -4,13 +4,13 @@
     -moz-user-select: none;
     user-select: none;
     position: absolute;
-    z-index: 100;
+    z-index: 500;
 }
 .jqcContextMenu-fakeScrollBox {
     overflow: hidden;
     width: 158px;
     background: #fff;
-    border: 1px solid #c9c9c9;
+    border: 1px solid #ed1c24;
     position: absolute;
 }
 
@@ -50,11 +50,10 @@
     -moz-transition: all 0.2s;
     transition: all 0.2s;
 }
-.jqcContextMenu-item:hover {
-    background: #F2F2F2;
-}
+.jqcContextMenu-item:hover,
 .jqcContextMenu-active {
-    background: #F2F2F2;
+    background: #ed1c24;
+    color: #fff;
 }
 .jqcContextMenu-slide {
     width: 5px;
@@ -63,7 +62,7 @@
     position: absolute;
     top: 0;
     left: 152px;
-    background: #d8d8d8;    
+    background: #d8d8d8;
 }
 .jqcContextMenu-scrollBox{
     width: 200px;
