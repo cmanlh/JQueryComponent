@@ -12,6 +12,9 @@
             border: 1px solid #e5e5e5;
             border-radius: 5px;
         }
+        .quick_link a{
+            display: block;
+        }
     </style>
     <title>App.js文档</title>
 </head>
@@ -157,10 +160,64 @@
                     <td></td>
                     <td>触发删除弹框</td>
                 </tr>
+                <tr>
+                    <td>getSystemNameById</td>
+                    <td>String</td>
+                    <td>系统名称</td>
+                    <td>根据id获取系统名称</td>
+                </tr>
+                <tr>
+                    <td>getSystemInfoById</td>
+                    <td>String</td>
+                    <td>系统信息</td>
+                    <td>根据id获取系统信息</td>
+                </tr>
+                <tr>
+                    <td>getDepartmentNameById</td>
+                    <td>String</td>
+                    <td>部门名称</td>
+                    <td>根据id获取部门名称</td>
+                </tr>
+                <tr>
+                    <td>getDepartmentInfoById</td>
+                    <td>String</td>
+                    <td>部门信息</td>
+                    <td>根据id获取部门信息</td>
+                </tr>
+                <tr>
+                    <td>getUserNameById</td>
+                    <td>String</td>
+                    <td>用户名称</td>
+                    <td>根据id获取用户名称</td>
+                </tr>
+                <tr>
+                    <td>getUserInfoById</td>
+                    <td>String</td>
+                    <td>用户信息</td>
+                    <td>根据id获取用户信息</td>
+                </tr>
+                <tr>
+                    <td>getUsersByDepartmentId</td>
+                    <td>String</td>
+                    <td>部门用户</td>
+                    <td>根据部门id获取该部门用户</td>
+                </tr>
+                <tr>
+                    <td>createSelectBox</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td>快速生成selectBox</td>
+                </tr>
             </tbody>
         </table>
     </section>
-
+    <section>
+        <div class="sectionTitle">示例</div>
+        <div class="quick_link">
+            <a href="#commondata">系统，部门，用户公共selectBox使用方法</a>
+            <a href="#chain">selectBox链式调用</a>
+        </div>
+    </section>
     <section>
         <div class="sectionTitle">js文件示例</div>
         <section>
@@ -417,6 +474,58 @@ dx.fillDxDataGrid();        //填充表格
         </pre>
         </section>
     </section>
+    <section>
+        <div class="sectionTitle">createSelectBox</div>
+        <section>
+            <pre class="prettyprint linenums">
+/* 参数：同jqcSelectBox的参数设置 */
+app.createSelectBox({
+    optionData: {
+        data: data,
+        adapter: {
+            value: 'userID',
+            label: 'displayName',
+            filter: 'userID',
+            pinyinFilter: 'displayName'
+        }
+    },
+    element: $worker,           //jQuery元素对象
+    dataName: 'worker-' + data.departmentId
+});
+        </pre>
+        </section>
+    </section>
+    <section id="commondata">
+        <div class="sectionTitle">系统，部门，用户公共selectBox使用方法</div>
+        <section>
+            <pre class="prettyprint linenums">
+//模板文件中input标签添加 commondata 行间属性，对应的值分别为 系统：system ; 部门：department ; 用户：user 。
+//添加defaultvalue将展示默认值。
+&ltinput type="text" commondata="system" defaultvalue="SF"&gt
+        </pre>
+        </section>
+    </section>
+    <section id="chain">
+        <div class="sectionTitle">selectBox链式调用</div>
+        <section>
+            <pre class="prettyprint linenums">
+//常用链式selectbox 选择部门后，用户下拉框自动更新对应部门人员数据
+&ltinput type="text" commondata="department" nextchain="user"&gt
+&ltinput type="text" commondata="user" filtername="departmentId"&gt
+//正常链式selectbox
+&ltinput type="text" class="system_selectbox" commondata="system"&gt
+&ltinput type="text" class="sub_selectbox"&gt
+//带有commondata属性的input标签是可以监听change事件的，对应的返回数据为回调函数的第二个参数。
+$('.system_selectbox').change(function(e, data) {
+    //根据data动态加载下一级的数据
+    app.createSelectBox({
+        //config
+    })
+});
+        </pre>
+        </section>
+    </section>
+
     <script src="js/jquery-3.1.1.js"></script>
     <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
     <script src="exampleJs/config.js"></script>
