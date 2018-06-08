@@ -37,6 +37,7 @@
 .jqcSelectboxContainer input {
     padding: 5px;
     border-width: 1px;
+    box-sizing: border-box;
 }
 
 .jqcSelectboxContainer input:focus {
