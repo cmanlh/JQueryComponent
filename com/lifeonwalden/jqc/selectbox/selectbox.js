@@ -426,6 +426,35 @@
                 }
             };
 
+            // autoDisplay 自动显示前十个
+            OptionCore.prototype.autoDisplay = function (params) {
+                var _this = this;
+                var cache = [];
+                if (this.sortedFilterCache.length) {
+                    var _list = '';
+                    var count = 0;
+                    for (let index = 0; index < this.sortedFilterCache.length; index++) {
+                        var _data = this.sortedFilterCache[index].data;
+                        var _key = _data.data[_data.key];
+                        if (params != undefined && params.selected && params.selected.has(_key)) {
+                            continue;
+                        }
+                        if (cache.indexOf(_key) > -1) {
+                            continue;
+                        }
+                        cache.push(_key);
+                        _list += _data.label;
+                        count ++;
+                        if (count >= 10) {
+                            break;
+                        }
+                    }
+                    return _list;
+                } else {
+                    return this.undefinedOption;
+                }
+            };
+
             function indexPYFilter(filterKey, cnFilterKey, mapping, packageData, unSorted, that) {
                 if (cnFilterKey != filterKey) {
                     fillMap(mapping, cnFilterKey, packageData);
@@ -556,6 +585,12 @@
                     }
                     that.container.show();
                     that.input.focus();
+                    // 自动显示
+                    if (that.options.autoDisplay) {
+                        that.optionUL.html(that.optionCore.autoDisplay({
+                            selected: that.valueCache
+                        }));
+                    }
                 });
 
                 var filterHandler = null,
@@ -593,6 +628,13 @@
                             break;
                         default:
                             {
+                                var _val = that.input.val();
+                                if ($.trim(_val) == '' && that.options.autoDisplay) {
+                                    that.optionUL.html(that.optionCore.autoDisplay({
+                                        selected: that.valueCache
+                                    }));
+                                    return;
+                                }
                                 if (null != filterHandler) {
                                     clearTimeout(filterHandler);
                                 }
@@ -798,6 +840,10 @@
                     }
                     that.container.show();
                     that.input.focus();
+                    // 自动显示
+                    if (that.options.autoDisplay) {
+                        that.optionUL.html(that.optionCore.autoDisplay());
+                    }
                 });
 
                 var filterHandler = null,
@@ -833,13 +879,17 @@
                             break;
                         default:
                             {
+                                var _val = that.input.val();
+                                if ($.trim(_val) == '' && that.options.autoDisplay) {
+                                    that.optionUL.html(that.optionCore.autoDisplay());
+                                    return;
+                                }
                                 if (null != filterHandler) {
                                     clearTimeout(filterHandler);
                                 }
                                 filterHandler = setTimeout(function () {
                                     if (oldVal != that.input.val()) {
                                         that.optionUL.html(filterFun.call(that.optionCore, that.input.val()));
-                                        optionSize = that.optionUL.find('li').length;
                                         selectIndex = null;
                                     }
                                     filterHandler = null;
@@ -848,6 +898,7 @@
                                 return;
                             }
                     }
+                    optionSize = that.optionUL.find('li').length;
                     if (optionSize === 0) {
                         return;
                     }

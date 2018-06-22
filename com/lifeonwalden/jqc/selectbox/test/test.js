@@ -424,6 +424,17 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 dataName: 'basic'
             });
 
+            new $.jqcSelectBox({
+                optionData: basicDataSrc, // data source
+                element: $('#autoDisplay'),
+                dataName: 'basic',
+                defaultVal: 'vala01',
+                autoDisplay: true,
+                onSelect: function (data) {
+                    console.log(data);
+                }
+            });
+
             /**
              * without resetter
              */
@@ -755,6 +766,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 width: 160,
                 supportMultiSelect: true,
                 supportFuzzyMatch: true,
+                autoDisplay: true,
                 updateDataSource: function (callback) {
                     callback(updateDataSrc);
                 },

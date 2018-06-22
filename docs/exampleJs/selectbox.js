@@ -389,4 +389,12 @@ $JqcLoader.importComponents('com.lifeonwalden.jqc', ['selectbox']).execute(funct
             console.log("post clear");
         }
     });
+
+    new $.jqcSelectBox({
+        optionData: basicModel,
+        element: $('#autoDisplay'),
+        dataName: 'basic',
+        autoDisplay: true,
+        width: 160
+    });
 });
