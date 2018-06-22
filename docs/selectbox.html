@@ -190,6 +190,14 @@
                     <td></td>
                     <td>允许用户运行时添加新的选项</td>
                 </tr>
+                <tr>
+                    <td>autoDisplay</td>
+                    <td>boolean</td>
+                    <td></td>
+                    <td></td>
+                    <td>false</td>
+                    <td>是否自动显示选项</td>
+                </tr>
             </tbody>
         </table>
     </section>
@@ -225,6 +233,21 @@ new $.jqcSelectBox({
     defaultVal: 'aal',
     element: $('#basic'),
     dataName: 'basic',
+    width: 160
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">自动显示选项。</div>
+            <div>
+                <input id="autoDisplay">
+            </div>
+            <pre class="prettyprint linenums">
+new $.jqcSelectBox({
+    optionData: basicModel,
+    element: $('#autoDisplay'),
+    dataName: 'basic',
+    autoDisplay: true,
     width: 160
 });
         </pre>
