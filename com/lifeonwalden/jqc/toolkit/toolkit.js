@@ -39,9 +39,19 @@
         }
         return _uuid;
     }
-    
+    /**
+     * 0-9补0
+     * @param {Int} num
+     */
+    function b0(num) {
+        if (typeof num != 'number' && num >= 0 && num % 1 == 0) {
+            throw new Error('b0: expects a int.');
+        }
+        return num > 9 ? num : '0' + num;
+    }
     $.jqcToolkit = {
         rawType: rawType,
         uuid: uuid,
+        b0: b0
     };
 })(jQuery);
