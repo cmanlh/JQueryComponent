@@ -223,6 +223,10 @@
                     if (_item.optional !== undefined) {
                         _optional.text('有')
                             .attr('title', _item.optional);
+                        _optional.click(function (e) {
+                            e.stopPropagation();
+                            modal(_item.optional);
+                        });
                     } else {
                         _optional.text('无').addClass('jqcApisBox-tips-disabled');
                     }
@@ -253,6 +257,25 @@
                     jsonBox.append(_li);
                 });
                 return jsonBox;
+            }
+
+            function modal(str) {
+                var _this = this;
+                var $body = $('body');
+                var mask = $('<div>').addClass('jqcApisBox-mask');
+                var modal = $('<div>').addClass('jqcApisBox-modal');
+                var content = $('<p>').text(str);
+                modal.append(content);
+                mask.append(modal);
+                $body.append(mask);
+                $body.css('overflow', 'hidden');
+                modal.click(function (e) {
+                    e.stopPropagation();
+                });
+                mask.click(function (e) {
+                    $(this).remove();
+                    $body.css('overflow', 'visible');
+                });
             }
         });
 }(jQuery));
