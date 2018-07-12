@@ -254,6 +254,9 @@
                     },
                     afterClose: function () {
                         _this.isSetting = false;
+                        if (_this.options.autoHide) {
+                            _this.hide();
+                        }
                     }
                 });
                 // _this.settingDialog.open();
