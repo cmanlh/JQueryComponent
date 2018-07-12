@@ -130,7 +130,6 @@
                 }
                 if (this.options.trigger) {
                     this.options.trigger.click(function (e) {
-                        console.log(e);
                         if (_this.display) {
                             _this.hide();
                         } else {
