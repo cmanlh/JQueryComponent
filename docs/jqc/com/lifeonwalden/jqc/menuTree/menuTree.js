@@ -70,7 +70,7 @@
                 if (this.options.trigger) {
                     this.options.trigger.addClass('active');
                 }
-                this.options.onShow && this.options.onShow();
+                this.options.onShow && this.options.onShow(_this.options.width, _this.options.speed);
             };
             $.jqcMenuTree.prototype.hide = function () {
                 var _this = this;
@@ -86,7 +86,7 @@
                 if (this.options.trigger) {
                     this.options.trigger.removeClass('active');
                 }
-                this.options.onHide && this.options.onHide();
+                this.options.onHide && this.options.onHide(_this.options.width, _this.options.speed);
                 if (this.isSetting) {
                     this.settingDialog.close();
                 }
