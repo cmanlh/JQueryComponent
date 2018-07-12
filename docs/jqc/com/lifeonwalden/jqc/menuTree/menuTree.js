@@ -102,8 +102,15 @@
                         if (_this.isSetting) {
                             return;
                         }
-                        _this.hide();
+                        _this.debounceHandle = setTimeout(function () {
+                            _this.hide();
+                        }, 600);
                     });
+                    this.container.on('mouseenter.jqcMenuTree', function () {
+                        if (_this.debounceHandle) {
+                            clearTimeout(_this.debounceHandle);
+                        }
+                    })
                 }
                 this.container.on('click', 'li', function (e) {
                     e.stopPropagation();
