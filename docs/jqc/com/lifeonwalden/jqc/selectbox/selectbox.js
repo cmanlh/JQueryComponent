@@ -433,7 +433,7 @@
                 if (this.sortedFilterCache.length) {
                     var _list = '';
                     var count = 0;
-                    for (let index = 0; index < this.sortedFilterCache.length; index++) {
+                    for (var index = 0; index < this.sortedFilterCache.length; index++) {
                         var _data = this.sortedFilterCache[index].data;
                         var _key = _data.data[_data.key];
                         if (params != undefined && params.selected && params.selected.has(_key)) {

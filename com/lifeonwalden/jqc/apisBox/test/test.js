@@ -44,6 +44,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                                 type: 'Number',
                                 required: true,
                                 default: 1,
+                                optional: '1,2,3,4,5',
                                 description: '种类'
                             },
                             subType: {
@@ -51,6 +52,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                                     type: 'Number',
                                     required: true,
                                     default: 0,
+                                    optional: 123456,
                                     description: '二级种类'
                                 }
                             }

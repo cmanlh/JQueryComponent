@@ -29,30 +29,56 @@
         INSERT: 45,
         DELETE: 46,
         CTRL: 17
-    }, SELECTED_CSS = 'over';
+    }, SELECTED_CSS = 'over', DUR_TIME = 500/*(ms)双击间隔时间*/;
     /**
-     * 去除属性内容{'属性值':[内容(以空格分隔),'']},属性值是数组
+     * 去除属性内容{'属性值':[内容,'']},属性值是数组
      * 去除属性{'属性值':true}
-     * 可以使用正则表达式(须是全匹配)
+     * 可以使用正则表达式(须是全匹配,否则不准)
      */
     const excludeAttrs = {
         '^class$': [SELECTED_CSS],//去除属性内容
         '^jqc.*$': true,//去除属性
+        '^contenteditable$': true,
     };
     let ctrl = false;
     $.fn.extend({
         computerSize: function () {
-            let obj = $(this), textarea = $('<textarea>'),
-                target = null, tlist = [], tmp;
+            let obj = $(this), textarea = $('<textarea readonly>'), target = null, tlist = [], tmp;
+            let edit = $('<button>编辑</button>');
             // 创建css样式
             $('<style>.'.concat(SELECTED_CSS, '{outline: red dashed;}</style>')).appendTo('head');
-            this.parent().append(textarea);
+            this.parent().append(edit).append(textarea);
+            edit.click(function (ev) {
+                let _t = $(ev.target);
+                if ('编辑' == _t.text()) {
+                    obj.hide();
+                    genHTML(obj, textarea);
+                    textarea.removeAttr('readonly');
+                    _t.text('保存');
+                } else {
+                    _t.text('编辑');
+                    obj.html(textarea.val());
+                    obj.show();
+                    textarea.attr('readonly', 'readonly');
+                }
+            });
             obj.off('click.layout').on('click.layout', 'div.row>div', function (e) {
                 if (tlist.length > 0 && !ctrl) {
                     while (tmp = tlist.pop())
                         tmp.removeClass(SELECTED_CSS);
                 }
                 target = $(e.target).closest('div[class!=row]');
+                let time = target.data('time');
+                console.log(+new Date - time);
+                if (time && (+new Date - time < DUR_TIME)) {
+                    target.attr('contenteditable', true).off('blur.layout change.layout').on({
+                        'blur.layout': (ev) => {
+                            $(ev.target).removeAttr('contenteditable')
+                        }
+                    });
+                }
+                target.data('time', +new Date);
+
                 if (!target.parent('div').hasClass('row')) {
                     target = null;
                     return;
@@ -142,9 +168,8 @@
                             arr.unshift(cstr);
                             _target.attr('class', arr.join(' '));
                         }
-                        let _obj = $(obj).clone();
-                        _obj.find('*').each(removeProp);
-                        textarea.val(_obj.html());
+                        //生成html
+                        genHTML(obj, textarea);
 
                         console.log('cost: ' + (+new Date - start) + '(ms)');
                     },
@@ -152,9 +177,22 @@
                         ctrl = false;
                     }
                 });
+            }).off('keyup.layout').on('keyup.layout',()=>{
+                genHTML(obj, textarea);
             });
         }
     });
+
+    /**
+     * 生成html
+     * @param ctx
+     * @param textarea
+     */
+    function genHTML(ctx, textarea) {
+        let _obj = $(ctx).clone();
+        _obj.find('*').each(removeProp);
+        textarea.val(_obj.html());
+    }
 
     /**
      * 去除无用的属性值
