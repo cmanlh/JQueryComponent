@@ -165,7 +165,20 @@
                     this.settingSwitch = $('<span>').addClass('jqcMenuTree-settingSwitch');
                     this.container.append(_this.settingSwitch)
                         .addClass('jqcMenuTree-canSetting');
-                    renderSettingPanel.call(this);
+                    this.settingSwitch.click(function () {
+                        if (_this.settingDialog) {
+                            _this.settingDialog.close();
+                            _this.settingDialog = null;
+                            _this.isSetting = false;
+                        } else {
+                            renderSettingPanel.call(_this);
+                            setTimeout(function () {
+                                _this.settingDialog.open();
+                                _this.isSetting = true;
+                            }, 100)
+                        }
+                        
+                    })
                 }
             }
             function render(data) {
@@ -260,16 +273,7 @@
                     },
                     afterClose: function () {
                         _this.isSetting = false;
-                    }
-                });
-                // 点击菜单直接触发事件
-                this.settingSwitch.click(function () {
-                    if (_this.isSetting) {
-                        _this.settingDialog.close();
-                        _this.isSetting = false;
-                    } else {
-                        _this.settingDialog.open();
-                        _this.isSetting = true;
+                        _this.settingDialog = null;
                     }
                 });
                 _this.settingPanel.on('click.jqcMenuTree', 'div', function (e) {
