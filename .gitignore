@@ -1,2 +1,7 @@
 /.idea/
 *.iml
+
+.vscode/
+
+#node server
+node-server.js
