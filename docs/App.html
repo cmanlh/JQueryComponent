@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .quick_link a{
+            display: block;
+        }
+    </style>
+    <title>App.js文档</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">App.js</div>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>templatePath</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>需要生成页面的模板文件的相对路径，如'./template.html'</td>
+                </tr>
+                <tr>
+                    <td>stylePath</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>页面样式文件的相对路径，如'./style.css'</td>
+                </tr>
+                <tr>
+                    <td>dxDataGrid</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>页面内dxDataGrid组件的相关配置</td>
+                </tr>
+                <tr>
+                    <td>contextmenu</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>dxDataGrid右击菜单的相关配置</td>
+                </tr>
+                <tr>
+                    <td>mixins</td>
+                    <td>Array</td>
+                    <td></td>
+                    <td>集成公共数据或者方法的对象</td>
+                    <td></td>
+                    <td>该对象需要拓展的混合对象，常用于封装多个页面共有方法</td>                    
+                </tr>
+                <tr>
+                    <td>afterRender</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>页面渲染之后的回调函数</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <div class="sectionTitle">实例化对象可直接使用的属性</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">属性名</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>root</td>
+                    <td>当前新生成页面根节点</td>
+                </tr>
+                <tr>
+                    <td>loading</td>
+                    <td>loading加载动画，有show和hide方法</td>
+                </tr>
+                <tr>
+                    <td>pinyinParser</td>
+                    <td>pinyin解析器，selectBox组件根据拼音查找时会用到</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <div class="sectionTitle">实例化对象可直接使用的方法</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">方法名</th>
+                <th width="128px">参数说明</th>
+                <th width="64px">返回值</th>
+                <th>效果及作用</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>requestGet</td>
+                    <td>参数1：api,参数2：query参数</td>
+                    <td>Promise</td>
+                    <td>get请求</td>
+                </tr>
+                <tr>
+                    <td>requestPost</td>
+                    <td>arg1: api，arg2: data</td>
+                    <td>Promise</td>
+                    <td>post请求</td>
+                </tr>
+                <tr>
+                    <td>getFile</td>
+                    <td>文件相对路径,如'./template.html'</td>
+                    <td>Promise</td>
+                    <td>获取文件内容</td>
+                </tr>
+                <tr>
+                    <td>fillDxDataGrid</td>
+                    <td>查询参数</td>
+                    <td></td>
+                    <td>根据参数查询数据并填充dxDataGrid</td>
+                </tr>
+                <tr>
+                    <td>getDxDataGrid</td>
+                    <td></td>
+                    <td>dxDataGrid组件</td>
+                    <td>获取实例内的dxDataGrid组件</td>
+                </tr>
+                <tr>
+                    <td>confirm</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td>触发confirm弹框</td>
+                </tr>
+                <tr>
+                    <td>dialog</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td>调用dialog组件显示模板数据</td>
+                </tr>
+                <tr>
+                    <td>delete</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td>触发删除弹框</td>
+                </tr>
+                <tr>
+                    <td>createSelectBox</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td>快速生成selectBox</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <div class="sectionTitle">js文件示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+;(function($) {
+
+    var app = new $.App({
+        templatePath: './template.html',
+        stylePath: './style.css',
+        dxDataGrid: {},
+        contextmenu: {},
+        afterRender: function() {}
+    });
+
+    $.setupApp(app);        //必须
+
+})(jQuery);
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">dxDataGrid数据示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+var dxDataGrid = {
+
+    fetchDataApi: 'http://localhost:8020/ops/task/query',         //填充该表格数据的api 必须
+
+    exportProxyClassName: 'exportBtn',      //导出按钮的类名
+
+    searchProxyClassName: 'searchInput',    //搜索输入框的类名
+
+    columns: [{                 //dxDataGrid表头对应的文字，已自动添加序号
+        dataField: 'type',
+        caption: '任务类型'
+    }]
+};
+        </pre>
+        </section>
+    
+    </section>
+    <section>
+        <div class="sectionTitle">requestGet/requestPost示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+
+this.requestGet('http://localhost:8020/ops/work/query', {
+    
+    page: 1,
+
+    size: 20
+
+}).then(res => {
+
+    console.log(res);
+
+}).catch(err => {
+
+    throw new Error(err);
+
+});
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">getFile方法示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+functio afterRender() {
+
+    this.getFile('./template.html').then(res => {
+        var _template = $(res);
+        /*do somethong...*/
+    });
+
+}
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">dialog方法示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+/**
+    * @param { String } title          dialog title
+    * @param { String } templatePath   模板文件的相对路径
+    * @param { String } api            用于添加，更新数据 触发网络请求的按钮需要添加类名'done' 且唯一
+    * @param { Number } width          dialog宽度 默认1080px
+    * @param { Array } disabled        需要设置为disabled的表单元素
+    * @param { Boolean } readOnly      是否只读，默认 false
+    * @param { Function } afterRender  dialog渲染之后的callback
+    * @param { Function } afterClose   dialog关闭之后的callback
+    * @param { Function } success      api请求成功之后的callback
+    */
+
+//添加-弹出框演示(复制同添加，需要设置defaultData = rowData)
+this.dialog({
+    title: '添加',
+    templatePath: './insert.html',
+    api: 'http://localhost:8020/ops/task/insert',
+    afterRender: function(root) {
+        //do somethong
+    }
+});
+
+//假设存在rowData数据
+
+//更新-弹出框演示
+this.dialog({
+    title: '更新',
+    templatePath: './insert.html',
+    api： 'http://localhost:8020/ops/task/update',
+    disabled: ['sysId'],
+    defaultData: rowData,   
+});
+
+//详情-弹出框演示
+this.dialog({
+    title: '详情',
+    templatePath: './insert.html',
+    defaultData: rowData,
+    readOnly: true
+});
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">confirm方法示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+this.confirm({
+    title: 'title',                 //title NotRequired
+    content: 'content',             //content NotRequired  可以为文字或者jQuery选择器对象。
+    width: 500,                     //width  默认300
+    onConfirm: function() {},       //点击确认的回调函数
+    onCancel: function() {},        //点击取消的回调函数
+    onClose: function()             //关闭confirm弹框的回调函数
+});
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">delete方法示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+this.delete({                       
+    title: 'title',         
+    content: 'content',
+    api: 'http://localhost:8020/ops/task/delete',
+    data: {},                   //请求需要带上的数据
+    success: function() {}      //请求成功后的回调函数
+});         //点击确认按钮自动带上数据请求api。
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">如何快速创建一个dx表格</div>
+        <section>
+            <pre class="prettyprint linenums">
+//如何在一个指定的元素内快速生成一个dx表格
+&ltdiv id="div1"&gt&lt/div&gt
+
+var dx = new $.App({       //创建$.App实例
+    dxDataGrid: {},
+    contextmenu: {},
+});
+
+dx.mount($('#div1'));     //指定一个容易装载dx表格
+dx.fillDxDataGrid();        //填充表格
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">完整示例</div>
+        <section>
+            <pre class="prettyprint linenums">
+;(function($) {
+    //dxDataGrid表格配置
+    var dxDataGrid = {
+        fetchDataApi: 'task/query',
+        exportProxyClassName: 'exportBtn',
+        searchProxyClassName: 'searchInput',
+        columns: [{
+            dataField: 'type',
+            caption: '类型'
+        }, {
+            dataField: 'name',
+            caption: '名称'
+        }]
+    };
+
+    //右击菜单配置
+    var contextmenu = {
+        menus: [{
+            text: '更新',
+            id: 'update'
+        }, {
+            text: '复制',
+            id: 'copy'
+        }, {
+            text: '详情',
+            id: 'detail'
+        }],
+        onSelect: function(data) {
+            control.call(app, data);
+        }
+    };
+
+    //afterRender回调函数
+    function afterRender () {
+        var _this = this;
+        init.call(this);
+        bindEvent.call(this);
+    }
+/********** 关键性代码 **********/    
+    //实例化生成app
+    var app = new $.App({
+        templatePath: 'template.html',
+        dxDataGrid: dxDataGrid,
+        contextmenu: contextmenu,
+        afterRender: afterRender
+    });
+
+    //装载
+    $.setupApp(App);
+/********************************/
+
+
+    //业务逻辑代码
+    function init () {
+        this.triggerQuery();
+        this.fillDxDataGrid();
+    }
+
+    function bindEvent () {
+        var _this = this;
+        var $insert = this.root.find('#insertBtn');
+        var $query = this.root.find('#query');
+        var $queryDataBox = this.root.find('#queryDataBox');
+        $insert.click(function() {
+            _this.dialog({
+                title: '添加',
+                templatePath: './insert.html',
+                api: 'task/insert'
+            });
+        });
+    }
+
+    function control (data) {
+        var _this = this;
+        //do something
+    }
+})(jQuery);
+        </pre>
+        </section>
+    </section>
+    <section>
+        <div class="sectionTitle">createSelectBox</div>
+        <section>
+            <pre class="prettyprint linenums">
+/* 参数：同jqcSelectBox的参数设置 */
+app.createSelectBox({
+    optionData: {
+        data: data,
+        adapter: {
+            value: 'userID',
+            label: 'displayName',
+            filter: 'userID',
+            pinyinFilter: 'displayName'
+        }
+    },
+    element: $worker,           //jQuery元素对象
+    dataName: 'worker-' + data.departmentId
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+</body>
+
+</html>

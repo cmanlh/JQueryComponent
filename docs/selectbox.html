@@ -6,10 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
     <meta name="description" content="jQuery Component : 基于jQuery的组件库">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/component.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/prettify.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="jqc-css/jqc.selectbox.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/highlight.css">
     <style>
         section>div>input {
             padding: 8px 8px;
@@ -194,6 +190,14 @@
                     <td></td>
                     <td>允许用户运行时添加新的选项</td>
                 </tr>
+                <tr>
+                    <td>autoDisplay</td>
+                    <td>boolean</td>
+                    <td></td>
+                    <td></td>
+                    <td>false</td>
+                    <td>是否自动显示选项</td>
+                </tr>
             </tbody>
         </table>
     </section>
@@ -229,6 +233,21 @@ new $.jqcSelectBox({
     defaultVal: 'aal',
     element: $('#basic'),
     dataName: 'basic',
+    width: 160
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">自动显示选项。</div>
+            <div>
+                <input id="autoDisplay">
+            </div>
+            <pre class="prettyprint linenums">
+new $.jqcSelectBox({
+    optionData: basicModel,
+    element: $('#autoDisplay'),
+    dataName: 'basic',
+    autoDisplay: true,
     width: 160
 });
         </pre>
@@ -679,15 +698,9 @@ new $.jqcSelectBox({
         </pre>
         </section>
     </section>
-    <script src="js/run_prettify.js"></script>
-    <script src="js/jquery-3.1.1.js "></script>
-    <script src="js/version.js"></script>
-    <script src="js/keycode.js"></script>
-    <script src="jqc-js/jqc.valHooks.js"></script>
-    <script src="jqc-js/jqc.baseElement.js"></script>
-    <script src="jqc-js/jqc.pinyin.js"></script>
-    <script src="jqc-js/jqc.uniqueKey.js"></script>
-    <script src="jqc-js/jqc.selectbox.js"></script>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
     <script src="exampleJs/selectbox.js"></script>
 </body>
 

@@ -1,0 +1,198 @@
+@charset 'utf-8';
+
+.jqcMenuTree * {
+    box-sizing: border-box!important;
+    margin: 0;
+    padding: 0;
+}
+
+.jqcMenuTree {
+    box-sizing: border-box;
+    background-color: #3F3F3F;
+    padding: 36px 0;
+    font-size: 14px;
+    color: #ccc;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    overflow: hidden;
+}
+
+.jqcMenuTree-box {
+    max-height: 100%;
+    overflow-y: scroll;
+}
+
+.jqcMenuTree-canSetting:before{
+    content: '';
+    position: absolute;
+    top: 36px;
+    right: 0;
+    width: 100%;
+    height: 1px;
+    background-color:#ccc;
+}
+
+.jqcMenuTree ul {
+    list-style: none;
+}
+
+.jqcMenuTree li {
+    position: relative;
+    width: 100%;
+}
+
+.jqcMenuTree li.hasChild:after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    background: url('./images/arraw_right.png') no-repeat center;
+    background-size: 20px 20px;
+    transform-origin: 50% 50%;
+    transition: all 0.1s ease-out;
+}
+
+.jqcMenuTree li.hasChild.active:after {
+    transform: rotate(90deg);
+}
+
+.jqcMenuTree li ul{
+    display: none;
+}
+
+.jqcMenuTree-scrollbox {
+    height: 100%;
+    overflow-y: scroll;
+    width: 150%;
+}
+
+.jqcMenuTree-scrollbox div {
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    transition: all .3s ease-out;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.jqcMenuTree-scrollbox div:hover,
+.jqcMenuTree-scrollbox div.active {
+    background-color: #ed1c24;
+    color: #fff;
+}
+/*一级菜单*/
+.jqcMenuTree-scrollbox > ul > li > div {
+    padding-left: 20px;
+}
+/*二级菜单*/
+.jqcMenuTree-scrollbox > ul > li > ul > li > div {
+    padding-left: 40px;
+    background-color: #222;
+}
+/*三级菜单*/
+.jqcMenuTree-scrollbox > ul > li > ul > li > ul div {
+    padding-left: 60px;
+    font-size: 12px;
+    background-color: #222;
+}
+
+.jqcMenuTree-settingPanel {
+    display: flex;
+    flex-flow: row wrap;
+    color: #333;
+}
+
+.jqcMenuTree-settingPanel *{
+    box-sizing: border-box!important;
+    margin: 0;
+    padding: 0;
+}
+
+.jqcMenuTree-settingPanel ul{
+    list-style: none;
+}
+
+.jqcMenuTree-settingPanel > ul{
+    padding: 15px 8px;
+}
+
+.jqcMenuTree-settingPanel > ul ul{
+    padding: 0 0 0 20px;
+}
+
+.jqcMenuTree-settingPanel > ul > li > div{
+    font-weight: bold;
+}
+
+.jqcMenuTree-settingPanel ul div{
+    line-height: 30px;
+    padding: 0 6px;
+    cursor: pointer;
+    position: relative;
+}
+
+.jqcMenuTree-settingPanel ul div:hover{
+    color: #fff;
+    background-color: rgba(0, 0, 0, .6);
+    border-radius: 2px;
+}
+
+.jqcMenuTree-settingPanel ul div.hasChild{
+    color: #333;
+    cursor: default;
+    background-color: #fff;
+}
+
+.jqcMenuTree-settingPanel ul div input{
+    position: absolute;
+    top: 3px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    z-index: 1;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.jqcMenuTree-settingPanel ul div span{
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #777;
+    border-radius: 2px;
+    background: #fff;
+}
+
+.jqcMenuTree-settingPanel ul div input:checked + span{
+    background-image: url('./images/right.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px 16px;
+}
+
+.jqcMenuTree-settingSwitch{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 8px;
+    right: 5px;
+    background: url('./images/setting.png') no-repeat center;
+    background-size: 20px 20px;
+    cursor: pointer;
+}
+
+.jqcMenuTree-viewMore {
+    width: 100%;
+    height: 36px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #ed1c24;
+}

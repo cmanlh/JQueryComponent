@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>formUtil</title>
+    <link rel="stylesheet" href="../../datetimepicker/css/datetimepicker.css">
+    <script src="../../loader/loader.js"></script>
+    <script src="test.js"></script>
+    <style type="text/css">
+        .label {
+            width: 80px;
+            display: inline-block;
+        }
+
+        .label::after {
+            content: ':';
+            float: right;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="ctx" onsubmit="return false">
+        <label class="label">time</label>
+        <input type="text" datatype="date" databind="time">
+        <br/>
+        <label class="label">userName</label>
+        <input type="text" databind="userName" maxlength="5">
+        <br/>
+        <label class="label">int</label>
+        <input type="text" databind="age" datatype="int">
+        <br/>
+        <label class="label">number</label>
+        <input type="text" databind="height" datatype="number">
+        <br/>
+        <label class="label">faverout</label>
+        <label>足球</label>
+        <input type="checkbox" name="faverout" databind="faverout" value="football">,
+        <label>篮球</label>
+        <input type="checkbox" name="faverout" databind="faverout" value="basketball">
+        <br/>
+        <label class="label">sex</label>
+        <label>man</label>
+        <input type="radio" value="man" name="sex" databind="sex">,
+        <label>woman</label>
+        <input type="radio" value="woman" name="sex" databind="sex">
+        <br/>
+        <label class="label">mobile</label>
+        <input type="text" datatype="textNumber" databind="mobile" maxlength="11">
+        <br/>
+        <label class="label">能力</label>
+        <select databind="ability">
+            <option value="1">游泳</option>
+            <option value="2">长跑</option>
+        </select>
+        <br/> 列表：
+        <br/>
+        <button id="add">添加一条</button>
+        <br/>
+        <div groupbind="group">
+            <label>item1:</label>
+            <input gdatabind="item1" name="item1" required="required">
+            <label>item2:</label>
+            <input gdatabind="item2" datatype="int" name="item2">
+            <label>item3:</label>
+            <input gdatabind="item3" datatype="number" name="item3">
+            <label>item4:</label>
+            <input gdatabind="item4" datatype="date" name="item4">
+            <label>item5:</label>
+            <input gdatabind="item5" type="checkbox" value="1" name="item5" checked>
+            <input type="checkbox" value="2" name="item5" gdatabind="item5">
+            <label>item6:</label>
+            <input type="radio" value="a" name="item6" gdatabind="item6">
+            <input type="radio" value="b" name="item6" gdatabind="item6">
+            <label>item10:</label>
+            <input type="radio" value="a" name="item10" gdatabind="item10">
+            <input type="radio" value="b" name="item10" gdatabind="item10">
+        </div>
+        <div groupbind="secondGroup" style="margin-top: 15px;">
+            <label>item1:</label>
+            <input gdatabind="item1" name="item1" required="required">
+            <label>item2:</label>
+            <input gdatabind="item2" datatype="int" name="item2">
+            <label>item3:</label>
+            <input gdatabind="item3" datatype="number" name="item3">
+            <label>item4:</label>
+            <input gdatabind="item4" datatype="date" name="item4">
+            <label>item5:</label>
+            <input gdatabind="item5" type="checkbox" value="1" name="item5" checked>
+            <input type="checkbox" value="2" name="item5" gdatabind="item5">
+            <label>item6:</label>
+            <input type="radio" value="a" name="item7" gdatabind="item6">
+            <input type="radio" value="b" name="item7" gdatabind="item6">
+        </div>
+    </form>
+    <button id="init">初始化</button>
+    <button id="fetchData">获取数据</button>
+    <button id="fillData">填充数据</button>
+    <br/>
+    <textarea id="txt" cols="50" rows="20"></textarea>
+</body>
+
+</html>

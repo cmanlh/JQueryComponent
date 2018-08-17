@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Editor</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        #div1 {
+            width: 800px;
+        }
+    </style>
+</head>
+    <div id="div1"></div>
+    <button id="btn">获取内容</button>
+<body>
+</body>
+    <script src="../../../../../qunit/jquery-3.1.1.js"></script>
+    <script src="../editor.js"></script>
+    <script>
+        var editor = new wangEditor('#div1');
+        editor.create();
+        $('#btn').click(function () {
+            var text = editor.txt.html();
+            console.log(text);
+        })
+    </script>
+</html>

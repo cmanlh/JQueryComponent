@@ -1,0 +1,79 @@
+.jqcTabContainer {
+    height: 36px;
+    width: 100%;
+    border-radius: 2px;
+    color: #333;
+    background-color: rgba(128, 128, 128, 0.1);
+    font-size: 14px;
+    display: flex;
+    position: relative;
+}
+
+.jqcTabInactive {
+    border: 1px solid rgba(128, 128, 128, 0.1);
+    background-color: rgba(128, 128, 128, 0.1);
+    border-radius: 3px;
+    margin-right: 4px;
+    padding: 3px 5px 3px 15px;
+    line-height: 30px;
+    cursor: pointer;
+    position: relative;
+}
+
+.jqcTabInactive:hover {
+    background-color: #FFFFFF;
+}
+
+.jqcTabActive {
+    border-top: 2px solid red;
+    border-bottom: 1px solid #FFFFFF;
+    background-color: #FFFFFF;
+    line-height: 28px;
+}
+
+.jqcTabClose {
+    background-image: url(images/close.png);
+    height: 16px;
+    width: 16px;
+    margin: 0 5px;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    border-radius: 1px;
+}
+
+.jqcTabClose:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
+.jqcTabMoreBtn {
+    position: absolute;
+    top: 7px;
+    right: 5px;
+    height: 16px;
+    width: 16px;
+    background-image: url(images/more.png);
+    cursor: pointer;
+    display: inline-block;
+}
+
+.jqcTabMoreContainer {
+    position: absolute;
+    top: 32px;
+    right: 0px;
+    border-radius: 3px;
+    min-height: 128px;
+    flex-direction: column;
+    align-items: flex-end;
+    display: flex;
+    z-index: 1;
+}
+
+.jqcTabPanel {
+    position: absolute;
+    top: 30px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: auto;
+}
