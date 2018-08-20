@@ -10,7 +10,7 @@
             const DEFAULT_OPTIONS = {
                 data: null, // menu data
                 speed: 200, //animate speed :ms
-                width: 150, // menu item width
+                width: 200, // menu item width
                 position: 'fixed',
                 top: 0, // top of position
                 left: 0, // left of position
@@ -148,7 +148,7 @@
                         'width': _this.options.width,
                         'height': window.innerHeight - _this.options.top,
                         'top': _this.options.top,
-                        'left': - _this.options.width,
+                        'left': - _this.options.width + 20,
                         'z-index': $.jqcZindex.menu
                     });
                 $('body').append(_this.container);
