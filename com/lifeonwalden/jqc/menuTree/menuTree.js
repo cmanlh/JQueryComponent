@@ -67,25 +67,21 @@
                 } else {
                     this.container.fadeIn();
                 }
-                if (this.options.trigger) {
-                    this.options.trigger.addClass('active');
-                }
+                this.switch.addClass('active');
                 this.options.onShow && this.options.onShow(_this.options.width, _this.options.speed);
             };
             $.jqcMenuTree.prototype.hide = function () {
                 var _this = this;
                 if (this.options.position == 'fixed') {
                     this.container.animate({
-                        left: -1 * this.options.width - this.options.left - 3
+                        left: -1 * this.options.width - this.options.left + 20
                     }, this.options.speed, function () {
                         _this.display = false;
                     });
                 } else {
                     this.container.fadeOut();
                 }
-                if (this.options.trigger) {
-                    this.options.trigger.removeClass('active');
-                }
+                this.switch.removeClass('active');
                 this.options.onHide && this.options.onHide(_this.options.width, _this.options.speed);
                 if (this.isSetting) {
                     this.settingDialog.close();
@@ -135,15 +131,13 @@
                 if (_this.options.displayed) {
                     _this.show();
                 }
-                if (this.options.trigger) {
-                    this.options.trigger.click(function (e) {
-                        if (_this.display) {
-                            _this.hide();
-                        } else {
-                            _this.show();
-                        }
-                    })
-                }
+                this.switch.click(function (e) {
+                    if (_this.display) {
+                        _this.hide();
+                    } else {
+                        _this.show();
+                    }
+                })
             }
             function createMenuBox() {
                 var _this = this;
@@ -160,7 +154,11 @@
                 $('body').append(_this.container);
                 this.scrollbox = $('<div>')
                     .addClass('jqcMenuTree-scrollbox');
-                this.container.append(_this.scrollbox);
+                this.switch = $('<div>')
+                    .addClass('jqcMenuTree-switch');
+                this.ban = $('<div>')
+                    .addClass('jqcMenuTree-limit');
+                this.container.append(_this.scrollbox, this.switch, this.ban);
                 if (this.options.allowedConfig && this.options.configurableMenuData) {
                     this.settingSwitch = $('<span>').addClass('jqcMenuTree-settingSwitch');
                     this.container.append(_this.settingSwitch)
