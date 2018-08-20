@@ -7,19 +7,23 @@
     background: #fff;
     overflow: hidden;
     z-index: 4;
-    border-bottom: 1px solid #ddd;
-    border-top: 1px solid #ddd;
 }
 .jqcFormToolBar.jqcFormToolBar-newline {
     display: block;
 }
 .jqcFormToolBar.jqcFormToolBar-newline .jqcFormToolBar-controlBox{
     background: #fff;
+    padding: 5px 0;
 }
 
 .jqcFormToolBar-controlBox {
     flex-shrink: 0;
     background: #fafafa;
+    border-radius: 0 6px 6px 0;
+}
+
+.jqcFormToolBar.jqcFormToolBar-newline .jqcFormToolBar-conditionBox{
+    border-radius: 6px;
 }
 
 .jqcFormToolBar-conditionBox {
@@ -27,6 +31,7 @@
     overflow: hidden;
     background: #fafafa;
     position: relative;
+    border-radius: 6px 0 0 6px;
 }
 .jqcFormToolBar-conditionBox.showmore-visible .jqcFormToolBar-conditionBox-switch{
     display: block;
