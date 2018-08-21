@@ -37,17 +37,18 @@
     display: block;
 }
 .jqcFormToolBar-conditionBox-switch {
-    width: 50px;
-    height: 50px;
+    width: 20px;
+    height: 20px;;
     background: #ccc;
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 15px;
+    right: 14px;
     cursor: pointer;
+    background: url('./images/icon_down.png') no-repeat center;
     display: none;
 }
 .jqcFormToolBar-conditionBox-switch.active {
-    background: red;
+    background: url('./images/icon_up.png') no-repeat center;
 }
 
 .jqcFormToolBar-showMore {

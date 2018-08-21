@@ -34,7 +34,6 @@
                 var _this = this;
                 this.options = Object.assign({}, DEFAULT_OPTIONS, params);
                 this.el = this.options.element;
-                this.el.height(_this.options.height);
                 this.status = 'fold';
                 render.call(_this);
                 bindEvent.call(_this);
