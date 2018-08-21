@@ -3,7 +3,7 @@
  * lastModifyTime: 2018年7月9日15:55:45
  */
 ;(function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'lang', 'dialog', 'zindex'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'lang', 'zindex'])
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'menuTree').concat('css/menuTree.css'))
         .execute(function () {
             var pageHeight = window.innerHeight;
@@ -83,8 +83,9 @@
                 }
                 this.switch.removeClass('active');
                 this.options.onHide && this.options.onHide(_this.options.width, _this.options.speed);
-                if (this.isSetting) {
-                    this.settingDialog.close();
+                if (this.setttingContainer) {
+                    this.setttingContainer.remove();
+                    this.setttingContainer = null;
                 }
             };
             $.jqcMenuTree.prototype.destroyed = function () {
@@ -154,28 +155,26 @@
                 $('body').append(_this.container);
                 this.scrollbox = $('<div>')
                     .addClass('jqcMenuTree-scrollbox');
+                this.fakeScrollBox = $('<div>')
+                    .addClass('jqcMenuTree-fakeScroll');
+                this.fakeScrollBox.append(this.scrollbox);
                 this.switch = $('<div>')
                     .addClass('jqcMenuTree-switch');
                 this.ban = $('<div>')
                     .addClass('jqcMenuTree-limit');
-                this.container.append(_this.scrollbox, this.switch, this.ban);
+                this.container.append(this.fakeScrollBox, this.switch, this.ban);
                 if (this.options.allowedConfig && this.options.configurableMenuData) {
                     this.settingSwitch = $('<span>').addClass('jqcMenuTree-settingSwitch');
                     this.container.append(_this.settingSwitch)
                         .addClass('jqcMenuTree-canSetting');
                     this.settingSwitch.click(function () {
-                        if (_this.settingDialog) {
-                            _this.settingDialog.close();
-                            _this.settingDialog = null;
-                            _this.isSetting = false;
+                        if (_this.isSetting) {
+                            _this.setttingContainer.remove();
+                            _this.setttingContainer = null;
                         } else {
                             renderSettingPanel.call(_this);
-                            setTimeout(function () {
-                                _this.settingDialog.open();
-                                _this.isSetting = true;
-                            }, 100)
                         }
-                        
+                        _this.isSetting = !_this.isSetting;
                     })
                 }
             }
@@ -258,33 +257,33 @@
                 _this.options.configurableMenuData.forEach(function (value, index, array) {
                     _this.settingPanel.append(renderConfig.call(_this, value));
                 });
-                _this.settingPanel.find('>ul').css('width', _this.options.width * 1.2);
-                _this.settingStack = [];
-                _this.settingDialog = new $.jqcDialog({
-                    title: $.jqcLang.MENU_SETTING_CONFIG,
-                    content: _this.settingPanel,
-                    modal: false,
-                    width: _this.options.configBoxWidth,
-                    position: {
-                        top: _this.options.top,
-                        left: _this.options.width + _this.options.left + 3
-                    },
-                    afterClose: function () {
-                        _this.isSetting = false;
-                        _this.settingDialog = null;
-                    }
-                });
+                // _this.settingPanel.find('>ul').css('width', _this.options.width);
+                var _title = $('<div>').addClass('setting-title').text('菜单管理');
+                var closeBtn = $('<div>').addClass('setting-close');
+                _title.append(closeBtn);
+                this.setttingContainer = $('<div>')
+                    .addClass('jqcMenuTree-setttingContainer');
+                this.setttingContainer.append(_title, this.settingPanel);
+                this.container.append(this.setttingContainer);
                 _this.settingPanel.on('click.jqcMenuTree', 'div', function (e) {
-                    e.stopPropagation();
+                    // e.stopPropagation();
                     if ($(this).hasClass('hasChild')) {
                         return;
                     }
-                    _this.settingDialog.close();
+                    closeBtn.trigger('click');
                     _this.options.onSelect && _this.options.onSelect(this.data);
                 });
                 // 防止input点击冒泡
                 _this.settingPanel.on('click.jqcMenuTree-input', 'input', function (e) {
                     e.stopPropagation();
+                    
+                });
+                // 关闭配置框
+                closeBtn.click(function (e) {
+                    e.stopPropagation();
+                    _this.isSetting = false;
+                    _this.setttingContainer.remove();
+                    _this.setttingContainer = null;
                 });
                 // 监听input改变
                 _this.settingPanel.on('change.jqcMenuTree', 'input', function (e) {
@@ -296,9 +295,11 @@
                     var $grandpa = $parent.parents('li:first');
 
                     if (_checked) {
+                        $(this).parent().addClass('checked');
                         $parent.find('input').eq(0).prop('checked', _checked);
                         $grandpa.find('input').eq(0).prop('checked', _checked);
                     } else {
+                        $(this).parent().removeClass('checked');
                         var pInput = $parent.find('input');
                         var pFlag = false;
                         for (var i = 1; i < pInput.length; i++) {
@@ -369,6 +370,7 @@
                 var $input = $(`<input type="checkbox" data-id=${id}>`);
                 if (this.avavilable[id]) {
                     $input.prop('checked', true);
+                    $div.addClass('checked');
                 }
                 var $fakeCheckbox = $('<span>');
                 $div.append($input, $fakeCheckbox);
