@@ -83,9 +83,8 @@
                 }
                 this.switch.removeClass('active');
                 this.options.onHide && this.options.onHide(_this.options.width, _this.options.speed);
-                if (this.setttingContainer) {
-                    this.setttingContainer.remove();
-                    this.setttingContainer = null;
+                if (this.isSetting) {
+                    this.settingSwitch.trigger('click');
                 }
             };
             $.jqcMenuTree.prototype.destroyed = function () {

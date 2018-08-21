@@ -132,6 +132,7 @@
     cursor: pointer;
     position: relative;
     font-size: 12px;
+    color: #666;
 }
 
 .jqcMenuTree-settingPanel ul div:hover{
@@ -244,7 +245,7 @@
 }
 .jqcMenuTree-setttingContainer {
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 100%;
     z-index: 10;
     width: 125%;
