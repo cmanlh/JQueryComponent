@@ -77,6 +77,7 @@
                 var _this = this;
                 // init
                 this.box.removeClass('jqcFormToolBar-newline');
+                this.conditionBox.removeClass('showmore-visible');
                 _this.conditionBox.height('auto');
                 var _height = this.box.height();
                 if (_height > _this.options.height) {
