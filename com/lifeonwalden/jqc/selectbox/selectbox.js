@@ -514,6 +514,8 @@
 
                 this.el = this.options.element; // the jquery element for the target document node
                 this.el.addClass('jqcSelectboxHooks');
+                var _width = this.el.outerWidth();
+                this.el.css('background-position', _width - 26);
                 this.typeName = 'jqcSelectBox';
                 this.elementId = 'jqc'.concat($.jqcUniqueKey.fetchIntradayKey());
                 this.el.attr($.jqcBaseElement.JQC_ELEMENT_TYPE, this.typeName);
@@ -538,7 +540,7 @@
             function renderMultiSelect(that) {
                 that.container = $('<div class="jqcSelectboxContainer" style="display:none;">'); //container for option list & operation board
                 that.operationBar = $('<div class="jqcSelectboxOperationBar">');
-                that.input = $('<input placeholder="输入选项值">');
+                that.input = $('<input placeholder="输入选项值">').addClass('search-input');
                 that.resetter = $('<button class="jqcSelectboxResetter" title="清空当前所选项">重置</button>'); // reset handler to reset value to default
                 that.refresher = $('<button class="jqcSelectboxRefresher" title="从服务器获取新选项">刷新</button>'); // refresh handler to refresh the data source
                 that.addNewItem = $('<button class="jqcSelectboxAddNewItem" title="从服务器获取新选项">新增</button>'); // allowed to trigger adding a item to options
@@ -575,6 +577,7 @@
                     onSelecting = false;
                 that.el.focus(function(e) {
                     triggerByMe = 1;
+                    console.log(this);
                     var elOffset = that.el.offset();
                     var maxWidth = $('body').width();
                     that.container.css('top', elOffset.top + elOuterHeight + 2);
@@ -583,6 +586,7 @@
                     } else {
                         that.container.css('left', elOffset.left);
                     }
+                    $(this).addClass('jqcSelectboxHooks-active');
                     that.container.show();
                     that.input.focus();
                     // 自动显示
@@ -603,6 +607,7 @@
                         case $.ui.keyCode.TAB:
                             {
                                 that.container.hide();
+                                that.el.removeClass('jqcSelectboxHooks-active');
                                 that.el.nextAll(":input").first().focus();
                                 e.preventDefault();
                                 return;
@@ -664,6 +669,7 @@
                 $(document).click(function(e) {
                     if (1 !== triggerByMe && 2 !== triggerByMe) {
                         that.container.hide();
+                        that.el.removeClass('jqcSelectboxHooks-active');
                         if (onSelecting && that.options.afterSelect) {
                             onSelecting = false;
                             var result = [];
@@ -756,6 +762,7 @@
                     that.el.val(that.defaultVal);
                     if (toHide) {
                         that.container.hide();
+                        that.el.removeClass('jqcSelectboxHooks-active');
                     }
                 }
 
@@ -785,6 +792,7 @@
                 if (that.options.addNewItem) {
                     that.addNewItem.click(function(e) {
                         that.container.hide();
+                        that.el.removeClass('jqcSelectboxHooks-active');
                         that.options.addNewItem(function(newItem) {
                             if (newItem) {
                                 that.optionCore.addNewItem(newItem);
@@ -797,34 +805,35 @@
             function renderSingleSelect(that) {
                 that.container = $('<div class="jqcSelectboxContainer" style="display:none;">'); //container for option list & operation board
                 that.operationBar = $('<div class="jqcSelectboxOperationBar">');
-                that.input = $('<input placeholder="输入选项值">');
+                that.input = $('<input placeholder="输入选项值">').addClass('search-input');
                 that.resetter = $('<button class="jqcSelectboxResetter" title="清空当前所选项">重置</button>'); // reset handler to reset value to default
                 that.refresher = $('<button class="jqcSelectboxRefresher" title="从服务器获取新选项">刷新</button>'); // refresh handler to refresh the data source
                 that.addNewItem = $('<button class="jqcSelectboxAddNewItem" title="从服务器获取新选项">新增</button>'); // allowed to trigger adding a item to options
                 that.optionUL = $('<ul>');
 
-                var inputWidth = containerWidth = that.options.width;
-                containerWidth += 64;
+                var inputWidth = that.el.outerWidth();
+                var containerWidth = inputWidth;
                 that.operationBar.append(that.input);
                 if (that.options.withResetter) {
+                    containerWidth += 54;
                     that.operationBar.append(that.resetter);
                 } else {
-                    inputWidth += 52;
+                    // inputWidth += 52;
                 }
                 if (that.options.updateDataSource) {
                     that.operationBar.append(that.refresher);
-                    containerWidth += 52;
+                    containerWidth += 54;
                 }
                 if (that.options.addNewItem) {
                     that.operationBar.append(that.addNewItem);
-                    containerWidth += 52;
+                    containerWidth += 54;
                 }
                 that.container.append(that.operationBar).append(that.optionUL);
                 var
                     elOuterHeight = that.el.outerHeight(),
                     elOuterWidth = that.el.outerWidth();
                 that.container.css('width', containerWidth);
-                that.input.css('width', inputWidth);
+                that.input.width(inputWidth);
                 that.container.appendTo('body');
 
                 var triggerByMe = false;
@@ -832,12 +841,13 @@
                     triggerByMe = true;
                     var elOffset = that.el.offset();
                     var maxWidth = $('body').width();
-                    that.container.css('top', elOffset.top + elOuterHeight + 2);
+                    that.container.css('top', elOffset.top + elOuterHeight + 4);
                     if (that.container.outerWidth() + elOffset.left + 5 > maxWidth) {
                         that.container.css('right', maxWidth - (elOffset.left + elOuterWidth - 15));
                     } else {
                         that.container.css('left', elOffset.left);
                     }
+                    $(this).addClass('jqcSelectboxHooks-active');
                     that.container.show();
                     that.input.focus();
                     // 自动显示
@@ -856,6 +866,7 @@
                         case $.ui.keyCode.TAB:
                             {
                                 that.container.hide();
+                                that.el.removeClass('jqcSelectboxHooks-active');
                                 that.el.nextAll(":input").first().focus();
                                 e.preventDefault();
                                 return;
@@ -870,6 +881,7 @@
                             return;
                         case $.ui.keyCode.ESCAPE:
                             that.container.hide();
+                            that.el.removeClass('jqcSelectboxHooks-active');
                             return;
                         case $.ui.keyCode.UP:
                             selectIndex == null ? selectIndex = -1 : selectIndex--;
@@ -909,6 +921,7 @@
                 $(document).click(function(e) {
                     if (!triggerByMe) {
                         that.container.hide();
+                        that.el.removeClass('jqcSelectboxHooks-active');
                     }
                     triggerByMe = false;
                 });
@@ -937,6 +950,7 @@
                     that.el.val(_val);
                     oldVal = null;
                     that.container.hide();
+                    that.el.removeClass('jqcSelectboxHooks-active');
                 });
 
                 function reset(toHide) {
@@ -946,6 +960,7 @@
                     that.el.val(that.defaultVal);
                     if (toHide) {
                         that.container.hide();
+                        that.el.removeClass('jqcSelectboxHooks-active');
                     }
                 }
 
@@ -975,6 +990,7 @@
                 if (that.options.addNewItem) {
                     that.addNewItem.click(function(e) {
                         that.container.hide();
+                        that.el.removeClass('jqcSelectboxHooks-active');
                         that.options.addNewItem(function(newItem) {
                             if (newItem) {
                                 that.optionCore.addNewItem(newItem);
