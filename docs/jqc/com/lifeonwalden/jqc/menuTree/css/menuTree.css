@@ -64,7 +64,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;*/
     padding-right: 36px;
-    font-family: PingFangSC-Regular;
 }
 
 .jqcMenuTree-scrollbox div:hover {
@@ -119,20 +118,24 @@
 }
 
 .jqcMenuTree-settingPanel > ul > li > div{
-    font-family: PingFangSC-Regular;
     font-size: 14px;
     color: #333333;
     letter-spacing: 0.58px;
     text-align: left;
+    line-height: 40px;
 }
 
 .jqcMenuTree-settingPanel ul div{
-    line-height: 30px;
+    line-height: 28px;
     padding-left: 20px;
     cursor: pointer;
     position: relative;
-    font-size: 12px;
+    font-size: 13px;
     color: #666;
+}
+.jqcMenuTree-settingPanel ul ul ul div{
+    color: #999;
+    font-size: 12px;
 }
 
 .jqcMenuTree-settingPanel ul div:hover{
@@ -265,8 +268,9 @@
     border-bottom: 1px solid #f2f2f2;
     padding-left: 20px;
     font-size: 14px;
-    color: #666;
+    color: #222;
     position: relative;
+    font-weight: 600;
 }
 .jqcMenuTree-setttingContainer .setting-close{
     width: 20px;

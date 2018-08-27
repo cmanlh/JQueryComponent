@@ -14,4 +14,5 @@ $JqcLoader.registerModule($JqcLoader.newModule('com.lifeonwalden.jqc', 'jqc/')
     .registerComponents(['apisBox'])
     .registerComponents(['notification'])
     .registerComponents(['menuTree'])
+    .registerComponents(['confirm'])
     .registerComponents(['msg']));
