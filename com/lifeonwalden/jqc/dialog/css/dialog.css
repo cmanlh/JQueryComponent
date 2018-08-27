@@ -1,45 +1,47 @@
 @charset "UTF-8";
 .jqcDialogContainer {
-    box-shadow: 0 0 3px #d5d5d5;
-    border-radius: 5px;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
+    border-radius: 4px;
     overflow: hidden;
     position: fixed;
     background-color: #FFFFFF;
 }
 
 .jqcDialogTitleBar {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 1px solid #e5e5e5;
-    padding: 8px 0 8px 16px;
+    border-bottom: 1px solid #f2f2f2;
+    padding: 16px 15px;
+    height: 50px;
+    box-sizing: border-box;
     cursor: move;
 }
 
 .jqcDialogTitle {
     overflow: hidden;
     font-weight: bold;
+    font-size: 14px;
+    color: #222;
 }
 
 .jqcDialogMinimizeBtn,
 .jqcDialogCloseBtn {
     float: right;
     background-repeat: no-repeat;
-    background-position: 4px 4px;
-    width: 24px;
-    height: 24px;
-    margin: 0 8px 0 0;
+    background-position: center;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 2px;
+    margin-left: 10px;
 }
 
-.jqcDialogMinimunBtn:hover,
+.jqcDialogMinimizeBtn:hover,
 .jqcDialogCloseBtn:hover {
-    background-color: #F5F5F5;
+    background-color: #F5F6FA;
 }
 
 .jqcDialogCloseBtn {
-    background-image: url("images/dialog-close.png")
+    background-image: url("images/dialog-close.png");
+    margin-right: -5px;
 }
 
 .jqcDialogMinimizeBtn {

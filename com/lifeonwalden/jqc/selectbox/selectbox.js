@@ -479,6 +479,7 @@
                 element: null,
                 supportFuzzyMatch: false,
                 filterDelay: 256,
+                withSearch: true,
                 withResetter: true, // does need resetter control
                 onSelect: null, // call back on selecting event,
                 afterSelect: null, // call back after selecting event
@@ -516,6 +517,11 @@
                 this.el.addClass('jqcSelectboxHooks');
                 var _width = this.el.outerWidth();
                 this.el.css('background-position', _width - 26);
+                if (!this.options.withSearch) {
+                    this.el.addClass('onlySelect')
+                        .prop('readonly', true)
+                        .css('background-position', _width - 21);
+                }
                 this.typeName = 'jqcSelectBox';
                 this.elementId = 'jqc'.concat($.jqcUniqueKey.fetchIntradayKey());
                 this.el.attr($.jqcBaseElement.JQC_ELEMENT_TYPE, this.typeName);
@@ -607,7 +613,7 @@
                         case $.ui.keyCode.TAB:
                             {
                                 that.container.hide();
-                                that.el.removeClass('jqcSelectboxHooks-active');
+                                that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                                 that.el.nextAll(":input").first().focus();
                                 e.preventDefault();
                                 return;
@@ -669,7 +675,7 @@
                 $(document).click(function(e) {
                     if (1 !== triggerByMe && 2 !== triggerByMe) {
                         that.container.hide();
-                        that.el.removeClass('jqcSelectboxHooks-active');
+                        that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                         if (onSelecting && that.options.afterSelect) {
                             onSelecting = false;
                             var result = [];
@@ -762,7 +768,7 @@
                     that.el.val(that.defaultVal);
                     if (toHide) {
                         that.container.hide();
-                        that.el.removeClass('jqcSelectboxHooks-active');
+                        that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                     }
                 }
 
@@ -792,7 +798,7 @@
                 if (that.options.addNewItem) {
                     that.addNewItem.click(function(e) {
                         that.container.hide();
-                        that.el.removeClass('jqcSelectboxHooks-active');
+                        that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                         that.options.addNewItem(function(newItem) {
                             if (newItem) {
                                 that.optionCore.addNewItem(newItem);
@@ -813,22 +819,26 @@
 
                 var inputWidth = that.el.outerWidth();
                 var containerWidth = inputWidth;
-                that.operationBar.append(that.input);
-                if (that.options.withResetter) {
-                    containerWidth += 54;
-                    that.operationBar.append(that.resetter);
+                if (that.options.withSearch) {
+                    that.operationBar.append(that.input);
+                    if (that.options.withResetter) {
+                        containerWidth += 54;
+                        that.operationBar.append(that.resetter);
+                    } else {
+                        // inputWidth += 52;
+                    }
+                    if (that.options.updateDataSource) {
+                        that.operationBar.append(that.refresher);
+                        containerWidth += 54;
+                    }
+                    if (that.options.addNewItem) {
+                        that.operationBar.append(that.addNewItem);
+                        containerWidth += 54;
+                    }
+                    that.container.append(that.operationBar).append(that.optionUL);
                 } else {
-                    // inputWidth += 52;
+                    that.container.append(that.optionUL);
                 }
-                if (that.options.updateDataSource) {
-                    that.operationBar.append(that.refresher);
-                    containerWidth += 54;
-                }
-                if (that.options.addNewItem) {
-                    that.operationBar.append(that.addNewItem);
-                    containerWidth += 54;
-                }
-                that.container.append(that.operationBar).append(that.optionUL);
                 var
                     elOuterHeight = that.el.outerHeight(),
                     elOuterWidth = that.el.outerWidth();
@@ -866,7 +876,7 @@
                         case $.ui.keyCode.TAB:
                             {
                                 that.container.hide();
-                                that.el.removeClass('jqcSelectboxHooks-active');
+                                that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                                 that.el.nextAll(":input").first().focus();
                                 e.preventDefault();
                                 return;
@@ -881,7 +891,7 @@
                             return;
                         case $.ui.keyCode.ESCAPE:
                             that.container.hide();
-                            that.el.removeClass('jqcSelectboxHooks-active');
+                            that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                             return;
                         case $.ui.keyCode.UP:
                             selectIndex == null ? selectIndex = -1 : selectIndex--;
@@ -921,7 +931,7 @@
                 $(document).click(function(e) {
                     if (!triggerByMe) {
                         that.container.hide();
-                        that.el.removeClass('jqcSelectboxHooks-active');
+                        that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                     }
                     triggerByMe = false;
                 });
@@ -950,7 +960,7 @@
                     that.el.val(_val);
                     oldVal = null;
                     that.container.hide();
-                    that.el.removeClass('jqcSelectboxHooks-active');
+                    that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                 });
 
                 function reset(toHide) {
@@ -960,7 +970,7 @@
                     that.el.val(that.defaultVal);
                     if (toHide) {
                         that.container.hide();
-                        that.el.removeClass('jqcSelectboxHooks-active');
+                        that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                     }
                 }
 
@@ -990,7 +1000,7 @@
                 if (that.options.addNewItem) {
                     that.addNewItem.click(function(e) {
                         that.container.hide();
-                        that.el.removeClass('jqcSelectboxHooks-active');
+                        that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                         that.options.addNewItem(function(newItem) {
                             if (newItem) {
                                 that.optionCore.addNewItem(newItem);

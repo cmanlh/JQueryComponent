@@ -5,8 +5,14 @@
     background-position: right center;
     padding-right: 32px;
 }
+.jqcSelectboxHooks.onlySelect {
+    background-image: url("images/icon_arrow.png");
+}
 .jqcSelectboxHooks-active {
     background-image: url("images/icon_select_active.png");
+}
+.jqcSelectboxHooks-active.onlySelect {
+    background-image: url("images/icon_arrow_active.png");
 }
 
 .jqcSelectboxContainer {
@@ -113,7 +119,7 @@
 
 .jqcSelectboxContainer li:hover,
 .jqcSelectboxSelected {
-    background: #F5F6FA;
+    background: #e4e6ee;
     color: #000;
 }
 
