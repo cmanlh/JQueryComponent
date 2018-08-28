@@ -583,7 +583,6 @@
                     onSelecting = false;
                 that.el.focus(function(e) {
                     triggerByMe = 1;
-                    console.log(this);
                     var elOffset = that.el.offset();
                     var maxWidth = $('body').width();
                     that.container.css('top', elOffset.top + elOuterHeight + 2);
@@ -843,7 +842,7 @@
                     elOuterHeight = that.el.outerHeight(),
                     elOuterWidth = that.el.outerWidth();
                 that.container.css('width', containerWidth);
-                that.input.width(inputWidth);
+                that.input.css('width', inputWidth);
                 that.container.appendTo('body');
 
                 var triggerByMe = false;
