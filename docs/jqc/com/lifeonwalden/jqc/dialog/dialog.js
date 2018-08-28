@@ -55,7 +55,7 @@
             MinimizeBar.prototype.show = function () {
                 var that = this;
                 that.ui.show();
-                that.blink();
+                // that.blink();
             };
 
             MinimizeBar.prototype.blink = function () {
@@ -241,7 +241,7 @@
                     dialog.modalBox = new $.jqcBlocker();
                     dialog.modalBox.addListener('click.dialog', function (e) {
                         if (dialog.minimizeBar) {
-                            dialog.minimizeBar.blink();
+                            // dialog.minimizeBar.blink();
                         }
                     });
                 }

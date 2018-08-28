@@ -307,6 +307,7 @@
     line-height: 26px;
     margin: auto;
 	border-radius: 2px;
+	font-size: 12px;
 }
 
 .xdsoft_datetimepicker .xdsoft_calendar th {

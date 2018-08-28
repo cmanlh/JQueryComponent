@@ -4,6 +4,7 @@
     background-repeat: no-repeat;
     background-position: right center;
     padding-right: 32px;
+    cursor: pointer;
 }
 .jqcSelectboxHooks.onlySelect {
     background-image: url("images/icon_arrow.png");
