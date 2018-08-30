@@ -382,8 +382,10 @@
                 var val = decodeChain(prop, data);
                 switch (dataType) {
                     case 'date':
-                        if (val)
-                            field.val($.jqcDateUtil.format(val, 'yyyy-MM-dd'));
+                        if (val) {
+                            var _format = field.attr('format') || 'yyyy-MM-dd';
+                            field.val($.jqcDateUtil.format(val, _format));
+                        }   
                         break;
                     case 'checkbox':
                         if (val && $.type(val) == 'array') {

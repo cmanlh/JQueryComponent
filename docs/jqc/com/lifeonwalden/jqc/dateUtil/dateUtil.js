@@ -41,7 +41,6 @@
             } else {
                 _date = date;
             }
-
             if (_date instanceof(Date) && !isNaN(_date.valueOf())) {
                 return _date;
             } else {
