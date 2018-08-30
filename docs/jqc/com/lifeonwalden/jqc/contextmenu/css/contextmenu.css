@@ -10,7 +10,8 @@
     overflow: hidden;
     width: 158px;
     background: #fff;
-    border: 1px solid #ed1c24;
+    box-shadow: 0 0 4px rgba(153, 153, 153, .3);
+    border-radius: 2px;
     position: absolute;
 }
 
@@ -42,8 +43,8 @@
     height: 32px;
     line-height: 32px;
     font-size: 12px;
-    color: #333;
-    text-indent: 20px;
+    color: rgba(102, 102, 102, .85);
+    text-indent: 9px;
     position: relative;
     cursor: pointer;
     -webkit-transition: all 0.2s;
@@ -52,8 +53,8 @@
 }
 .jqcContextMenu-item:hover,
 .jqcContextMenu-active {
-    background: #ed1c24;
-    color: #fff;
+    background: #e4e6ee;
+    color: #000;
 }
 .jqcContextMenu-slide {
     width: 5px;

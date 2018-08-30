@@ -8,29 +8,18 @@
 
 .jqcMenuTree {
     box-sizing: border-box;
-    background-color: #3F3F3F;
-    padding: 36px 0;
+    background-color: #3a3f52;
+    padding: 30px 0;
     font-size: 14px;
-    color: #ccc;
+    color:  #CAD3DC;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
-    overflow: hidden;
 }
 
 .jqcMenuTree-box {
     max-height: 100%;
     overflow-y: scroll;
-}
-
-.jqcMenuTree-canSetting:before{
-    content: '';
-    position: absolute;
-    top: 36px;
-    right: 0;
-    width: 100%;
-    height: 1px;
-    background-color:#ccc;
 }
 
 .jqcMenuTree ul {
@@ -44,19 +33,16 @@
 
 .jqcMenuTree li.hasChild:after {
     content: '';
-    width: 20px;
-    height: 20px;
+    width: 8px;
+    height: 6px;
     position: absolute;
-    top: 10px;
-    right: 5px;
-    background: url('./images/arraw_right.png') no-repeat center;
-    background-size: 20px 20px;
-    transform-origin: 50% 50%;
-    transition: all 0.1s ease-out;
+    top: 17px;
+    right: 20px;
+    background: url('./images/icon_item_detault.png') no-repeat center;
 }
 
 .jqcMenuTree li.hasChild.active:after {
-    transform: rotate(90deg);
+    background: url('./images/icon_item_active.png') no-repeat center;
 }
 
 .jqcMenuTree li ul{
@@ -74,14 +60,16 @@
     line-height: 40px;
     cursor: pointer;
     transition: all .3s ease-out;
-    overflow: hidden;
+    /*overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: nowrap;*/
+    padding-right: 36px;
 }
 
-.jqcMenuTree-scrollbox div:hover,
-.jqcMenuTree-scrollbox div.active {
-    background-color: #ed1c24;
+.jqcMenuTree-scrollbox div:hover {
+    background-color: #545B75;
+}
+.jqcMenuTree-scrollbox .active > div {
     color: #fff;
 }
 /*一级菜单*/
@@ -90,20 +78,25 @@
 }
 /*二级菜单*/
 .jqcMenuTree-scrollbox > ul > li > ul > li > div {
-    padding-left: 40px;
-    background-color: #222;
+    padding-left: 30px;
+    background-color: #2B3042;
+    color: #B6C8DA;
 }
 /*三级菜单*/
 .jqcMenuTree-scrollbox > ul > li > ul > li > ul div {
-    padding-left: 60px;
+    padding-left: 50px;
     font-size: 12px;
-    background-color: #222;
+    line-height: 18px;
+    height: auto;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-color: #2B3042;
+    color: #B6C8DA;
 }
 
 .jqcMenuTree-settingPanel {
-    display: flex;
-    flex-flow: row wrap;
     color: #333;
+    padding: 20px;
 }
 
 .jqcMenuTree-settingPanel *{
@@ -117,7 +110,7 @@
 }
 
 .jqcMenuTree-settingPanel > ul{
-    padding: 15px 8px;
+    /*padding: 15px 8px;*/
 }
 
 .jqcMenuTree-settingPanel > ul ul{
@@ -125,67 +118,96 @@
 }
 
 .jqcMenuTree-settingPanel > ul > li > div{
-    font-weight: bold;
+    font-size: 14px;
+    color: #333333;
+    letter-spacing: 0.58px;
+    text-align: left;
+    line-height: 40px;
 }
 
 .jqcMenuTree-settingPanel ul div{
-    line-height: 30px;
-    padding: 0 6px;
+    line-height: 28px;
+    padding-left: 20px;
     cursor: pointer;
     position: relative;
+    font-size: 13px;
+    color: #666;
+}
+.jqcMenuTree-settingPanel ul ul ul div{
+    color: #999;
+    font-size: 12px;
 }
 
 .jqcMenuTree-settingPanel ul div:hover{
-    color: #fff;
-    background-color: rgba(0, 0, 0, .6);
-    border-radius: 2px;
+    color: #C63136;
+}
+.jqcMenuTree-settingPanel ul div:hover input+span{
+    border-color: #C63136;
 }
 
 .jqcMenuTree-settingPanel ul div.hasChild{
-    color: #333;
     cursor: default;
-    background-color: #fff;
+    position: relative;
 }
-
+.jqcMenuTree-settingPanel ul div.hasChild::after{
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 6px;
+    background: url('./images/icon_arrow_down.png') no-repeat center;
+    right: 0;
+    top: 50%;
+    margin-top: -3px;
+}
+.jqcMenuTree-settingPanel .active > div.hasChild::after{
+    background: url('./images/icon_arrow_up.png') no-repeat center;
+}
 .jqcMenuTree-settingPanel ul div input{
     position: absolute;
-    top: 3px;
-    right: 6px;
+    top: 50%;
+    left: -6px;
     width: 24px;
     height: 24px;
     z-index: 1;
     opacity: 0;
     padding: 0;
     margin: 0;
+    margin-top: -12px;
 }
 
 .jqcMenuTree-settingPanel ul div span{
     position: absolute;
-    top: 7px;
-    right: 10px;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #777;
+    top: 50%;
+    margin-top: -6px;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #B8B9C5;
     border-radius: 2px;
     background: #fff;
 }
 
 .jqcMenuTree-settingPanel ul div input:checked + span{
-    background-image: url('./images/right.png');
+    background-image: url('./images/icon_checked.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 16px 16px;
+    background-color: #C63136;
+    border-color: #C63136;
+    background-size: 7px 6px;
 }
 
 .jqcMenuTree-settingSwitch{
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
     position: absolute;
-    top: 8px;
-    right: 5px;
+    top: 13px;
+    right: 30px;
     background: url('./images/setting.png') no-repeat center;
-    background-size: 20px 20px;
+    background-size: 14px 14px;
     cursor: pointer;
+}
+.jqcMenuTree-settingSwitch:hover{
+    background: url('./images/setting_active.png') no-repeat center;
 }
 
 .jqcMenuTree-viewMore {
@@ -195,4 +217,72 @@
     bottom: 0;
     left: 0;
     background: #ed1c24;
+}
+
+.jqcMenuTree-switch {
+    width: 20px;
+    height: 20px;
+    background-color: #f2f2f2;
+    position: absolute;
+    top: 10px;
+    right: 0;
+    z-index: 3;
+    cursor: pointer;
+    border-radius: 10px 0 0 10px;
+    background-image: url('./images/icon_right.png');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}
+.jqcMenuTree-switch.active {
+    background-image: url('./images/icon_left.png');
+}
+
+.jqcMenuTree-limit {
+    position: absolute;
+    width: 22px;
+    height: 100%;
+    opacity: 0;
+    z-index: 1;
+    top: 0;
+    right: 0;
+}
+.jqcMenuTree-setttingContainer {
+    position: absolute;
+    top: 10px;
+    left: 100%;
+    z-index: 10;
+    width: 125%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+.jqcMenuTree-fakeScroll {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.jqcMenuTree-setttingContainer .setting-title{
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #f2f2f2;
+    padding-left: 20px;
+    font-size: 14px;
+    color: #222;
+    position: relative;
+    font-weight: 600;
+}
+.jqcMenuTree-setttingContainer .setting-close{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    right: 14px;
+    background-image: url('./images/icon_close.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.jqcMenuTree-setttingContainer .setting-close:hover{
+    background-color: rgba(128, 128, 128, .1);
 }

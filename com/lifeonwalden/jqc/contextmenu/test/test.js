@@ -40,7 +40,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                     child: 'child',
                     valid: 'valid'
                 },
-                width: 200,
+                width: 118,
                 height: 40
             });
             $('.box3').on('contextmenu', function (e) {
@@ -175,7 +175,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                     var oid = data.menu.id;
                     manageOrder(id, oid);
                 },
-                width: 200,
+                width: 118,
                 height: 40
             });
 

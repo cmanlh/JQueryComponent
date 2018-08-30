@@ -34,7 +34,8 @@
         toDate: function (date) {
             var _date = null;
             if (typeof (date) == 'string') {
-                _date = new Date(date);
+                var _temp = isNaN(+date) ? date : +date;
+                _date = new Date(_temp);
             } else if (typeof (date) == 'number') {
                 _date = new Date(date);
             } else {

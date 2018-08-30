@@ -1,27 +1,29 @@
 @charset 'utf-8';
 
 .jqcNotification-box {
-    width: 230px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    width: 380px;
     position: fixed;
     right: -240px;
     top: 16px;
     animation: slideToLeft .5s;
     animation-fill-mode: forwards;
-    /*box-sizing: border-box;*/
-    padding: 5px 16px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding: 20px 40px 20px 54px;
     background: #fff;
     transition: top 0.2s ease-in;
     overflow: hidden;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
+    border-radius: 4px;
 }
-.jqcNotification-box.success,
-.jqcNotification-box.error,
-.jqcNotification-box.warn,
-.jqcNotification-box.info {
-    padding-left: 40px;
-    width: 206px;
+.jqcNotification-box:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    background: #fff;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
 }
 
 .jqcNotification-box.success::before,
@@ -29,40 +31,35 @@
 .jqcNotification-box.warn::before,
 .jqcNotification-box.info::before {
     content: '';
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     position: absolute;
-    top: 5px;
-    left: 5px;
+    top: 20px;
+    left: 20px;
 }
 
 .jqcNotification-box.success::before {
     background: url('./images/success.png') no-repeat center;
-    background-size: 30px 30px;
 }
 
 .jqcNotification-box.error::before {
     background: url('./images/error.png') no-repeat center;
-    background-size: 30px 30px;
 }
 
 .jqcNotification-box.warn::before {
     background: url('./images/warn.png') no-repeat center;
-    background-size: 30px 30px;
 }
 
 .jqcNotification-box.info::before {
     background: url('./images/info.png') no-repeat center;
-    background-size: 30px 30px;
 }
 
 .jqcNotification-title{
     padding: 0;
-    margin: 0;
-    font-size: 16px;
-    font-weight: 700;
+    margin: 0 0 10px;
+    font-size: 14px;
     color: #666;
-    line-height: 30px;
+    line-height: 24px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -71,9 +68,11 @@
 .jqcNotification-content{
     padding: 0;
     margin: 0;
-    font-size: 14px;
+    font-size: 12px;
     color: #999;
     line-height: 20px;
+    word-break: break-all;
+    word-wrap: break-word;
 }
 
 .jqcNotification-placeholder {
@@ -84,14 +83,20 @@
 
 .jqcNotification-close {
     position: absolute;
-    top: 10px;
-    right: 5px;
+    top: 15px;
+    right: 15px;
     width: 20px;
     height: 20px;
-    background: url('./images/close.png') no-repeat center;
-    background-size: 16px 16px;
+    background-image: url('./images/close.png');
+    background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
     z-index: 1;
+}
+
+.jqcNotification-close:hover {
+    background-color: #F5F6FA;
+    border-radius: 2px;
 }
 
 @keyframes slideToLeft {

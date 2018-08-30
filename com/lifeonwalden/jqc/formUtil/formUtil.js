@@ -92,6 +92,9 @@
                     if (field.attr('required') && !$.trim(field.val())) {
                         showError(field, $.jqcLang.FORM_UTIL_INVALID_REQUIRED);
                     }
+                    if (field.attr('required') && field.attr('strict') && !$.trim(field[0].value)) {
+                        showError(field, $.jqcLang.FORM_UTIL_INVALID_REQUIRED);
+                    }
                 });
                 //databind
                 data = wrapBeanToData(beans); //data 不会为null

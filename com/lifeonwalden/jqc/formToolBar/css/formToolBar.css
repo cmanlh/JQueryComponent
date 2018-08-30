@@ -7,17 +7,48 @@
     background: #fff;
     overflow: hidden;
     z-index: 4;
-    border-bottom: 1px solid #ddd;
-    border-top: 1px solid #ddd;
 }
+.jqcFormToolBar.jqcFormToolBar-newline {
+    display: block;
+}
+.jqcFormToolBar.jqcFormToolBar-newline .jqcFormToolBar-controlBox{
+    background: #fff;
+    padding: 5px 0;
+}
+
 .jqcFormToolBar-controlBox {
     flex-shrink: 0;
-    padding: 0 10px;
+    background: #fafafa;
+    border-radius: 0 6px 6px 0;
+}
+
+.jqcFormToolBar.jqcFormToolBar-newline .jqcFormToolBar-conditionBox{
+    border-radius: 6px;
 }
 
 .jqcFormToolBar-conditionBox {
     width: 100%;
-    padding:  0 10px;
+    overflow: hidden;
+    background: #fafafa;
+    position: relative;
+    border-radius: 6px 0 0 6px;
+}
+.jqcFormToolBar-conditionBox.showmore-visible .jqcFormToolBar-conditionBox-switch{
+    display: block;
+}
+.jqcFormToolBar-conditionBox-switch {
+    width: 20px;
+    height: 20px;;
+    background: #ccc;
+    position: absolute;
+    bottom: 15px;
+    right: 14px;
+    cursor: pointer;
+    background: url('./images/icon_down.png') no-repeat center;
+    display: none;
+}
+.jqcFormToolBar-conditionBox-switch.active {
+    background: url('./images/icon_up.png') no-repeat center;
 }
 
 .jqcFormToolBar-showMore {

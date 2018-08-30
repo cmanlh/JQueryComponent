@@ -1722,8 +1722,7 @@ var datetimepickerFactory = function ($) {
 					top: '',  //Initialize to prevent previous values interfering with new ones.
 					bottom: ''  //Initialize to prevent previous values interfering with new ones.
 				};
-
-				datetimepickerCss[verticalAnchorEdge] = verticalPosition;
+				datetimepickerCss[verticalAnchorEdge] = verticalPosition + 4;
 
 				datetimepicker.css(datetimepickerCss);
 			};

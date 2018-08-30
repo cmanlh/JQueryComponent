@@ -15,6 +15,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
             
             var a = new $.jqcFormToolBar({
                 element: $('#div2'),
+                height: 50,
                 conditionHtml: '<div class="condition"><label><span>姓名：</span><input type="text"/></label><label><span>姓名：</span><input type="text"/></label><label><span>姓名：</span><input type="text"/></label><label><span>姓名：</span><input type="text"/></label><label><span>姓名：</span><input type="text"/></label><label><span>姓名：</span><input type="text"/></label></div>',
                 // conditionHtml: '<div class="condition"><span>123</span>域我是条件区域我是条件区域我是条件区域我是条件区域我是条件区域我是条件区域</div>',
                 controlHtml: '<div class="control"><button>搜索</button><button>搜索</button><button>搜索</button></div>',

@@ -47,13 +47,11 @@
                         'z-index': $.jqcZindex.notification,
                         'top': _this.top
                     });
-                if (params.type) {
-                    $notice.addClass(params.type);
-                    if (!params.title && !params.content) {
-                        var placeholder = $('<div>')
-                            .addClass('jqcNotification-placeholder');
-                        $notice.append(placeholder);
-                    }
+                $notice.addClass(params.type || 'success');
+                if (!params.title && !params.content) {
+                    var placeholder = $('<div>')
+                        .addClass('jqcNotification-placeholder');
+                    $notice.append(placeholder);
                 }
                 if (params.title) {
                     var $title = $('<p>')

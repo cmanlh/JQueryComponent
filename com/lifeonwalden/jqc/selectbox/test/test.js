@@ -779,5 +779,24 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                     console.log(result);
                 }
             });
+            new $.jqcSelectBox({
+                defaultVal: '002602',
+                element: $('#select'),
+                dataName: 'updateSrcWithExt',
+                supportPinYin: true,
+                pinyinParser: pinyinParser,
+                width: 160,
+                supportFuzzyMatch: true,
+                withSearch: false,
+                autoDisplay: true,
+                onSelect: function (result, item, appended) {
+                    console.log(result);
+                    console.log(item);
+                    console.log(appended);
+                },
+                afterSelect: function (result) {
+                    console.log(result);
+                }
+            });
         });
     });

@@ -25,7 +25,7 @@
                 element: null,
                 conditionHtml: null,
                 controlHtml: null,
-                height: 36,
+                height: 50,
                 background: '#fff',
                 afterRender: null,
             };
@@ -34,7 +34,6 @@
                 var _this = this;
                 this.options = Object.assign({}, DEFAULT_OPTIONS, params);
                 this.el = this.options.element;
-                this.el.height(_this.options.height);
                 this.status = 'fold';
                 render.call(_this);
                 bindEvent.call(_this);
@@ -53,12 +52,11 @@
                 if (this.status === 'fold') {
                     return;
                 }
-                _this.showMore.removeClass('jqcFormToolBar-showMore-spread');
-                _this.box.animate({
+                _this.switch.removeClass('active');
+                _this.conditionBox.animate({
                     height: _this.options.height
-                }, 100, function () {
+                }, 50, function () {
                     _this.status = 'fold';
-                    _this.showMore.hide();
                 });
             };
 
@@ -67,30 +65,32 @@
                 if (this.status === 'spread') {
                     return;
                 }
-                _this.showMore.addClass('jqcFormToolBar-showMore-spread');
-                _this.box.animate({
+                _this.switch.addClass('active');
+                _this.conditionBox.animate({
                     height: _this.height
-                }, 100, function () {
+                }, 50, function () {
                     _this.status = 'spread';
-                    if (_this.showMore.hasClass('jqcFormToolBar-showMore-visible')) {
-                        _this.showMore.show();
-                    }
                 });
             };
 
             $.jqcFormToolBar.prototype.resize = function () {
                 var _this = this;
-                var _height = _this.box.height('auto').height();
-                _this.height = _height;
+                // init
+                this.box.removeClass('jqcFormToolBar-newline');
+                this.conditionBox.removeClass('showmore-visible');
+                _this.conditionBox.height('auto');
+                var _height = this.box.height();
                 if (_height > _this.options.height) {
-                    _this.status = 'fold';
-                    _this.showMore.addClass('jqcFormToolBar-showMore-visible')
-                        .removeClass('jqcFormToolBar-showMore-spread');
+                    this.box.addClass('jqcFormToolBar-newline');
+                    var _conditionBox_height = this.conditionBox.height();
+                    if (_conditionBox_height > this.options.height) {
+                        this.height = _conditionBox_height;
+                        this.conditionBox.addClass('showmore-visible').height(this.options.height);
+                        this.fold();
+                    }
                 } else {
-                    _this.showMore.hide()
-                        .removeClass('jqcFormToolBar-showMore-visible');
+                    this.conditionBox.removeClass('showmore-visible');
                 }
-                _this.box.height(_this.options.height);
             };
 
             function render() {
@@ -103,13 +103,15 @@
                         'background': _this.options.background,
                         'min-height': _this.options.height
                     });
-                this.el.append(_this.box)
-                    .append(createShowMore.call(_this));
+                this.el.append(_this.box);
                 var _height = this.box.height();
                 if (_height > _this.options.height) {
-                    this.height = _height;
-                    this.showMore.addClass('jqcFormToolBar-showMore-visible');
-                    this.box.height(_this.options.height);
+                    this.box.addClass('jqcFormToolBar-newline');
+                    var _conditionBox_height = this.conditionBox.height();
+                    if (_conditionBox_height > this.options.height) {
+                        this.conditionBox.addClass('showmore-visible').height(this.options.height);
+                        this.height = _conditionBox_height;
+                    }
                 }
             }
             
@@ -117,6 +119,9 @@
                 var _this = this;
                 this.conditionBox = $('<div>')
                     .addClass('jqcFormToolBar-conditionBox');
+                this.switch = $('<div>')
+                    .addClass('jqcFormToolBar-conditionBox-switch');
+                this.conditionBox.append(this.switch);
                 this.options.conditionHtml && this.conditionBox.append($(_this.options.conditionHtml));
                 return this.conditionBox;
             }
@@ -148,25 +153,12 @@
                 $(window).resize(function () {
                     _this.resize();
                 });
-                var _doing = false;
-                var _moveIn = false;
-                this.el.on('mousemove', function (e) {
-                    _moveIn = true;
-                    if (_this.showMore.hasClass('jqcFormToolBar-showMore-visible')) {
-                        _this.showMore.show();
+                this.switch.click(function () {
+                    if (_this.status === 'fold') {
+                        _this.spread();
+                    } else {
+                        _this.fold();
                     }
-                }).on('mouseleave', function (e) {
-                    _moveIn = false;
-                    if (_doing) {
-                        return;
-                    }
-                    _doing = true;
-                    setTimeout(function () {
-                        if (_this.status === 'fold' && _this.showMore.hasClass('jqcFormToolBar-showMore-visible') && !_moveIn) {
-                            _this.showMore.hide();
-                        }
-                        _doing = false;
-                    }, 1200);
                 })
             }
         });

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+    <title>confirm - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">confirm</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>确认弹框</li>
+            <li>单例模式,一次引入，全局使用</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>title</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>确认框title</td>
+                </tr>
+                <tr>
+                    <td>content</td>
+                    <td>String|jQury Object</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>确认框内容</td>
+                </tr>
+                <tr>
+                    <td>width</td>
+                    <td>Int</td>
+                    <td></td>
+                    <td></td>
+                    <td>400</td>
+                    <td>确认框宽度</td>
+                </tr>
+                <tr>
+                    <td>onConfirm</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>点击确认触发</td>
+                </tr>
+                <tr>
+                    <td>onCancel</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>点击取消触发</td>
+                </tr>
+                <tr>
+                    <td>cancelText</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>取消</td>
+                    <td>取消按钮文字</td>
+                </tr>
+                <tr>
+                    <td>confirmText</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>确定</td>
+                    <td>确定按钮文字</td>
+                </tr>
+                <tr>
+                    <td>btnPosition</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>left|center|right</td>
+                    <td>right</td>
+                    <td>按钮位置</td>
+                </tr>
+                <tr>
+                    <td>icon</td>
+                    <td>String|false</td>
+                    <td></td>
+                    <td>success|error|warn|info|false</td>
+                    <td>error</td>
+                    <td>是否显示icon</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <button id="btn1">confirm弹框</button>
+            <pre class="prettyprint linenums">
+$('#btn1').click(function () {
+    $.jqcConfirm({
+        title: '我是title',
+        content: '我是内容',
+        onConfirm: function () {
+            console.log('confirm');
+        },
+        onCancel: function () {
+            console.log('cancel');
+        }
+    });
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/confirm.js"></script>
+</body>
+
+</html>

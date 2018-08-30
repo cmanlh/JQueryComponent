@@ -1,9 +1,19 @@
 @charset "UTF-8";
 .jqcSelectboxHooks {
-    background-image: url("images/selectbox-filter.png");
+    background-image: url("images/icon_select.png");
     background-repeat: no-repeat;
-    background-position: 2px;
-    text-indent: 18px;
+    background-position: right center;
+    padding-right: 32px;
+    cursor: pointer;
+}
+.jqcSelectboxHooks.onlySelect {
+    background-image: url("images/icon_arrow.png");
+}
+.jqcSelectboxHooks-active {
+    background-image: url("images/icon_select_active.png");
+}
+.jqcSelectboxHooks-active.onlySelect {
+    background-image: url("images/icon_arrow_active.png");
 }
 
 .jqcSelectboxContainer {
@@ -13,31 +23,42 @@
 }
 
 .jqcSelectboxOperationBar {
-    margin: 0 0 3px 0;
+    margin: 0 0 4px 0;
     background-color: #FFFFFF;
 }
 
 .jqcSelectboxContainer button {
-    padding: 3px 9px;
-    margin: 0 0 0 10px;
+    box-sizing: border-box;
+    width: 50px;
+    height: 30px;
+    background: #D9D9D9;
+    border-radius: 2px;
+    line-height: 30px;
+    text-align: center;
+    border: none;
+    font-size: 12px;
+    color: #FFFFFF;
     letter-spacing: 1px;
-    border: 1px solid transparent;
-    border-radius: 5px;
-    background-color: #F5F5F5;
     cursor: pointer;
-    color: #686868;
-    -moz-padding-start: 6px;
-    -moz-padding-end: 6px;
+    margin-left: 4px;
 }
 
 .jqcSelectboxContainer button:hover {
-    color: #000000;
+    background: #C63136;
+    color: #fff;
 }
 
 .jqcSelectboxContainer input {
-    padding: 5px;
-    border-width: 1px;
     box-sizing: border-box;
+    height: 30px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    padding: 0 10px;
+    color: #262626;
+    line-height: 30px;
+}
+.jqcSelectboxContainer input:hover {
+    border: 1px solid #999;
 }
 
 .jqcSelectboxContainer input:focus {
@@ -48,13 +69,14 @@
 
 .jqcSelectboxContainer ul {
     list-style: none;
-    padding: 3px 0 0 0;
     margin: 0;
     background-color: #FFFFFF;
-    box-shadow: 0 0 3px rgba(73, 73, 73, 0.6);
     border-radius: 3px;
-    max-height: 268px;
     overflow: auto;
+    border: 1px solid #F2F2F2;
+    box-shadow: 0 1px 4px rgba(153,153,153,0.10);
+    border-radius: 2px;
+    padding: 0;
 }
 
 .jqcSelectboxOptions {
@@ -64,19 +86,42 @@
 .jqcSelectboxSelectedOption {
     float: right;
     list-style-position: inside !important;
-    list-style-image: url('images/selectbox-check.png') !important;
+    /*list-style-image: url('images/selectbox-check.png') !important;*/
+    /*list-style-image: url('images/icon_checked.png') !important;*/
     border: none;
+}
+.jqcSelectboxSelectedOption li{
+    position: relative;
+    padding-left: 30px!important;
+}
+.jqcSelectboxSelectedOption li::before{
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    top: 9px;
+    left: 9px;
+    background-color:  #C63136;
+    background-image: url('images/icon_checked.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 2px;
 }
 
 .jqcSelectboxContainer li {
-    padding: 5px;
+    background: #fff;
+    color: #666;
+    font-size: 12px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
     cursor: pointer;
 }
 
 .jqcSelectboxContainer li:hover,
 .jqcSelectboxSelected {
-    background-color: #ED1C24;
-    color: #FFFFFF;
+    background: #e4e6ee;
+    color: #000;
 }
 
 .jqcSelectboxContainer li.none:hover{
@@ -84,8 +129,7 @@
     color: #000;
 }
 
-.jqcSelectboxSelectedOption li:hover {
-    list-style-image: url('images/selectbox-delete.png') !important;
-    background-color: #F5F5F5;
-    color: #686868;
+.jqcSelectboxSelectedOption li:hover::before{
+    background-color: transparent;
+    background-image: url('images/icon_close.png');
 }

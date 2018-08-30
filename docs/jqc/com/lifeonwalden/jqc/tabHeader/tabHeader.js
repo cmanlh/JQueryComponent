@@ -206,15 +206,17 @@
                 } else {
                     this.prev.hide();
                     this.next.hide();
+                    this.slideBox.css('left', 0);
                 }
             };
             $.jqcTabHeader.prototype.slideToActive = function (label) {
                 var _this = this;
                 var _appointed;
+                _this.slide();
                 if (label) {
                     _appointed = this.middleBox.find('[data-label=' + label + ']');
                 } else {
-                    _this.slide();
+                    _this.slideBox.css('left', 0);
                     _appointed = this.middleBox.find('.jqcTabHeader-item-active');
                 }
                 if (!_appointed.length) {
