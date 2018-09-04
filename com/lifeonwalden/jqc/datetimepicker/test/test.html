@@ -13,10 +13,17 @@
 
 <body>
     <input type="text" name="" id="test">
+    <input type="text" id="test2">
     <script>
         $.datetimepicker.setLocale('zh');
         $('#test').datetimepicker({
             defaultDate:'2018-11-12'
+        });
+
+        $('#test2').datetimepicker({
+            timepicker: true,
+            format: 'Y-m-d H:i:s',
+            step: 1
         });
     </script>
 </body>

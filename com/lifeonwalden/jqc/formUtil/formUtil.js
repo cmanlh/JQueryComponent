@@ -373,6 +373,32 @@
                         field.datetimepicker();
                         field.attr('placeholder', 'yyyy-mm-dd');
                         break;
+                    case 'seccode':
+                        var reg = /\`|[^(a-zA-Z\d)]/g;
+                        field.on({
+                            'keyup': function (e) {
+                                var val = field.val();
+                                var pos = field[0].selectionStart;
+                                if (reg.test(val)) {
+                                    pos -= 1;
+                                }
+                                field.val(val.replace(reg, ''));
+                                field[0].selectionStart = pos;
+                                field[0].selectionEnd = pos;
+                            },
+                            'paste': function (e) {
+                                var val = '',
+                                    original = e.originalEvent;
+                                    console.log(e.originalEvent);
+                                if (original.clipboardData && original.clipboardData.getData) {
+                                    val = original.clipboardData.getData('text/plain');
+                                }
+                                field.val((val || '').replace(/[^(a-zA-Z\d)]/g, ''));
+                                e.stopPropagation();
+                                return false;
+                            }
+                        })
+                        break;
                     default: //string do nothing
                 }
                 field.data('_formatted', true);
@@ -382,8 +408,10 @@
                 var val = decodeChain(prop, data);
                 switch (dataType) {
                     case 'date':
-                        if (val)
-                            field.val($.jqcDateUtil.format(val, 'yyyy-MM-dd'));
+                        if (val) {
+                            var _format = field.attr('format') || 'yyyy-MM-dd';
+                            field.val($.jqcDateUtil.format(val, _format));
+                        }   
                         break;
                     case 'checkbox':
                         if (val && $.type(val) == 'array') {

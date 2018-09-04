@@ -282,6 +282,7 @@
     background-image: url('./images/icon_close.png');
     background-repeat: no-repeat;
     background-position: center;
+    cursor: pointer;
 }
 .jqcMenuTree-setttingContainer .setting-close:hover{
     background-color: rgba(128, 128, 128, .1);
