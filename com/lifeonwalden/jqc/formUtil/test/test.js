@@ -13,7 +13,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 var json = {};
                 if (txt.val())
                     json = JSON.parse(txt.val());
-                $.formUtil.init(ctx, {
+                $.formUtil.fill(ctx, {
                     userName: 'init',
                     age: 100
                 }, json);
