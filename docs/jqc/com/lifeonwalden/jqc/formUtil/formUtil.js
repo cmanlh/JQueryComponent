@@ -373,8 +373,8 @@
                         field.datetimepicker();
                         field.attr('placeholder', 'yyyy-mm-dd');
                         break;
-                    case 'seccode':
-                        var reg = /\`|[^(a-zA-Z\d)]/g;
+                    case 'alpha':
+                        var reg = /\`|[^(a-zA-Z\d\.\_\-)]/g;
                         field.on({
                             'keyup': function (e) {
                                 var val = field.val();
@@ -393,7 +393,7 @@
                                 if (original.clipboardData && original.clipboardData.getData) {
                                     val = original.clipboardData.getData('text/plain');
                                 }
-                                field.val((val || '').replace(/[^(a-zA-Z\d)]/g, ''));
+                                field.val((val || '').replace(reg, ''));
                                 e.stopPropagation();
                                 return false;
                             }
