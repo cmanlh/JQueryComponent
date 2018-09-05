@@ -120,8 +120,8 @@
 
 .jqcSelectboxContainer li:hover,
 .jqcSelectboxSelected {
-    background: #e4e6ee;
-    color: #000;
+    background: #e4e6ee!important;
+    color: #000!important;
 }
 
 .jqcSelectboxContainer li.none:hover{
