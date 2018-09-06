@@ -29,7 +29,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 // displayed: false,
                 // triggerFirst: true,
                 width: 200,
-                autoHide: false,
+                // autoHide: false,
                 configBoxWidth: 1100,
                 trigger: $('.btn'),
                 configurableMenuData: data.result.authorized || [],

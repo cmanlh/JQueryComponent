@@ -125,6 +125,9 @@
                         _this.options.onSelect && _this.options.onSelect.call(_this, this.data);
                     }
                 });
+                this.container.on('mouseenter.jqcMenuTree-limit', function () {
+                    _this.show();
+                })
                 $(window).on('resize.jqcMenuTree', function () {
                     _this.container.css('height', this.innerHeight);
                 })
