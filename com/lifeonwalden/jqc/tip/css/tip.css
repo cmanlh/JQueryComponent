@@ -15,16 +15,28 @@
     background-color: #FFFFFF;
     position: relative;
     left: 6px;
+    display: none;
 }
 
 .jqcTipContentBlock {
     display: table;
     position: relative;
-    top: -3px;
-    box-shadow: 0 0 3px rgba(73, 73, 73, 0.6);
-    background-color: #FFFFFF;
-    padding: 8px 5px 8px 5px;
-    border-radius: 5px;
+    top: 1px;
+    padding: 3px 6px 3px 30px;
+
+    background: #FFFFFF;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
+    border-radius: 4px;
+}
+
+.jqcTipContentBlock::before {
+    position: absolute;
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: url('./images/icon_error.png') no-repeat center;
+    top: 8px;
+    left: 10px;
 }
 
 .jqcTipIcon {
@@ -36,6 +48,13 @@
     border-radius: 7px;
     background-color: rgb(255, 107, 7);
     top: 1px;
+    display: none;
+}
+
+.jqcTipContent {
+    line-height: 24px;
+    color: #666;
+    font-size: 12px;
 }
 
 .jqcTipIcon::before {

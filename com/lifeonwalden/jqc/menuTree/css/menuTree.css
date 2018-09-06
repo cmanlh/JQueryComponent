@@ -126,7 +126,7 @@
 }
 
 .jqcMenuTree-settingPanel ul div{
-    line-height: 28px;
+    line-height: 30px;
     padding-left: 20px;
     cursor: pointer;
     position: relative;
@@ -197,13 +197,13 @@
 }
 
 .jqcMenuTree-settingSwitch{
-    width: 14px;
-    height: 14px;
+    width: 20px;
+    height: 20px;
     position: absolute;
-    top: 13px;
+    top: 8px;
     right: 30px;
     background: url('./images/setting.png') no-repeat center;
-    background-size: 14px 14px;
+    background-size: 20px 20px;
     cursor: pointer;
 }
 .jqcMenuTree-settingSwitch:hover{
@@ -221,17 +221,17 @@
 
 .jqcMenuTree-switch {
     width: 20px;
-    height: 20px;
+    height: 24px;
     background-color: #f2f2f2;
     position: absolute;
-    top: 10px;
+    top: 6px;
     right: 0;
     z-index: 3;
     cursor: pointer;
-    border-radius: 10px 0 0 10px;
+    border-radius: 12px 0 0 12px;
     background-image: url('./images/icon_right.png');
     background-repeat: no-repeat;
-    background-position: 10px center;
+    background-position: 9px center;
 }
 .jqcMenuTree-switch.active {
     background-image: url('./images/icon_left.png');
@@ -248,7 +248,7 @@
 }
 .jqcMenuTree-setttingContainer {
     position: absolute;
-    top: 10px;
+    top: 6px;
     left: 100%;
     z-index: 10;
     width: 125%;

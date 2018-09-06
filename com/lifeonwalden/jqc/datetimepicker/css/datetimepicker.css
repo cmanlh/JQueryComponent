@@ -1,11 +1,10 @@
 .xdsoft_datetimepicker {
-	box-shadow: 0 1px 4px 0 rgba(153,153,153,0.10);
+	border: 1px solid #D9D9D9;
+	box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
 	background: #fff;
 	border: 1px solid #f2f2f2;
 	color: #444;
-	/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
 	padding: 15px;
-	/*padding-left: 0;*/
 	padding-top: 0;
 	position: absolute;
 	z-index: 9999;
@@ -316,7 +315,7 @@
 
 .xdsoft_datetimepicker .xdsoft_calendar td,.xdsoft_datetimepicker .xdsoft_calendar th {
 	width: 36px;
-	color: #7d7d7d;
+	color: #333;
 	font-size: 12px;
 	text-align: right;
 	vertical-align: middle;
@@ -352,7 +351,7 @@
 .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_current > div,
 .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div.xdsoft_current >div {
 	background: #fff!important;
-	/*box-shadow: #178fe5 0 1px 3px 0 inset;*/
+	font-weight: 600;
 	color: #000;
 	line-height: 24px;
 	border: 1px solid #AEB3D3;
