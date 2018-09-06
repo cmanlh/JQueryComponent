@@ -28,6 +28,7 @@
                 height: 50,
                 background: '#fff',
                 afterRender: null,
+                onResize: null
             };
 
             $.jqcFormToolBar = function (params) {
@@ -90,6 +91,11 @@
                     }
                 } else {
                     this.conditionBox.removeClass('showmore-visible');
+                }
+                if (this.options.onResize) {
+                    var _height = this.box.outerHeight();
+                    var _margin = parseInt(this.box.css('margin-bottom'));
+                    this.options.onResize(_height + _margin);
                 }
             };
 

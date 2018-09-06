@@ -126,7 +126,7 @@
 }
 
 .jqcMenuTree-settingPanel ul div{
-    line-height: 28px;
+    line-height: 30px;
     padding-left: 20px;
     cursor: pointer;
     position: relative;
@@ -248,7 +248,7 @@
 }
 .jqcMenuTree-setttingContainer {
     position: absolute;
-    top: 10px;
+    top: 6px;
     left: 100%;
     z-index: 10;
     width: 125%;
