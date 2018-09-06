@@ -92,7 +92,7 @@
                 } else {
                     this.conditionBox.removeClass('showmore-visible');
                 }
-                if (this.options.onResize) {
+                if (this.options.onResize && this.box.is(':visible')) {
                     var _height = this.box.outerHeight();
                     var _margin = parseInt(this.box.css('margin-bottom'));
                     this.options.onResize(_height + _margin);
