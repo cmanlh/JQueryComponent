@@ -57,7 +57,8 @@
                         owner: this,
                         id: param.id,
                         title: param.title,
-                        content: param.content
+                        content: param.content,
+                        beforeDestroy: param.beforeDestroy
                     });
                     layoutTabAfterAdd.call(this);
 
@@ -91,6 +92,9 @@
             function remove(id) {
                 var toClosedOne = this.index.get(id);
                 var isActive = toClosedOne.getStatus();
+                if (toClosedOne.beforeDestroy && typeof toClosedOne.beforeDestroy == 'function') {
+                    toClosedOne.beforeDestroy();
+                }
                 toClosedOne.remove();
                 var firstOne = this.container.find('>.jqcTabInactive:first');
                 if (firstOne.length == 0) {
@@ -167,7 +171,7 @@
                 this.close = $('<span>').attr('closeId', this.id).addClass('jqcTabClose');
                 this.tab.append(this.close);
                 this.panel = $('<div>').addClass('jqcTabPanel').append(param.content);
-
+                this.beforeDestroy = param.beforeDestroy;
                 this.owner.container.prepend(this.tab);
                 this.owner.el.append(this.panel);
                 this.owner.index.set(this.id, this);
