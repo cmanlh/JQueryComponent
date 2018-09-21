@@ -82,6 +82,7 @@
                 });
                 $(document).off('click.jqcAsyncSelect');
                 $(document).on('click.jqcAsyncSelect', function () {
+                    $('.jqcAsyncSelect-container').remove();
                     var $inputs = $('.jqcAsyncSelect-input');
                     $.each($inputs, function (index, el) {
                         var select = $(el).data('jqcAsyncSelect');
