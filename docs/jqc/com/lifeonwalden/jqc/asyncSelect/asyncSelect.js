@@ -33,6 +33,7 @@
                 this.wait = params.wait || 500; // 节流时间
                 this.placeholder = params.placeholder || '输入选项值';   // searchbar搜索框placeholder
                 this.max = params.max || 10;    // 同时显示的最大条数
+                this.triggerLen = params.triggerLen || 0;
                 this.requestData = params.requestData || function (value) { // 返回值为网络请求时需要带的参数
                     return {
                         data: value
@@ -81,7 +82,7 @@
                     }
                 });
                 $(document).off('click.jqcAsyncSelect');
-                $(document).on('click.jqcAsyncSelect', function () {
+                $(document).on('click.jqcAsyncSelect', function (e) {
                     $('.jqcAsyncSelect-container').remove();
                     var $inputs = $('.jqcAsyncSelect-input');
                     $.each($inputs, function (index, el) {
@@ -151,7 +152,7 @@
                     _val = this.searchInput.val().trim();
                 }
 
-                if (_val == '') {
+                if (_val == '' || _val.length < this.triggerLen) {
                     if (hasDefaultValue) {
                         _this.input[0].value = '';
                         _this.input.trigger('change', {});
@@ -250,4 +251,5 @@
                 this.getAsyncData(true);
                 this.close();
             }
+        });
 }(jQuery));
