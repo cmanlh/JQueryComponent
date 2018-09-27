@@ -91,6 +91,14 @@
                     <td>最大显示条数</td>
                 </tr>
                 <tr>
+                    <td>triggerLen</td>
+                    <td>Number</td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>当输入的字符长度大于等于该值时触发异步请求</td>
+                </tr>
+                <tr>
                     <td>defaultValue</td>
                     <td>String</td>
                     <td></td>
@@ -161,6 +169,7 @@ new $.jqcAsyncSelect({
             num: 20
         };
     },
+    triggerLen: 3, // 输入字符大于等于3时，触发异步网络请求
     getResult：function(res) {   // 处理每次请求的返回结果，拿到可用的数组数据
         return res.windData || [];
     },
