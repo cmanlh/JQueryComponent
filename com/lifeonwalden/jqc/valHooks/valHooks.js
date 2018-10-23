@@ -74,6 +74,12 @@
 
             $.valHooks.text.get = function (el) {
                 var jqcElement = $.jqcValHooksCtrl.getElement($(el));
+                if ($(el).data('jqcAsyncSelect')) {
+                    return $(el).data('value');
+                }
+                if ($(el).data('jqcSelect')) {
+                    return $(el).data('value');
+                }
                 if (jqcElement) {
                     return jqcElement.getCurrentVal();
                 } else {
@@ -86,6 +92,15 @@
             };
 
             $.valHooks.text.set = function (el, val) {
+                if ($(el).data('jqcAsyncSelect')) {
+                    $(el).data('value', val);
+                    $(el).data('jqcAsyncSelect').getAsyncData(true);
+                    return;
+                }
+                if ($(el).data('jqcSelect')) {
+                    $(el).data('jqcSelect').currentValue = val;
+                    return '';
+                }
                 var jqcElement = $.jqcValHooksCtrl.getElement($(el));
                 if (jqcElement) {
                     return el.value = jqcElement.updateCurrentVal(val);

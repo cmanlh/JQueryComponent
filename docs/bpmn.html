@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        .bpmn_container{
+            height: 800px;
+        }
+    </style>
+    <title>Bpmn/BpmnViewer - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">Bpmn/BpmnViewer</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>流程图编辑/流程图查看</li>
+            <li>支持*.bpmn导入</li>
+            <li>支持导出*.bpmn文件</li>
+            <li>支持导出*.svg文件</li>
+            <li>复核bpmn2.0规范</li>
+        </ul>
+        <div class="sectionTitle">提示</div>
+        <ul>
+            <li>Ctr + 鼠标滚轮,可进行缩放操作</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>container</td>
+                    <td>String/Element Object</td>
+                    <td>是</td>
+                    <td></td>
+                    <td></td>
+                    <td>容器，“.className #id”</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <div class="sectionTitle">方法</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">方法名</th>
+                <th width="128px">参数</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>importXML</td>
+                    <td>xml</td>
+                    <td>是</td>
+                    <td></td>
+                    <td></td>
+                    <td>bpmn文件内的文本</td>
+                </tr>
+                <tr>
+                    <td>exportBpmn</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>导出Bpmn文件</td>
+                </tr>
+                <tr>
+                    <td>exportSvg</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>导出svg文件</td>
+                </tr>
+                <tr>
+                    <td>openFile</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>打开文件</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例代码</div>
+        <section>
+            <pre class="prettyprint linenums">
+// 查看bpmn请调用$.jqcBpmnViewer
+var bpmn = new $.jqcBpmn({
+    container: '.bpmn_container'
+});
+$('.openFile').click(function () {
+    bpmn.openFile();
+});
+$('.exportBpmn').click(function () {
+    bpmn.exportBpmn();
+});
+$('.exportSvg').click(function () {
+    bpmn.exportSvg();
+});
+        </pre>
+        </section>
+        <div>
+            <button class="openFile">导入</button>
+            <button class="exportBpmn">导出bpmn文件</button>
+            <button class="exportSvg">导出svg文件</button>
+        </div>
+        <div class="bpmn_container">
+
+        </div>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/bpmn.js"></script>
+</body>
+
+</html>

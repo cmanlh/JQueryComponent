@@ -769,6 +769,7 @@
                         that.container.hide();
                         that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                     }
+                    that.el.trigger('change', that.defaultVal);
                 }
 
                 if (that.options.withResetter) {
@@ -971,6 +972,7 @@
                         that.container.hide();
                         that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
                     }
+                    that.el.trigger('change', that.defaultVal);
                 }
 
                 if (that.options.withResetter) {

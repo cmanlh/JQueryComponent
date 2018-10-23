@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+    <title>asyncSelect - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">asyncSelect</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>异步请求select框</li>
+            <li>支持默认值</li>
+            <li>支持.val()回填</li>
+            <li>支持格式化</li>
+            <li>支持适配</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>el</td>
+                    <td>jQuery Object</td>
+                    <td>是</td>
+                    <td></td>
+                    <td></td>
+                    <td>需要组件化的input标签-jQuery对象</td>
+                </tr>
+                <tr>
+                    <td>url</td>
+                    <td>String</td>
+                    <td>是</td>
+                    <td></td>
+                    <td></td>
+                    <td>异步请求的地址</td>
+                </tr>
+                <tr>
+                    <td>wait</td>
+                    <td>Number</td>
+                    <td></td>
+                    <td></td>
+                    <td>500</td>
+                    <td>输入延迟请求时间，单位毫秒</td>
+                </tr>
+                <tr>
+                    <td>placeholder</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>输入选项值</td>
+                    <td>搜索框placeholder</td>
+                </tr>
+                <tr>
+                    <td>max</td>
+                    <td>Number</td>
+                    <td></td>
+                    <td></td>
+                    <td>10</td>
+                    <td>最大显示条数</td>
+                </tr>
+                <tr>
+                    <td>triggerLen</td>
+                    <td>Number</td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>当输入的字符长度大于等于该值时触发异步请求</td>
+                </tr>
+                <tr>
+                    <td>defaultValue</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>默认值</td>
+                </tr>
+                <tr>
+                    <td>requestData</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td>返回{data: val}</td>
+                    <td>返回结果为搜索时需要带的数据，方法的参数为搜索框的当前值</td>
+                </tr>
+                <tr>
+                    <td>getResult</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td>返回请求结果的result或data或空数组</td>
+                    <td>处理请求结果，返回需要的数组数据，无数据需要返回空数组</td>
+                </tr>
+                <tr>
+                    <td>adapter</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td>{value:"value",text:"text"}</td>
+                    <td>适配数据对象相关属性名称</td>
+                </tr>
+                <tr>
+                    <td>format</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td>返回item[adapter.text]</td>
+                    <td>格式化显示文案</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例代码</div>
+        <section>
+            <pre class="prettyprint linenums">
+// 假如每次请求的返回结果如下
+var resp = {
+    code: 0,
+    status: 200,
+    windData: [{
+        windCode: 100,
+        name: '一百'
+    }, ......]
+};
+
+new $.jqcAsyncSelect({
+    el: node,   // 需要组件化的对象
+    url: 'fmFundDeal/selectByWindCode', // 异步请求的api地址
+    wait: 1000, // 用户输入后请求等待时间
+    max: 20,    // 查询结果最大显示条数
+    defaultValue: 100,  // 默认值
+    placeholder: '请输入', // 搜索框placeholder
+    requestData: function (val) {   // 处理每次请求时的需要传给后台的参数,val为搜素框内输入的值，已做trim处理
+        return {
+            windCode: val,
+            num: 20
+        };
+    },
+    triggerLen: 3, // 输入字符大于等于3时，触发异步网络请求
+    getResult：function(res) {   // 处理每次请求的返回结果，拿到可用的数组数据
+        return res.windData || [];
+    },
+    adapter: {  // 适配数组数据
+        value: 'windCode',
+        text: 'name'
+    },
+    format: function (item) {   // 格式化显示文字
+        return `${item.name}-${item.windCode}`
+    }
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <!--<script src="exampleJs/notification.js"></script>-->
+</body>
+
+</html>
