@@ -140,7 +140,7 @@
                         prop = bean.getProp();
                     var save = true; //针对checkbox,radio
                     var _val = $.trim(field.val());
-                    if (_val.length == 0 && !(dataType == 'string' || dataType == 'text')) {
+                    if (_val.length == 0 && !(dataType == 'string' || dataType == 'text' || dataType == 'textnumber' || dataType == 'alpha')) {
                         continue;
                     }
                     switch (dataType) {
