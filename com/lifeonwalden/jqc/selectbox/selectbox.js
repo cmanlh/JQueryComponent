@@ -368,8 +368,17 @@
                     var _data = sourceData[i];
                     if (!_data)
                         continue;
+                    if (_data[keyVal] == undefined) {
+                        continue;
+                    }
                     var packageData = null;
                     if ('string' == typeof(keyLabel)) {
+                        if (_data[keyLabel] == undefined) {
+                            continue;
+                        }
+                        if (this.optionMapping.has(_data[keyVal].toString())) {
+                            continue;
+                        }
                         packageData = {
                             label: '<li '.concat('value="v').concat(_data[keyVal]).concat('">').concat(_data[keyLabel]).concat('</li>'),
                             key: keyVal,
