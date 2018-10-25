@@ -56,7 +56,7 @@
                 Object.defineProperty(this, 'currentValue', {
                     set: value => {
                         _this._el.data('value', value);
-                        if (value == '' && _this._el.attr('ext') != undefined) {
+                        if (value === '' && _this._el.attr('ext') != undefined) {
                             _this._el[0].value = empty[_this._el.attr('ext')].label;
                             _this._el.trigger('change', empty[_this._el.attr('ext')]);
                             return;
@@ -121,7 +121,7 @@
                         value: _value,
                         data: empty[ext]
                     });
-                    if (_value == _this.currentValue) {
+                    if (_value === _this.currentValue) {
                         _this.currentIndex = 0;
                         _li.addClass('active');
                     }
