@@ -36,7 +36,7 @@
                 }
                 this._defaultValue = null;
                 if (params.defaultValue != undefined) {
-                    this._defaultValue = params.defaultValue;
+                    this._defaultValue = params.defaultValue.toString();
                 }
                 if (this._el.attr('defaultvalue') != undefined) {
                     this._defaultValue = this._el.attr('defaultvalue');
@@ -61,7 +61,7 @@
                             _this._el.trigger('change', empty[_this._el.attr('ext')]);
                             return;
                         }
-                        var _data = _this._data.filter(i => (i[_this._adapter.value] == value));
+                        var _data = _this._data.filter(i => (i[_this._adapter.value].toString() == value));
                         if (_data.length == 1) {
                             _this._el[0].value = _this.format(_data[0]);
                             _this._el.trigger('change', _data[0]);
@@ -127,7 +127,7 @@
                     }
                 }
                 this._data.forEach(function(data, index) {
-                    var value = data[_this._adapter.value];
+                    var value = data[_this._adapter.value].toString();
                     var _li = $('<li>').text(_this.format(data)).attr('value', value);
                     if (value == _this.currentValue) {
                         _li.addClass('active');
