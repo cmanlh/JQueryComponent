@@ -36,10 +36,13 @@
                 }
                 this._defaultValue = null;
                 if (params.defaultValue != undefined) {
-                    this._defaultValue = params.defaultValue;
+                    this._defaultValue = params.defaultValue.toString();
                 }
                 if (this._el.attr('defaultvalue') != undefined) {
                     this._defaultValue = this._el.attr('defaultvalue');
+                }
+                if (params.onSelect != undefined && typeof params.onSelect == 'function') {
+                    this.onSelect = params.onSelect;
                 }
                 this._adapter = Object.assign({}, { value: 'value', label: 'label'}, (params.adapter || {})); // 适配
                 this.currentIndex = -1;
@@ -56,15 +59,17 @@
                 Object.defineProperty(this, 'currentValue', {
                     set: value => {
                         _this._el.data('value', value);
-                        if (value == '' && _this._el.attr('ext') != undefined) {
+                        if (value === '' && _this._el.attr('ext') != undefined) {
                             _this._el[0].value = empty[_this._el.attr('ext')].label;
                             _this._el.trigger('change', empty[_this._el.attr('ext')]);
+                            _this.onSelect && _this.onSelect(empty[_this._el.attr('ext')]);
                             return;
                         }
-                        var _data = _this._data.filter(i => (i[_this._adapter.value] == value));
+                        var _data = _this._data.filter(i => (i[_this._adapter.value].toString() == value));
                         if (_data.length == 1) {
                             _this._el[0].value = _this.format(_data[0]);
                             _this._el.trigger('change', _data[0]);
+                            _this.onSelect && _this.onSelect(_data[0]);
                         } else {
                             _this._el[0].value = value;
                         }
@@ -106,6 +111,7 @@
                 var _width = this._el.outerWidth();
                 var _height = this._el.outerHeight();
                 var _offset = this._el.offset();
+                this.scrollTop = $(document).scrollTop();
                 var container = $('.jqcSelect-container');
                 if (container.length) {
                     container.remove();
@@ -121,13 +127,13 @@
                         value: _value,
                         data: empty[ext]
                     });
-                    if (_value == _this.currentValue) {
+                    if (_value === _this.currentValue) {
                         _this.currentIndex = 0;
                         _li.addClass('active');
                     }
                 }
                 this._data.forEach(function(data, index) {
-                    var value = data[_this._adapter.value];
+                    var value = data[_this._adapter.value].toString();
                     var _li = $('<li>').text(_this.format(data)).attr('value', value);
                     if (value == _this.currentValue) {
                         _li.addClass('active');
@@ -143,7 +149,7 @@
                     .css('width', _width)
                     .append(this.ul)
                     .css({
-                        top: _offset.top + _height + 4,
+                        top: _offset.top + _height + 4 - _this.scrollTop,
                         left: _offset.left
                     });
                 $('body').append(this.container);
@@ -177,6 +183,12 @@
                 $(document).on('click.jqcSelect', function (e) {
                     _this.close();
                 });
+                $(window).on('scroll.jqcSelect', function (e) {
+                    _this.scrollTop = $(document).scrollTop();
+                    _this.container.css({
+                        top: _offset.top + _height + 4 - _this.scrollTop,
+                    });
+                });
             }
             // 关闭
             $.jqcSelect.prototype.close = function () {
@@ -188,6 +200,7 @@
                 }
                 $(document).off('keyup.jqcSelect-upAndDown');
                 $(document).off('click.jqcSelect');
+                $(window).off('scroll.jqcSelect');
             }
             // 格式化
             $.jqcSelect.prototype.format = function (data) {
