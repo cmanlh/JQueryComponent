@@ -106,6 +106,7 @@
                 var _width = this._el.outerWidth();
                 var _height = this._el.outerHeight();
                 var _offset = this._el.offset();
+                this.scrollTop = $(document).scrollTop();
                 var container = $('.jqcSelect-container');
                 if (container.length) {
                     container.remove();
@@ -143,7 +144,7 @@
                     .css('width', _width)
                     .append(this.ul)
                     .css({
-                        top: _offset.top + _height + 4,
+                        top: _offset.top + _height + 4 - _this.scrollTop,
                         left: _offset.left
                     });
                 $('body').append(this.container);
@@ -177,6 +178,12 @@
                 $(document).on('click.jqcSelect', function (e) {
                     _this.close();
                 });
+                $(window).on('scroll.jqcSelect', function (e) {
+                    _this.scrollTop = $(document).scrollTop();
+                    _this.container.css({
+                        top: _offset.top + _height + 4 - _this.scrollTop,
+                    });
+                });
             }
             // 关闭
             $.jqcSelect.prototype.close = function () {
@@ -188,6 +195,7 @@
                 }
                 $(document).off('keyup.jqcSelect-upAndDown');
                 $(document).off('click.jqcSelect');
+                $(window).off('scroll.jqcSelect');
             }
             // 格式化
             $.jqcSelect.prototype.format = function (data) {
