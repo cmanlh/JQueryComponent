@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+    <title>select - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">select</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>模拟浏览器原生下拉框</li>
+            <li>支持默认值</li>
+            <li>支持全部和空值拓展</li>
+            <li>支持格式化</li>
+            <li>支持适配</li>
+            <li>支持原生change事件监听</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>el</td>
+                    <td>jQuery Object</td>
+                    <td>是</td>
+                    <td></td>
+                    <td></td>
+                    <td>需要组件化的input标签-jQuery对象</td>
+                </tr>
+                <tr>
+                    <td>defaultValue</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>默认值</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>Array</td>
+                    <td></td>
+                    <td></td>
+                    <td>[]</td>
+                    <td>数据源</td>
+                </tr>
+                <tr>
+                    <td>adapter</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td>{value: 'value', label: 'label'}</td>
+                    <td>字段适配，label可以为function</td>
+                </tr>
+                <tr>
+                    <td>onSelect</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>选择选项的回调函数args:(data)，也可以监听input的change事件args:（event， data）</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例代码</div>
+        <section>
+            <div class="exampleTitle">标准数据模型，无需适配参数</div>
+            <input type="text" id="normal">
+            <pre class="prettyprint linenums">
+const normalData = [{
+    value: 0,
+    label: '广兰路'
+}, {
+    value: 1,
+    label: '金科路'
+}];
+
+new $.jqcSelect({
+    el: $('#normal'),
+    data: normalData
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">拓展全部和空值</div>
+            <input type="text" id="all" ext="*">
+            <input type="text" id="empty" ext="null">
+            <pre class="prettyprint linenums">
+// 全部和空值的值都是空字符串
+&lt;input id="all" ext="*"/&gt;
+new $.jqcSelect({
+    el: $('#all'),
+    data: normalData
+});
+
+&lt;input id="empty" ext="none"/&gt;
+new $.jqcSelect({
+    el: $('#empty'),
+    data: normalData
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">默认值</div>
+            <input type="text" id="default1" ext="*">
+            <input type="text" id="default2" ext="*" defaultvalue="">
+            <pre class="prettyprint linenums">
+// 行间属性的默认值优先级更高
+&lt;input id="default1" ext="*"/&gt;
+new $.jqcSelect({
+    el: $('#default1'),
+    data: normalData,
+    defaultValue: 1
+});
+
+&lt;input id="default2" ext="*" defaultValue=""/&gt;
+new $.jqcSelect({
+    el: $('#default2'),
+    data: normalData,
+    defaultValue: 1
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">适配</div>
+            <input type="text" id="adapter" ext="*">
+            <pre class="prettyprint linenums">
+
+const adapterData = [{
+    id: 1,
+    name: '广兰路'
+}, {
+    id: 2,
+    name: '金科路'
+}];
+new $.jqcSelect({
+    el: $('#adapter'),
+    data: adapterData,
+    adapter: {
+        value: 'id',
+        label: 'name'
+    },
+    onSelect: function (data) {
+        console.log(data);
+    }
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/select.js"></script>
+</body>
+
+</html>

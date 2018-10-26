@@ -16,4 +16,5 @@ $JqcLoader.registerModule($JqcLoader.newModule('com.lifeonwalden.jqc', 'jqc/')
     .registerComponents(['menuTree'])
     .registerComponents(['confirm'])
     .registerComponents(['bpmn'])
+    .registerComponents(['select'])
     .registerComponents(['msg']));

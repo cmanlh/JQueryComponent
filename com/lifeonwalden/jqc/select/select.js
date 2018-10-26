@@ -41,6 +41,9 @@
                 if (this._el.attr('defaultvalue') != undefined) {
                     this._defaultValue = this._el.attr('defaultvalue');
                 }
+                if (params.onSelect != undefined && typeof params.onSelect == 'function') {
+                    this.onSelect = params.onSelect;
+                }
                 this._adapter = Object.assign({}, { value: 'value', label: 'label'}, (params.adapter || {})); // 适配
                 this.currentIndex = -1;
                 this.listLen = 0;
@@ -59,12 +62,14 @@
                         if (value === '' && _this._el.attr('ext') != undefined) {
                             _this._el[0].value = empty[_this._el.attr('ext')].label;
                             _this._el.trigger('change', empty[_this._el.attr('ext')]);
+                            _this.onSelect && _this.onSelect(empty[_this._el.attr('ext')]);
                             return;
                         }
                         var _data = _this._data.filter(i => (i[_this._adapter.value].toString() == value));
                         if (_data.length == 1) {
                             _this._el[0].value = _this.format(_data[0]);
                             _this._el.trigger('change', _data[0]);
+                            _this.onSelect && _this.onSelect(_data[0]);
                         } else {
                             _this._el[0].value = value;
                         }
