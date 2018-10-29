@@ -352,9 +352,14 @@
                         });
                         break;
                     case 'textnumber':
+                        var limitPrefix = field.attr('limit-prefix') != undefined;
                         field.on({
                             'keyup': function () {
-                                field.val((field.val() || '').replace(/\D/g, ''));
+                                if (limitPrefix) {
+                                    field.val((field.val() || '').replace(/\D/g, '').replace(/^(0+)/g, ''));
+                                } else {
+                                    field.val((field.val() || '').replace(/\D/g, ''));
+                                }
                             },
                             'paste': function (e) {
                                 var val = '',
@@ -364,7 +369,11 @@
                                 } else if (original.clipboardData && original.clipboardData.getData) {
                                     val = original.clipboardData.getData('text/plain');
                                 }
-                                field.val((val || '').replace(/\D/g, ''));
+                                if (limitPrefix) {
+                                    field.val((field.val() || '').replace(/\D/g, '').replace(/^(0+)/g, ''));
+                                } else {
+                                    field.val((field.val() || '').replace(/\D/g, ''));
+                                }
                                 e.stopPropagation();
                             }
                         })
