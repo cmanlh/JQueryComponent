@@ -18,7 +18,7 @@
  *
  */
 (function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker', 'dateUtil', 'inputNumber', 'tip', 'lang', 'uniqueKey'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['datetimepicker', 'dateUtil', 'inputNumber', 'tip', 'lang', 'uniqueKey', 'notification'])
         .execute(function () {
             $.formUtil = {};
             /**
@@ -140,7 +140,10 @@
                         prop = bean.getProp();
                     var save = true; //针对checkbox,radio
                     var _val = $.trim(field.val());
-                    if (_val.length == 0 && !(dataType == 'string' || dataType == 'text' || dataType == 'textnumber' || dataType == 'alpha')) {
+                    if (_val === '') {
+                        if (save) {
+                            Object.assign(data, encodeChain(prop, _val));
+                        }
                         continue;
                     }
                     switch (dataType) {
@@ -445,7 +448,14 @@
             }
 
             function showError(field, msg) {
-                field.tip(msg);
+                if (field.parents('.outerErrorTip').length > 0) {
+                    $.jqcNotification({
+                        type: 'error',
+                        title: msg
+                    });
+                } else {
+                    field.tip(msg);
+                }
                 throw new Error(msg);
             }
 
