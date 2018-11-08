@@ -80,6 +80,9 @@
                 if ($(el).data('jqcSelect')) {
                     return $(el).data('value');
                 }
+                if ($(el).data('jqcTag')) {
+                    return $(el).data('jqcTag').getValue();
+                }
                 if (jqcElement) {
                     return jqcElement.getCurrentVal();
                 } else {
@@ -99,6 +102,10 @@
                 }
                 if ($(el).data('jqcSelect')) {
                     $(el).data('jqcSelect').currentValue = val;
+                    return '';
+                }
+                if ($(el).data('jqcTag')) {
+                    $(el).data('jqcTag').setValue(val);
                     return '';
                 }
                 var jqcElement = $.jqcValHooksCtrl.getElement($(el));

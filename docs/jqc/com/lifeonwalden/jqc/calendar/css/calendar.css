@@ -1,0 +1,140 @@
+@charset 'UTF-8';
+.jqcCalendar-container {
+    /*border: 1px solid red;*/
+}
+.jqcCalendar-container * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+.jqcCalendar-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+.jqcCalendar-title {
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.jqcCalendar-select input{
+    height: 30px;
+    width: 80px;
+    border-radius: 2px;
+    padding: 0 10px;
+    border: 1px solid #d9d9d9;
+    margin-left: 10px;
+}
+.jqcCalendar-select input:focus{
+    outline: none;
+}
+.jqcCalendar-body,
+.jqcCalendar-week {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.jqcCalendar-body .jqcCalendar-item{
+    border-top: 2px solid #d9d9d9;
+    margin: 1px 0.14%;
+    width: 14%;
+    transition: all 0.5s;
+    position: relative;
+    cursor: pointer;
+    padding: 15px 20px 15px 15px;
+    background: #E9F5FC;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.jqcCalendar-body .jqcCalendar-item > p{
+    width: 100%;
+    font-size: 14px;
+    color: #333;
+    height: 100%;
+    line-height: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: auto;
+    word-break: break-all;
+}
+.jqcCalendar-body .jqcCalendar-item > textarea{
+    width: 100%;
+    font-size: 14px;
+    height: 30px;
+    background: transparent;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    padding: 5px;
+    resize: none;
+    height: 100%;
+}
+.jqcCalendar-body .jqcCalendar-item > textarea:focus{
+    outline: none;
+}
+.jqcCalendar-body .jqcCalendar-item.success{
+    background: #E9F5FC;
+}
+.jqcCalendar-body .jqcCalendar-item.error{
+    background: #FFEBEB;
+}
+.jqcCalendar-body .jqcCalendar-item.warn{
+    background: #FEF5E6;
+}
+.jqcCalendar-body .jqcCalendar-item.info{
+    background: #F2F2F2;
+}
+.jqcCalendar-body .jqcCalendar-item:hover,
+.jqcCalendar-body .jqcCalendar-item.active{
+    /*background: #fff0f1!important;*/
+    box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+    z-index: 1;
+}
+.jqcCalendar-week div {
+    width: 14%;
+    margin-right: 0.24%;
+    margin-bottom: 10px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #666;
+}
+.jqcCalendar-prevMonth,
+.jqcCalendar-nextMonth {
+    opacity: .3;
+}
+.jqcCalendar-today{
+    border: 2px solid #c63136!important;
+}
+.jqcCalendar-date{
+    font-size: 12px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #333;
+}
+.jqcCalendar-save {
+    height: 30px;
+    color: #fff;
+    background: #C63136;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    font-size: 12px;
+    min-width: 70px;
+    margin-left: 10px;
+}
+.jqcCalendar-save:hover{
+    background: #D86065;
+}
+.jqcCalendar-save:focus{
+    outline: none;
+}
