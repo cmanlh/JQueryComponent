@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+        p{
+            text-indent: 0!important;
+        }
+    </style>
+    <title>calendar - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">calendar</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>日历</li>
+            <li>可编辑</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>el</td>
+                    <td>jQury Object</td>
+                    <td>yes</td>
+                    <td></td>
+                    <td></td>
+                    <td>日历容器元素</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>String|Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>日历title</td>
+                </tr>
+                <tr>
+                    <td>cellHeight</td>
+                    <td>Int</td>
+                    <td></td>
+                    <td></td>
+                    <td>100</td>
+                    <td>日历cell高度</td>
+                </tr>
+                <tr>
+                    <td>startYear</td>
+                    <td>Int</td>
+                    <td></td>
+                    <td></td>
+                    <td>now - 10</td>
+                    <td>开始年份</td>
+                </tr>
+                <tr>
+                    <td>endYear</td>
+                    <td>Int</td>
+                    <td></td>
+                    <td></td>
+                    <td>now + 10</td>
+                    <td>结束年份</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>Array</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>特殊日期</td>
+                </tr>
+                <tr>
+                    <td>adapter</td>
+                    <td>String|Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>适配特殊日期时间字段或函数返回形如'2018-11-11'字符串</td>
+                </tr>
+                <tr>
+                    <td>currentYear</td>
+                    <td>Int</td>
+                    <td></td>
+                    <td></td>
+                    <td>now</td>
+                    <td>默认的年份</td>
+                </tr>
+                <tr>
+                    <td>currentMonth</td>
+                    <td>Int</td>
+                    <td></td>
+                    <td>1-12</td>
+                    <td>now</td>
+                    <td>默认月份</td>
+                </tr>
+                <tr>
+                    <td>cellTextAlign</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>left|center|right</td>
+                    <td>center</td>
+                    <td>cell文字位置</td>
+                </tr>
+                <tr>
+                    <td>onSelect</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>选中cell触发的事件</td>
+                </tr>
+                <tr>
+                    <td>cellRender</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>渲染cell时触发的方法参数（data, cell, fillData）返回{content,type}</td>
+                </tr>
+                <tr>
+                    <td>canEditor</td>
+                    <td>Boolean</td>
+                    <td></td>
+                    <td></td>
+                    <td>false</td>
+                    <td>是否能够编辑</td>
+                </tr>
+                <tr>
+                    <td>onSave</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>编辑模式下点击保存触发的回调</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="calendar" style="width: 50%"></div>
+            <pre class="prettyprint linenums">
+var calendar = new $.jqcCalendar({
+    el: $('.calendar'),
+    title: function (year, month) {
+        return `${year}年${month}月`
+    },
+    data: [{
+        date: '2018-11-11',
+        text: '光棍节'
+    }, {
+        date: '2018-10-01',
+        text: '国庆节'
+    }],
+    adapter: 'date',
+    cellRender: function (data, cell, fillData) {
+        var config = {};
+        if (fillData) {
+            config.type = 'error';  // success|error|warn|info
+            config.content = fillData.text;
+        }
+        return config;
+    }
+});
+// calendar.reRender可用于重新渲染日历，参数可传新的data    
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">编辑模式</div>
+            <div class="calendar2" style="width: 50%"></div>
+            <pre class="prettyprint linenums">
+new $.jqcCalendar({
+    el: $('.calendar2'),
+    canEditor: true,
+    cellRender: function (data, cell, fillData) {
+        var config = {};
+        if (fillData) {
+            config.content = fillData.content;
+        }
+        return config;
+    },
+    onSave: function (data) {
+        console.log(data);
+    }
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/calendar.js"></script>
+</body>
+
+</html>
