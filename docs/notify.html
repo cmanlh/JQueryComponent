@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+    <title>notify - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">notify</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>通知模块</li>
+            <li>超出最大高度可滚动</li>
+            <li>可监听开关事件</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>el</td>
+                    <td>jQuery Object</td>
+                    <td>yes</td>
+                    <td></td>
+                    <td></td>
+                    <td>需要添加通知的页面元素</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>Array</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>通知消息列表</td>
+                </tr>
+                <tr>
+                    <td>position</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>'left,right'</td>
+                    <td>left</td>
+                    <td>通知框显示的位置</td>
+                </tr>
+                <tr>
+                    <td>adapter</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td>{title: 'title',content: 'content', time: function(data){return new Date();}}</td>
+                    <td>适配器</td>
+                </tr>
+                <tr>
+                    <td>tip</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>标题后面的提示文字</td>
+                </tr>
+                <tr>
+                    <td>onOpen</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>监听通知列表打开事件</td>
+                </tr>
+                <tr>
+                    <td>onClose</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>监听通知列表关闭事件</td>
+                </tr>
+                <tr>
+                    <td>onMore</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>监听点击title事件，不设置即title不可点击</td>
+                </tr>
+                <tr>
+                    <td>onSelect</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>监听点击单个通知事件，不设置即通知不可点击</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">正常示例</div>
+            <div class="notify1"></div>
+            <pre class="prettyprint linenums">
+new $.jqcNotify({
+    el: $('.notify1')
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">带有适配数据</div>
+            <div class="notify2"></div>
+            <pre class="prettyprint linenums">
+new $.jqcNotify({
+    el: $('.notify2'),
+    data: [{
+        title: '抬头1',
+        content: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
+        createTime: 1542009959382
+    }],
+    adapter: {
+        time: function (data) {
+            return new Date(data.createTime);
+        }
+    },
+    tip: function (data) {
+        return `${data.length}条未读`;
+    }
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/notify.js"></script>
+</body>
+
+</html>
