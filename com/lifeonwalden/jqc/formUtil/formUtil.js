@@ -449,9 +449,14 @@
 
             function showError(field, msg) {
                 if (field.parents('.outerErrorTip').length > 0) {
+                    var siblings = field.siblings();
+                    var datafield = '';
+                    if (siblings.length >= 1) {
+                        datafield = siblings.eq(0).text();
+                    }
                     $.jqcNotification({
                         type: 'error',
-                        title: msg
+                        title: datafield + msg
                     });
                 } else {
                     field.tip(msg);
