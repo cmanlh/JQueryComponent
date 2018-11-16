@@ -1552,6 +1552,9 @@ var datetimepickerFactory = function ($) {
 
 			input
 				.on('mousewheel.xdsoft', function (event) {
+					if ($(this).prop('disabled')) {
+						return;
+					}
 					if (!options.scrollInput) {
 						return true;
 					}

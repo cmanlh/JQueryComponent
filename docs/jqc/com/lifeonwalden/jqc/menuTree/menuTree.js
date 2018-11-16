@@ -210,7 +210,7 @@
                 var item = $('<li>');
                 var _data = this.options.autoSkip ? simplifyData.call(_this, data) : data;
                 var textBox = $('<div>');
-                textBox.text(_data[_label]);
+                textBox.text(_data[_label]).attr('title', _data[_label]);
                 item.append(textBox);
                 item.attr('menuId', _data[_id]);
                 if (_data[_child] && _data[_child].length > 0) {
