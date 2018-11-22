@@ -81,6 +81,9 @@
 
 .jqcSelectboxOptions {
     float: left;
+    max-height: 450px;
+    overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 .jqcSelectboxSelectedOption {
@@ -89,6 +92,9 @@
     /*list-style-image: url('images/selectbox-check.png') !important;*/
     /*list-style-image: url('images/icon_checked.png') !important;*/
     border: none;
+    max-height: 450px;
+    overflow-y: scroll;
+    box-sizing: border-box;
 }
 .jqcSelectboxSelectedOption li{
     position: relative;

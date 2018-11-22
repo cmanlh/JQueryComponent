@@ -576,10 +576,10 @@
                 var
                     elOuterHeight = that.el.outerHeight(),
                     elOuterWidth = that.el.outerWidth();
-                that.container.css('width', that.options.width * 2 + 116);
-                that.input.css('width', that.options.width);
-                that.optionUL.css('width', that.options.width + 50);
-                that.optionSelected.css('width', that.options.width + 60);
+                that.container.css('width', elOuterWidth * 2);
+                that.input.css('width', elOuterWidth);
+                that.optionUL.css('width', elOuterWidth);
+                that.optionSelected.css('width', elOuterWidth);
                 that.container.appendTo('body');
 
                 that.valueCache = new Map();
@@ -594,9 +594,9 @@
                     triggerByMe = 1;
                     var elOffset = that.el.offset();
                     var maxWidth = $('body').width();
-                    that.container.css('top', elOffset.top + elOuterHeight + 2);
+                    that.container.css('top', elOffset.top + elOuterHeight + 4);
                     if (that.container.outerWidth() + elOffset.left + 5 > maxWidth) {
-                        that.container.css('right', maxWidth - (elOffset.left + elOuterWidth - 15));
+                        that.container.css('right', maxWidth - (elOffset.left + elOuterWidth));
                     } else {
                         that.container.css('left', elOffset.left);
                     }
