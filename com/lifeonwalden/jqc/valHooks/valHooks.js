@@ -83,6 +83,9 @@
                 if ($(el).data('jqcTag')) {
                     return $(el).data('jqcTag').getValue();
                 }
+                if ($(el).data('jqcInput')) {
+                    return $(el).data('jqcInput').getValue();
+                }
                 if (jqcElement) {
                     return jqcElement.getCurrentVal();
                 } else {
@@ -106,6 +109,10 @@
                 }
                 if ($(el).data('jqcTag')) {
                     $(el).data('jqcTag').setValue(val);
+                    return '';
+                }
+                if ($(el).data('jqcInput')) {
+                    $(el).data('jqcInput').setValue(val);
                     return '';
                 }
                 var jqcElement = $.jqcValHooksCtrl.getElement($(el));

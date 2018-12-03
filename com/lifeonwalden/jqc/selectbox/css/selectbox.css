@@ -24,7 +24,7 @@
 
 .jqcSelectboxOperationBar {
     margin: 0 0 4px 0;
-    background-color: #FFFFFF;
+    /*background-color: #FFFFFF;*/
 }
 
 .jqcSelectboxContainer button {
@@ -81,6 +81,9 @@
 
 .jqcSelectboxOptions {
     float: left;
+    max-height: 450px;
+    overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 .jqcSelectboxSelectedOption {
@@ -89,6 +92,9 @@
     /*list-style-image: url('images/selectbox-check.png') !important;*/
     /*list-style-image: url('images/icon_checked.png') !important;*/
     border: none;
+    max-height: 450px;
+    overflow-y: scroll;
+    box-sizing: border-box;
 }
 .jqcSelectboxSelectedOption li{
     position: relative;

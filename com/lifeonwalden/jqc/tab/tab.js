@@ -192,6 +192,9 @@
             TabPanel.prototype.active = function () {
                 this.tab.addClass('jqcTabActive');
                 this.panel.fadeIn();
+                if ($.jqcEvent) {
+                    $.jqcEvent.emit('show.tab', this.id);
+                }
                 this.isActive = true;
             };
 
