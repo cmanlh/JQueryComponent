@@ -6,6 +6,9 @@
     padding-right: 26px;
     cursor: pointer;
 }
+.jqcSelect-input:disabled {
+    cursor: default;
+}
 
 .jqcSelect-input.active {
     background-image: url('./images/icon_select_active.png');
