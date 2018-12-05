@@ -117,7 +117,12 @@
                     defaultValue: this.currentYear,
                     onSelect: function (data) {
                         _this.currentYear = data.value;
+                        if (_this.lockYear) {
+                            _this.lockYear = false;
+                            return;
+                        }
                         _this.fillBody();
+                        _this.onMonthChange && _this.onMonthChange(_this.currentYear, _this.currentMonth);
                     }
                 });
                 new $.jqcSelect({
@@ -127,6 +132,7 @@
                     onSelect: function (data) {
                         _this.currentMonth = data.value;
                         _this.fillBody();
+                        _this.onMonthChange && _this.onMonthChange(_this.currentYear, _this.currentMonth);
                     }
                 });
                 this.prev.click(function () {
@@ -319,11 +325,13 @@
                     month = 1;
                     year = this.startYear;
                 }
-                this.currentYear = year;
-                this.currentMonth = month;
-                this.monthSelect.val(month);
-                this.yearSelect.val(year);
-                this.fillBody();
+                if (this.currentYear != year) {
+                    this.lockYear = true;
+                    this.yearSelect.val(year);
+                }
+                if (this.currentMonth != month) {
+                    this.monthSelect.val(month);
+                }
             }
             $.jqcCalendar.prototype.toNext = function () {
                 var month = this.currentMonth + 1;
@@ -336,11 +344,13 @@
                     month = 12;
                     year = this.endYear;
                 }
-                this.currentYear = year;
-                this.currentMonth = month;
-                this.monthSelect.val(month);
-                this.yearSelect.val(year);
-                this.fillBody();
+                if (this.currentYear != year) {
+                    this.lockYear = true;
+                    this.yearSelect.val(year);
+                }
+                if (this.currentMonth != month) {
+                    this.monthSelect.val(month);
+                }
             }
             $.jqcCalendar.prototype.renderContextmenu = function () {
                 var _this = this;

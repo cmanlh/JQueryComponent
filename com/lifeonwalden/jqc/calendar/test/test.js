@@ -92,6 +92,9 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 },
                 onMemoUpdate: function (memo) {
                     console.log('update',memo);
+                },
+                onMonthChange: function (year, month) {
+                    console.log(year, month);
                 }
             });
         });
