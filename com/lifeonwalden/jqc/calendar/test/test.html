@@ -4,10 +4,22 @@
 <head>
     <meta charset="utf-8">
     <title>calendar</title>
+    <style>
+        .box{
+            display: flex;
+        }
+        .box > div {
+            width: 50%;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="calendar"></div>
+    <div class="box">
+        <div class="calendar"></div>
+        <div style="width: 20px;"></div>
+        <div class="calendar2"></div>
+    </div>
     <script src="../../loader/loader.js"></script>
     <script src="test.js"></script>
 </body>

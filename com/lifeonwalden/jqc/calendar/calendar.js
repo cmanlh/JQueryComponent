@@ -666,6 +666,7 @@
                 });
                 $mask.click(function (e) {
                     if (readOnly) {
+                        $(document).off('keyup.memo');
                         box.remove();
                         $(this).remove();
                         return;
@@ -745,13 +746,23 @@
                         _this.memos.push(temp);
                         _this.onMemoAdd && _this.onMemoAdd(temp);
                     }
+                    $(document).off('keyup.memo');
                     _this.onMemoChange && _this.onMemoChange(temp, _this.memos);
                     _this.decodeMemo();
                     
                 }
                 box.click(function (e) {
                     e.stopPropagation();
-                })
+                });
+
+                $(document).off('keyup.memo').on('keyup.memo', function (e) {
+                    console.log(123);
+                    if (e.keyCode == 27) {
+                        $(document).off('keyup.memo');
+                        box.remove();
+                        $mask.remove();
+                    }
+                });
             }
             $.jqcCalendar.prototype.addMemo = function (time, target) {
                 this.createMemoEditor({

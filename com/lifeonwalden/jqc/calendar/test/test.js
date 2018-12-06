@@ -43,8 +43,8 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 content: '测试测试测试测试12.2'
             }];
             var calendar = new $.jqcCalendar({
-                title: '银行间节假日',
-                el: $('.calendar'),
+                title: '可编辑',
+                el: $('.calendar2'),
                 startYear: 2018,
                 endYear: 2020,
                 data: A_data,
@@ -63,18 +63,6 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                         return data.tip
                     }
                 },
-                // cellRender: function (data, cell, memos) {
-                //     var x = [];
-                //     if (data.day == 6 || data.day == 7) {
-                //         cell.addClass('error');
-                //         var config1 = {};
-                //         config1.type = '2';
-                //         config1.content = '周末';
-                //         x.push({data: config1});
-                //     }
-                //     return memos;
-                //     // return x.concat(memos);
-                // },
                 onSelect: function (data, memos) {
                     console.log(data, memos);
                 },
@@ -95,6 +83,27 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 },
                 onMonthChange: function (year, month) {
                     console.log(year, month);
+                }
+            });
+            new $.jqcCalendar({
+                title: '不可编辑',
+                el: $('.calendar'),
+                startYear: 2018,
+                endYear: 2020,
+                data: A_data,
+                adapter: {
+                    startTime: function (data) {
+                        return +new Date(data.time);
+                    },
+                    endTime: function (data) {
+                        return +new Date(data.time);
+                    },
+                    type: function (data) {
+                        return data.type || 4
+                    },
+                    tip: function (data) {
+                        return data.tip
+                    }
                 }
             });
         });
