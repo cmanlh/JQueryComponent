@@ -166,7 +166,7 @@
                 });
                 this.body.on('click', '.jqcCalendar-item-more', function (e) {
                     e.stopPropagation();
-                    if (_this.contextmenu) {
+                    if (_this.contextmenu && _this.contextmenu.box) {
                         _this.contextmenu.box.remove();
                     }
                     if ($(this).hasClass('active')) {

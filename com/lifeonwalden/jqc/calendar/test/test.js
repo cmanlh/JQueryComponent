@@ -20,27 +20,33 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
 
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['calendar']).execute(function () {
             var A_data = [{
+                type: 0,
+                time: '2018-12-26',
+                content: '测试测试测试12.26',
+                tip: '11:23'
+            }, {
                 type: 1,
                 time: '2018-12-26',
                 content: '测试测试测试12.26',
                 tip: '11:23'
             }, {
+                type: 2,
+                time: '2018-12-26',
+                content: '测试测试测试12.26',
+                tip: '11:23'
+            }, {
+                type: 2,
+                time: '2018-12-26',
+                content: '测试测试测试12.26',
+                tip: '11:23'
+            }, {
+                type: 3,
+                time: '2018-12-27',
+                content: '测试测试测试测试12.27'
+            }, {
+                type: 4,
                 time: '2018-12-28',
                 content: '测试测试测试测试12.28'
-            }, {
-                time: '2018-12-29',
-                content: '测试测试测试测试12.29'
-            }, {
-                time: '2018-11-30',
-                content: '测试测试测试测试11.30',
-                id: 100,
-                tip: '12:25'
-            }, {
-                time: '2018-12-01',
-                content: '测试测试测试测试12.1'
-            }, {
-                time: '2018-12-02',
-                content: '测试测试测试测试12.2'
             }];
             var calendar = new $.jqcCalendar({
                 title: '可编辑',
