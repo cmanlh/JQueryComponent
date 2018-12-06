@@ -178,10 +178,12 @@
     z-index: 3;
     cursor: pointer;
 }
-.jqcCalendar-item-tips:hover {
+.jqcCalendar-item-tips:hover,
+.jqcCalendar-item-tips.hover {
     color: #fff!important;
 }
-.jqcCalendar-item-tips:hover::after {
+.jqcCalendar-item-tips:hover::after,
+.jqcCalendar-item-tips.hover::after {
     opacity: .6;
 }
 .jqcCalendar-item-tips:before {

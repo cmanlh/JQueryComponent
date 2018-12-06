@@ -195,6 +195,12 @@
                     e.stopPropagation();
                     var index = $(this).attr('data-index');
                     _this.onMemoSelect && _this.onMemoSelect(_this.memos[index]);
+                }).on('mouseenter', '.jqcCalendar-item-tips', function () {
+                    var index = $(this).attr('data-index');
+                    _this.body.find('[data-index='+index+']').addClass('hover');
+                }).on('mouseleave', '.jqcCalendar-item-tips', function () {
+                    var index = $(this).attr('data-index');
+                    _this.body.find('[data-index='+index+']').removeClass('hover');
                 });
                 this.decodeMemo();
             }
@@ -594,6 +600,11 @@
                         onShow: function () {
                             open = true;
                         },
+                        onClose: function () {
+                            setTimeout(function () {
+                                open = false;
+                            }, 100);
+                        },
                         onChangeDateTime: function (time) {
                             var end = new Date(_end.val() || time);
                             _end.datetimepicker({
@@ -611,6 +622,11 @@
                     _end.datetimepicker({
                         onShow: function () {
                             open = true;
+                        },
+                        onClose: function () {
+                            setTimeout(function () {
+                                open = false;
+                            }, 100);
                         },
                         onChangeDateTime: function (time) {
                             var start = new Date(_start.val() || time);

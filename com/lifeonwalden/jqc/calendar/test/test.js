@@ -21,26 +21,26 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['calendar']).execute(function () {
             var A_data = [{
                 type: 1,
-                time: '2018-11-26',
-                content: '测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
+                time: '2018-12-26',
+                content: '测试测试测试12.26',
                 tip: '11:23'
             }, {
-                time: '2018-11-28',
-                content: '测试测试测试测试'
+                time: '2018-12-28',
+                content: '测试测试测试测试12.28'
             }, {
-                time: '2018-11-29',
-                content: '测试测试测试测试'
+                time: '2018-12-29',
+                content: '测试测试测试测试12.29'
             }, {
                 time: '2018-11-30',
-                content: '测试测试测试测试',
+                content: '测试测试测试测试11.30',
                 id: 100,
                 tip: '12:25'
             }, {
                 time: '2018-12-01',
-                content: '测试测试测试测试'
+                content: '测试测试测试测试12.1'
             }, {
                 time: '2018-12-02',
-                content: '测试测试测试测试'
+                content: '测试测试测试测试12.2'
             }];
             var calendar = new $.jqcCalendar({
                 title: '银行间节假日',
@@ -48,7 +48,6 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 startYear: 2018,
                 endYear: 2020,
                 data: A_data,
-                cellHeight: 130,
                 canEditor: true,
                 adapter: {
                     startTime: function (data) {
@@ -64,17 +63,18 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                         return data.tip
                     }
                 },
-                cellRender: function (data, cell, memos) {
-                    var x = [];
-                    if (data.day == 6 || data.day == 7) {
-                        cell.addClass('error');
-                        var config1 = {};
-                        config1.type = '2';
-                        config1.content = '周末';
-                        x.push({data: config1});
-                    }
-                    return x.concat(memos);
-                },
+                // cellRender: function (data, cell, memos) {
+                //     var x = [];
+                //     if (data.day == 6 || data.day == 7) {
+                //         cell.addClass('error');
+                //         var config1 = {};
+                //         config1.type = '2';
+                //         config1.content = '周末';
+                //         x.push({data: config1});
+                //     }
+                //     return memos;
+                //     // return x.concat(memos);
+                // },
                 onSelect: function (data, memos) {
                     console.log(data, memos);
                 },
