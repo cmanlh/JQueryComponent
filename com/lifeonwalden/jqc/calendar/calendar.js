@@ -756,7 +756,6 @@
                 });
 
                 $(document).off('keyup.memo').on('keyup.memo', function (e) {
-                    console.log(123);
                     if (e.keyCode == 27) {
                         $(document).off('keyup.memo');
                         box.remove();

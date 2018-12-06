@@ -100,11 +100,11 @@
                 </tr>
                 <tr>
                     <td>adapter</td>
-                    <td>String|Function</td>
+                    <td>Object(content, startTime, endTime, tip, type)</td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>适配特殊日期时间字段或函数返回形如'2018-11-11'字符串</td>
+                    <td>适配data</td>
                 </tr>
                 <tr>
                     <td>currentYear</td>
@@ -140,11 +140,11 @@
                 </tr>
                 <tr>
                     <td>cellRender</td>
-                    <td>Function</td>
+                    <td>Function(data, cell, memos)</td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>渲染cell时触发的方法参数（data, cell, fillData）返回{content,type}</td>
+                    <td>渲染cell时回调，须返回memos</td>
                 </tr>
                 <tr>
                     <td>canEditor</td>
@@ -155,12 +155,52 @@
                     <td>是否能够编辑</td>
                 </tr>
                 <tr>
-                    <td>onSave</td>
-                    <td>Function</td>
+                    <td>onMemoSelect</td>
+                    <td>Function（memo）</td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>编辑模式下点击保存触发的回调</td>
+                    <td>选中日程触发的回调</td>
+                </tr>
+                <tr>
+                    <td>onMemoChange</td>
+                    <td>Function（memo）</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>日程列表改变时触发</td>
+                </tr>
+                <tr>
+                    <td>onMemoAdd</td>
+                    <td>Function（memo）</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>新增日程触发</td>
+                </tr>
+                <tr>
+                    <td>onMemoUpdate</td>
+                    <td>Function（memo）</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>更新日程触发</td>
+                </tr>
+                <tr>
+                    <td>onMemoDelete</td>
+                    <td>Function（memo）</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>删除日程触发</td>
+                </tr>
+                <tr>
+                    <td>onMonthChange</td>
+                    <td>Function（year, month）</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>月份变更触发</td>
                 </tr>
             </tbody>
         </table>
@@ -169,9 +209,9 @@
     <section>
         <div class="sectionTitle">示例</div>
         <section>
-            <div class="calendar" style="width: 50%"></div>
+            <div class="calendar" style="width: 80%"></div>
             <pre class="prettyprint linenums">
-var calendar = new $.jqcCalendar({
+new $.jqcCalendar({
     el: $('.calendar'),
     title: function (year, month) {
         return `${year}年${month}月`
@@ -183,14 +223,14 @@ var calendar = new $.jqcCalendar({
         date: '2018-10-01',
         text: '国庆节'
     }],
-    adapter: 'date',
-    cellRender: function (data, cell, fillData) {
-        var config = {};
-        if (fillData) {
-            config.type = 'error';  // success|error|warn|info
-            config.content = fillData.text;
+    adapter: {
+        content: 'text',
+        startTime: function ({date}) {
+            return +new Date(date);
+        },
+        endTime: function ({date}) {
+            return +new Date(date);
         }
-        return config;
     }
 });
 // calendar.reRender可用于重新渲染日历，参数可传新的data    
@@ -198,22 +238,12 @@ var calendar = new $.jqcCalendar({
         </section>
         <section>
             <div class="exampleTitle">编辑模式</div>
-            <div class="calendar2" style="width: 50%"></div>
+            <div class="calendar2" style="width: 80%"></div>
             <pre class="prettyprint linenums">
-new $.jqcCalendar({
-    el: $('.calendar2'),
-    canEditor: true,
-    cellRender: function (data, cell, fillData) {
-        var config = {};
-        if (fillData) {
-            config.content = fillData.content;
-        }
-        return config;
-    },
-    onSave: function (data) {
-        console.log(data);
-    }
-});
+    new $.jqcCalendar({
+        el: $('.calendar2'),
+        canEditor: true
+    });
         </pre>
         </section>
     </section>

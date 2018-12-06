@@ -11,28 +11,21 @@ $JqcLoader.importComponents('com.lifeonwalden.jqc', ['calendar']).execute(functi
             date: '2018-10-01',
             text: '国庆节'
         }],
-        adapter: 'date',
-        cellRender: function (data, cell, fillData) {
-            var config = {};
-            if (fillData) {
-                config.type = 'error';  // success|error|warn|info
-                config.content = fillData.text;
+        adapter: {
+            content: 'text',
+            startTime: function ({date}) {
+                return +new Date(date);
+            },
+            endTime: function ({date}) {
+                return +new Date(date);
             }
-            return config;
         }
     });
     new $.jqcCalendar({
         el: $('.calendar2'),
         canEditor: true,
-        cellRender: function (data, cell, fillData) {
-            var config = {};
-            if (fillData) {
-                config.content = fillData.content;
-            }
-            return config;
-        },
-        onSave: function (data) {
-            console.log(data);
+        onMemoAdd: function (memo) {
+            console.log(memo);
         }
     });
 });

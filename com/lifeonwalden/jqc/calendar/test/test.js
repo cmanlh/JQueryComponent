@@ -35,11 +35,6 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 content: '测试测试测试12.26',
                 tip: '11:23'
             }, {
-                type: 2,
-                time: '2018-12-26',
-                content: '测试测试测试12.26',
-                tip: '11:23'
-            }, {
                 type: 3,
                 time: '2018-12-27',
                 content: '测试测试测试测试12.27'
