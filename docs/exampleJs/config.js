@@ -19,5 +19,7 @@ $JqcLoader.registerModule($JqcLoader.newModule('com.lifeonwalden.jqc', 'jqc/')
     .registerComponents(['select'])
     .registerComponents(['notify'])
     .registerComponents(['tag'])
+    .registerComponents(['datetimepicker'])
+    .registerComponents(['timepicker'])
     .registerComponents(['calendar'])
     .registerComponents(['msg']));

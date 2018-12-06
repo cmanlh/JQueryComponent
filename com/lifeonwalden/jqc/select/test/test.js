@@ -22,6 +22,10 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 adapter: {
                     value: 'id',
                     label: 'name'
+                },
+                cellRender: function (label, data) {
+                    console.log(label);
+                    return '<span>100+'+label+'</span>';
                 }
             });
             new $.jqcSelect({

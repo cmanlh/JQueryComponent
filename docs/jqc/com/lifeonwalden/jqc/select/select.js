@@ -45,6 +45,7 @@
                     this.onSelect = params.onSelect;
                 }
                 this._adapter = Object.assign({}, { value: 'value', label: 'label'}, (params.adapter || {})); // 适配
+                this.cellRender = params.cellRender || null;
                 this.currentIndex = -1;
                 this.listLen = 0;
                 this._data = params.data || [];
@@ -101,6 +102,12 @@
                         _this.render();
                     }
                 });
+                this._el.blur(function () {
+                    if (_this.lock) {
+                        return;
+                    }
+                    _this.close();
+                });
             },
             // 渲染
             $.jqcSelect.prototype.render = function () {
@@ -134,7 +141,12 @@
                 }
                 this._data.forEach(function(data, index) {
                     var value = data[_this._adapter.value].toString();
-                    var _li = $('<li>').text(_this.format(data)).attr('value', value);
+                    var label = _this.format(data);
+                    var _li = $('<li>').attr('value', value);
+                    if (_this.cellRender) {
+                        label = _this.cellRender(label, data);
+                    }
+                    _li.append(label);
                     if (value == _this.currentValue) {
                         _li.addClass('active');
                     }
@@ -144,12 +156,17 @@
                         data: data
                     });
                 });
+                var top = _offset.top + _height + 4 - _this.scrollTop;
+                var wHeight = window.innerHeight;
+                if (top + (this._data.length * 30) + 10 > wHeight) {
+                    top = top - (this._data.length * 30) - 8 - _height;
+                }
                 this.container = $('<div>')
                     .addClass('jqcSelect-container')
                     .css('width', _width)
                     .append(this.ul)
                     .css({
-                        top: _offset.top + _height + 4 - _this.scrollTop,
+                        top: top,
                         left: _offset.left
                     });
                 $('body').append(this.container);
@@ -157,6 +174,11 @@
                     e.stopPropagation();
                     _this.currentValue = $(this).data('value');
                     _this.close();
+                });
+                this.container.mouseenter(function () {
+                    _this.lock = true;
+                }).mouseleave(function () {
+                    _this.lock = false;
                 });
                 $(document).on('keyup.jqcSelect-upAndDown', function (e) {
                     e.stopPropagation();
@@ -193,6 +215,7 @@
             // 关闭
             $.jqcSelect.prototype.close = function () {
                 var _this = this;
+                this.lock = false;
                 this._el.removeClass('active');
                 if (this.container) {
                     this.container.remove();

@@ -44,7 +44,18 @@
 
                 var inputHanlder = null;
                 var that = this;
+                // 兼容win10输入法 bug fix #CASHMGMT-4919
+                var timer = null;
+                var isShiftKey = false;
                 that.el.keyup(function (e) {
+                    if (e.keyCode == 16) {
+                        timer && clearTimeout(timer);
+                        isShiftKey = true;
+                        timer = setTimeout(function () {
+                            isShiftKey = false;
+                            timer = null;
+                        }, 10);
+                    }
                     switch (e.keyCode) {
                         case $.ui.keyCode.LEFT:
                         case $.ui.keyCode.RIGHT:
@@ -69,6 +80,19 @@
                         that.inputting = true;
                     }
 
+                    setupFormatProcessor(that);
+                });
+                // 兼容右击粘贴
+                that.el.on('paste', function (e) {
+                    setTimeout(function () {
+                        setupFormatProcessor(that);
+                    }, 10)
+                });
+                // 兼容win10 shift切换输入法
+                that.el.on('input', function (e) {
+                    if (!isShiftKey) {
+                        return;
+                    }
                     setupFormatProcessor(that);
                 });
             }

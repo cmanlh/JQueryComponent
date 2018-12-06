@@ -8,76 +8,103 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
             .registerComponent('select')
             .registerComponent('valHooks')
             .registerComponent('uniqueKey')
+            .registerComponent('toolkit')
+            .registerComponent('contextmenu')
+            .registerComponent('timepicker')
+            .registerComponent('datetimepicker')
+            .registerComponent('notification')
+            .registerComponent('zindex')
+            .registerComponent('dateUtil')
+            .registerComponent('tip')
             .registerComponent('calendar'));
 
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['calendar']).execute(function () {
-            var A_data = [];
-            window.a = new $.jqcCalendar({
-                title: function (year, month) {
-                    return `${year}年${month}月 - 默认`
-                },
-                el: $('.calendar'), 
-                cellHeight: 100,
+            var A_data = [{
+                type: 0,
+                time: '2018-12-26',
+                content: '测试测试测试12.26',
+                tip: '11:23'
+            }, {
+                type: 1,
+                time: '2018-12-26',
+                content: '测试测试测试12.26',
+                tip: '11:23'
+            }, {
+                type: 2,
+                time: '2018-12-26',
+                content: '测试测试测试12.26',
+                tip: '11:23'
+            }, {
+                type: 3,
+                time: '2018-12-27',
+                content: '测试测试测试测试12.27'
+            }, {
+                type: 4,
+                time: '2018-12-28',
+                content: '测试测试测试测试12.28'
+            }];
+            var calendar = new $.jqcCalendar({
+                title: '可编辑',
+                el: $('.calendar2'),
                 startYear: 2018,
-                endYear: 2019,
-                // cellTextAlign: 'left',
+                endYear: 2020,
                 data: A_data,
-                adapter: 'time',
-                cellRender: function (data, cell, fillData) {
-                    var config = {};
-                    if (data.day == 6 || data.day == 7) {
-                        config.type = 'success';
-                    } else {
-                        config.type = 'error'
+                canEditor: true,
+                adapter: {
+                    startTime: function (data) {
+                        return +new Date(data.time);
+                    },
+                    endTime: function (data) {
+                        return +new Date(data.time);
+                    },
+                    type: function (data) {
+                        return data.type || 4
+                    },
+                    tip: function (data) {
+                        return data.tip
                     }
-                    if (fillData) {
-                        config.type = 'warn';
-                        config.content = fillData.content;
-                    }
-                    return config;
                 },
-                onSelect: function (data) {
-                    console.log(data);
+                onSelect: function (data, memos) {
+                    console.log(data, memos);
                 },
-                onSave: function (data) {
-                    console.log(data);
+                onMemoSelect: function (memo) {
+                    console.log(memo);
+                },
+                onMemoChange: function (memo) {
+                    console.log('change', memo);
+                },
+                onMemoDelete: function (memo) {
+                    console.log('delete',memo);
+                },
+                onMemoAdd: function (memo) {
+                    console.log('add',memo);
+                },
+                onMemoUpdate: function (memo) {
+                    console.log('update',memo);
+                },
+                onMonthChange: function (year, month) {
+                    console.log(year, month);
                 }
             });
-
-            window.b = new $.jqcCalendar({
-                title: function (year, month) {
-                    return `${year}年${month}月 - 可编辑`
-                },
-                el: $('.calendar2'), 
-                cellHeight: 100,
+            new $.jqcCalendar({
+                title: '不可编辑',
+                el: $('.calendar'),
                 startYear: 2018,
-                endYear: 2019,
-                adapter: function (rowData) {
-                    return rowData.time;
-                },
-                data: [{
-                    time: '2019-01-01',
-                    content: '123456'
-                }],
-                canEditor: true,
-                cellRender: function (data, cell, fillData) {
-                    var config = {};
-                    if (data.day == 6 || data.day == 7) {
-                        config.type = 'success';
-                    } else {
-                        config.type = 'error'
+                endYear: 2020,
+                data: A_data,
+                adapter: {
+                    startTime: function (data) {
+                        return +new Date(data.time);
+                    },
+                    endTime: function (data) {
+                        return +new Date(data.time);
+                    },
+                    type: function (data) {
+                        return data.type || 4
+                    },
+                    tip: function (data) {
+                        return data.tip
                     }
-                    if (fillData) {
-                        config.type = 'warn';
-                        config.content = fillData.content;
-                    }
-                    return config;
-                },
-                mode: 'editor',
-                onSave: function (data) {
-                    A_data = data;
-                    console.log(data);
-                    a.reRender(data);
                 }
             });
         });

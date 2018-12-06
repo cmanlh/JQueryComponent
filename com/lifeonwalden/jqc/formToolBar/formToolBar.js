@@ -28,7 +28,8 @@
                 height: 50,
                 background: '#fff',
                 afterRender: null,
-                onResize: null
+                onResize: null,
+                onChange: null,
             };
 
             $.jqcFormToolBar = function (params) {
@@ -54,6 +55,7 @@
                     return;
                 }
                 _this.switch.removeClass('active');
+                _this.options.onChange && _this.options.onChange(_this.options.height);
                 _this.conditionBox.animate({
                     height: _this.options.height
                 }, 50, function () {
@@ -67,6 +69,7 @@
                     return;
                 }
                 _this.switch.addClass('active');
+                _this.options.onChange && _this.options.onChange(_this.height);
                 _this.conditionBox.animate({
                     height: _this.height
                 }, 50, function () {

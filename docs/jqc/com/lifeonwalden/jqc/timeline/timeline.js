@@ -120,7 +120,7 @@
                         data: _this.categorys.map(i => (i.label)),
                         axisLabel: {
                             // rotate: 65,
-                            fontSize: 7,
+                            fontSize: 12,
                             color: '#999'
                         },
                         axisLine: {
@@ -145,7 +145,7 @@
                             formatter: function (data, index) {
                                 return timeFormat(+data, true);
                             },
-                            fontSize: 7,
+                            fontSize: 12,
                             color: '#999'
                         },
                         axisLine: {

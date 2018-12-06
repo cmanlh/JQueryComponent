@@ -46,6 +46,9 @@
             Loading.prototype.constructor = Loading;
 
             Loading.prototype.show = function () {
+                if (this.locked) {
+                    return;
+                }
                 if (this.status === 'show') {
                     return;
                 }
@@ -59,6 +62,9 @@
             };
 
             Loading.prototype.hide = function () {
+                if (this.locked) {
+                    return;
+                }
                 if (this.status === 'hide') {
                     return;
                 }
@@ -67,6 +73,19 @@
                 this.mask.hide();
                 addScroll.call(_this);
                 cancelAnimationFrame(_this.aid);
+            };
+
+            Loading.prototype.lock = function (time) {
+                var _this = this;
+                this.locked = true;
+                if (time) {
+                    setTimeout(function () {
+                        _this.locked = false;
+                    }, time);
+                }
+            };
+            Loading.prototype.unlock = function () {
+                this.locked = false;
             };
 
             // 私有方法
