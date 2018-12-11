@@ -16,7 +16,8 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 el: $('.single'),
                 url: 'http://172.29.114.86:7001/upload',
                 accept: 'image',
-                maxSize: 0.8,
+                maxSize: 800,
+                name: 'test',
                 data: {
                     username: 'mawenjie',
                     password: '111111'
@@ -35,7 +36,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 url: 'http://172.29.114.86:7001/upload',
                 accept: ['xlsx', 'txt', 'jpg'],
                 mode: 'multiple',
-                maxSize: 0.8,
+                maxSize: 800,
                 placeholder: '请选择图片,我是placeholder',
                 success: function (data, next) {
                     var files = data.filename;

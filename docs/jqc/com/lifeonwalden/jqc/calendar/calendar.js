@@ -90,9 +90,9 @@
                 this.el.addClass('jqcCalendar-container');
                 this.decodeData();
                 this.renderHeader();
+                this.renderContextmenu();
                 if (this.canEditor) {
                     this.body.addClass('canEditor');
-                    this.renderContextmenu();
                 }
             }
             $.jqcCalendar.prototype.renderHeader = function () {
