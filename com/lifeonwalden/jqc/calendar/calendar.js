@@ -1,9 +1,9 @@
 /**
- * confirm
+ * calendar
  * 
  */
 ;(function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'valHooks', 'select', 'timepicker', 'notification', 'contextmenu', 'datetimepicker', 'dateUtil'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'valHooks', 'select', 'timepicker', 'notification', 'contextmenu', 'datetimepicker', 'dateUtil', 'confirm'])
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'datetimepicker').concat('css/datetimepicker.css'))
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'calendar').concat('css/calendar.css'))
         .execute(function () {
@@ -371,19 +371,19 @@
                         id: 1,
                         text: '新增日程',
                         valid: function (rowData) {
-                            return rowData.type == 'all';
+                            return rowData.type == 'all' && _this.canEditor;
                         }
                     }, {
                         id: 2,
                         text: '编辑日程',
                         valid: function (rowData) {
-                            return rowData.type == 'item';
+                            return rowData.type == 'item' && _this.canEditor;
                         }
                     }, {
                         id: 3,
                         text: '删除日程',
                         valid: function (rowData) {
-                            return rowData.type == 'item';
+                            return rowData.type == 'item' && _this.canEditor;
                         }
                     }],
                     onSelect: function (data) {
@@ -401,7 +401,15 @@
                                 _this.editorMemo(rowData, target);
                                 break;
                             case 3:
-                                _this.deleteMemo(rowData);
+                                var data = _this.memos[rowData].data;
+                                $.jqcConfirm({
+                                    icon: 'warn',
+                                    title: '删除日程',
+                                    content: `请确认是否删除该日程 ( ${data.content} )？`,
+                                    onConfirm: function () {
+                                        _this.deleteMemo(rowData);
+                                    }
+                                });
                                 break;
                             default:
                                 break;
@@ -426,11 +434,15 @@
                             target: temp
                         });
                     } else {
-                        _this.contextmenu.show({
-                            type: 'all',
-                            data: data,
-                            target
-                        });
+                        if (_this.canEditor) {
+                            _this.contextmenu.show({
+                                type: 'all',
+                                data: data,
+                                target
+                            });
+                        } else {
+                            _this.contextmenu.hide();
+                        }
                     }
                 });
 
@@ -535,35 +547,59 @@
                 var offset = target.offset();
                 var width = target.outerWidth();
                 var tWidth = window.innerWidth;
-                var box = $('<div>').addClass('jqcCalendar-memo-editor');
+                var tHeight = window.innerHeight;
+                var box = $('<div>').addClass('jqcCalendar-memo-editor editor');
+                var scrollTop = $(window).scrollTop();
+                var memoWidth = readOnly ? 200 : 313;
                 var pos = {
                     left: offset.left + width + 5,
                     top: offset.top - 12
                 }
-                if ((pos.left + 164) >= tWidth) {
-                    pos.left = offset.left - 5 - 164;
+                if (pos.top + 224 >= tHeight + scrollTop) {
+                    pos.top = 'initial';
+                    pos.bottom = tHeight - offset.top - 30;
+                    box.addClass('bottom');
+                }
+                if ((pos.left + memoWidth) >= tWidth) {
+                    pos.left = offset.left - 5 - memoWidth;
                     box.addClass('jqcCalendar-memo-editor-arrow-right');
                 }
-                // this.body.append(box);
                 $('body').append(box);
                 box.css(pos);
-                var memoContent = $('<div>').css('position', 'relative');
-                var _content = $('<textarea>').addClass('jqcCalendar-memo-editor-textarea').attr('placeholder', '新建日程').attr('maxlength', 140);
+                var memoContent = $('<div>').addClass('jqcCalendar-memo-editor-content');
+                var span = $('<span>').text('日程名称');
+                var right = $('<div>');
+                var _content = $('<textarea>').addClass('jqcCalendar-memo-editor-textarea').attr('placeholder', '请输入内容').attr('maxlength', 140);
                 var _pre = $('<pre>');
-                memoContent.append(_pre).append(_content);
+                right.append(_pre, _content);
+                memoContent.append(span, right);
                 _content.on('input', function (e) {
                     _pre.text($(this).val());
                 });
                 var timebox = $('<div>').addClass('jqcCalendar-memo-editor-timebox');
+                var $start = $('<div>');
+                span = $('<span>').text('开始时间');
+                right = $('<div>');
                 var _start = $('<input>').addClass('jqcCalendar-memo-editor-start').attr('placeholder', '添加起始时间').prop('readonly', true);
                 var _startTime = $('<input>').addClass('jqcCalendar-memo-editor-start-time');
-                var _end = $('<input>').addClass('jqcCalendar-memo-editor-start').attr('placeholder', '添加结束时间').prop('readonly', true);
+                right.append(_start, _startTime);
+                $start.append(span, right);
+                var $end = $('<div>');
+                span = $('<span>').text('结束时间');
+                right = $('<div>');
+                var _end = $('<input>').addClass('jqcCalendar-memo-editor-end').attr('placeholder', '添加结束时间').prop('readonly', true);
                 var _endTime = $('<input>').addClass('jqcCalendar-memo-editor-end-time');
-                timebox.append(_start, _startTime, _end, _endTime);
+                right.append(_end, _endTime)
+                $end.append(span, right);
+                timebox.append($start, $end);
                 var _type = $('<div>').addClass('jqcCalendar-memo-editor-type');
                 var _color = $('<span>');
                 var $type = $('<input type="text">').addClass('jqcCalendar-memo-type');
-                _type.append(_color, $type);
+                
+                span = $('<span>').text('日程标记');
+                right = $('<div>');
+                right.append(_color, $type);
+                _type.append(span, right);
                 box.append(memoContent, timebox, _type);
                 new $.jqcSelect({
                     el: $type,
@@ -588,7 +624,7 @@
                             'height': 8,
                             'border-radius': 1,
                             'display': 'inline-block',
-                            'margin-right': 10
+                            'margin-left': 12
                         });
                     }
                 });
@@ -597,6 +633,7 @@
                 var open = false;
                 if (!readOnly) {
                     _start.datetimepicker({
+                        format: 'Y/m/d',
                         onShow: function () {
                             open = true;
                         },
@@ -605,21 +642,9 @@
                                 open = false;
                             }, 100);
                         },
-                        onChangeDateTime: function (time) {
-                            var end = new Date(_end.val() || time);
-                            _end.datetimepicker({
-                                minDateTime: $.jqcDateUtil.format(time, 'yyyy-MM-dd HH:mm')
-                            });
-                            var start = new Date(_start.val());
-                            if (start > end) {
-                                start = end;
-                                _start.datetimepicker({
-                                    value: start
-                                });
-                            }
-                        }
                     });
                     _end.datetimepicker({
+                        format: 'Y/m/d',
                         onShow: function () {
                             open = true;
                         },
@@ -628,23 +653,10 @@
                                 open = false;
                             }, 100);
                         },
-                        onChangeDateTime: function (time) {
-                            var start = new Date(_start.val() || time);
-                            _start.datetimepicker({
-                                maxDateTime: $.jqcDateUtil.format(time, 'yyyy-MM-dd HH:mm'),
-                            });
-                            var end = new Date(_end.val());
-                            if (start > end) {
-                                end = start;
-                                _end.datetimepicker({
-                                    value: end
-                                });
-                            }
-                        }
                     });
                     new $.jqcTimepicker({
                         el: _startTime,
-                        width: 150,
+                        // width: 150,
                         format: 'HH:mm',
                         onShow: function (time) {
                             open = true;
@@ -652,7 +664,7 @@
                     });
                     new $.jqcTimepicker({
                         el: _endTime,
-                        width: 150,
+                        // width: 150,
                         format: 'HH:mm',
                         onShow: function (time) {
                             open = true;
@@ -667,6 +679,8 @@
                 $mask.click(function (e) {
                     if (readOnly) {
                         $(document).off('keyup.memo');
+                        _start.datetimepicker('destroy');
+                        _end.datetimepicker('destroy');
                         box.remove();
                         $(this).remove();
                         return;
@@ -679,9 +693,9 @@
                 });
                 // 回显
                 if (memo) {
-                    var startDate = $.jqcDateUtil.format(memo.startTime);
+                    var startDate = $.jqcDateUtil.format(memo.startTime, 'yyyy/MM/dd');
                     var startTime = $.jqcDateUtil.format(memo.startTime, 'HH:mm');
-                    var endDate = $.jqcDateUtil.format(memo.endTime);
+                    var endDate = $.jqcDateUtil.format(memo.endTime, 'yyyy/MM/dd');
                     var endTime = $.jqcDateUtil.format(memo.endTime, 'HH:mm');
                     _content.val(memo.content);
                     _start.val(startDate);
@@ -708,6 +722,8 @@
                             type: 'warn',
                             title: '取消添加日程',
                         });
+                        _start.datetimepicker('destroy');
+                        _end.datetimepicker('destroy');
                         $mask.remove();
                         box.remove();
                         return;
@@ -717,6 +733,8 @@
                             type: 'error',
                             title: '开始时间必须小于等于结束时间',
                         });
+                        _start.datetimepicker('destroy');
+                        _end.datetimepicker('destroy');
                         return;
                     }
                     var type = $type.val();
@@ -758,6 +776,8 @@
                 $(document).off('keyup.memo').on('keyup.memo', function (e) {
                     if (e.keyCode == 27) {
                         $(document).off('keyup.memo');
+                        _start.datetimepicker('destroy');
+                        _end.datetimepicker('destroy');
                         box.remove();
                         $mask.remove();
                     }
@@ -775,7 +795,76 @@
             }
             $.jqcCalendar.prototype.viewMemo = function (index, target) {
                 var memo = this.memos[index].data;
-                this.createMemoEditor(memo, target, true);
+
+                var offset = target.offset();
+                var width = target.outerWidth();
+                var tWidth = window.innerWidth;
+                var tHeight = window.innerHeight;
+                var box = $('<div>').addClass('jqcCalendar-memo-editor view');
+                var scrollTop = $(window).scrollTop();
+                var memoWidth = 200;
+                var pos = {
+                    left: offset.left + width + 5,
+                    top: offset.top - 12
+                }
+                if (pos.top + 224 >= tHeight + scrollTop) {
+                    pos.top = 'initial';
+                    pos.bottom = tHeight - offset.top - 30;
+                    box.addClass('bottom');
+                }
+                if ((pos.left + memoWidth) >= tWidth) {
+                    pos.left = offset.left - 5 - memoWidth;
+                    box.addClass('jqcCalendar-memo-editor-arrow-right');
+                }
+                $('body').append(box);
+                box.css(pos);
+                var memoContent = $('<div>').addClass('jqcCalendar-memo-editor-content');
+                var span = $('<span>').text('日程名称');
+                var p = $('<p>').text(memo.content).addClass('jqcCalendar-memo-editor-text');
+                memoContent.append(span, p);
+                var timebox = $('<div>').addClass('jqcCalendar-memo-editor-timebox');
+                span = $('<span>').text('开始时间');
+                p = $('<p>').text($.jqcDateUtil.format(+memo.startTime, 'yyyy/MM/dd HH:mm'));
+                var startBox = $('<div>');
+                startBox.append(span, p);
+                timebox.append(startBox);
+                span = $('<span>').text('结束时间');
+                p = $('<p>').text($.jqcDateUtil.format(+memo.endTime, 'yyyy/MM/dd HH:mm'));
+                var endBox = $('<div>');
+                endBox.append(span, p);
+                timebox.append(endBox);
+
+                var $type = $('<div>').addClass('jqcCalendar-memo-editor-type');
+                var _type = memo.type || 0;
+                span = $('<span>').text('日程标记');
+                var $color = $('<span>').addClass('jqcCalendar-memo-editor-color');
+                $color.css({
+                    background: colorMap[_type].color
+                });
+                p = $('<p>').append($color).append(colorMap[_type].label);
+                $type.append(span, p);
+                box.append(memoContent, timebox, $type);
+
+                var $mask = $('<div>').addClass('jqcCalendar-mask');
+                $('body').append($mask);
+               
+                $mask.click(function (e) {
+                    $(document).off('keyup.memo');
+                    box.remove();
+                    $(this).remove();
+                    return;
+                });
+                box.click(function (e) {
+                    e.stopPropagation();
+                });
+
+                $(document).off('keyup.memo').on('keyup.memo', function (e) {
+                    if (e.keyCode == 27) {
+                        $(document).off('keyup.memo');
+                        box.remove();
+                        $mask.remove();
+                    }
+                });
             }
             $.jqcCalendar.prototype.deleteMemo = function (index) {
                 var temp = this.memos[index];
