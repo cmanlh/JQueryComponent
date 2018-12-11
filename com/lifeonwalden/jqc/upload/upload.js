@@ -6,7 +6,6 @@
 (function ($) {
     $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'icon', 'notification'])
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'upload').concat('css/upload.css'))
-        .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'upload').concat('css/common.css'))
         .execute(function () {
             const mimeType = {
                 "image": 'image/vnd.dwg,image/vnd.dxf,image/gif,image/jp2,image/jpeg,image/png,image/vnd.svf,image/tiff',   // 常用图片兼容
