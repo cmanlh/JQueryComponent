@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+        p{
+            text-indent: 0!important;
+        }
+    </style>
+    <title>upload - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">upload</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>分为单文件，多文件模式</li>
+            <li>可限制文件大小</li>
+            <li>可自定义文件类型</li>
+            <li>可提交自定义数据</li>
+            <li>可自定义文件name字段</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>el</td>
+                    <td>jQury Object</td>
+                    <td>yes</td>
+                    <td></td>
+                    <td></td>
+                    <td>容器元素</td>
+                </tr>
+                <tr>
+                    <td>url</td>
+                    <td>String</td>
+                    <td>yes</td>
+                    <td></td>
+                    <td></td>
+                    <td>上传文件的地址</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>需要额外上传的formData</td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>file</td>
+                    <td>文件对应的name</td>
+                </tr>
+                <tr>
+                    <td>accept</td>
+                    <td>Array(String)</td>
+                    <td></td>
+                    <td>文件格式|image|word|excel</td>
+                    <td></td>
+                    <td>可选文件类型，一种文件类型可直接用字符串，如：'jpg',多种文件用数组，如:['jpg', 'pdf'],image表示所有图片类型，word表示新老word文档类型，excel表新老表格类型。</td>
+                </tr>
+                <tr>
+                    <td>mode</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>single|multiple</td>
+                    <td>single</td>
+                    <td>单文件，多文件模式</td>
+                </tr>
+                <tr>
+                    <td>placeholder</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>placeholder提示</td>
+                </tr>
+                <tr>
+                    <td>maxSize</td>
+                    <td>Int</td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>限制文件大小，单位KB,0标识不限制</td>
+                </tr>
+                <tr>
+                    <td>uploadBtnText</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>上传数据</td>
+                    <td>上传按钮的文本</td>
+                </tr>
+                <tr>
+                    <td>selectFilesText</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>选取文件</td>
+                    <td>选择文件按钮的文本</td>
+                </tr>
+                <tr>
+                    <td>success</td>
+                    <td>Function（data, next）</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>请求成功的回调函数，data为接口返回的数据，next表示成功后，组件需要调用的回调，已封装，直接调用</td>
+                </tr>
+                <tr>
+                    <td>error</td>
+                    <td>Function(error, next)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>同success</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">单文件模式</div>
+            <div class="single"></div>
+            <pre class="prettyprint linenums">
+new $.jqcUpload({
+    el: $('.single'),
+    url: 'http://172.29.114.86:7001/upload',
+    accept: 'image',
+    maxSize: 800,
+    name: 'test',
+    data: {
+        username: 'mawenjie',
+        password: '111111'
+    },
+    placeholder: 'placeholder'
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">多文件模式</div>
+            <div class="multiple"></div>
+            <pre class="prettyprint linenums">
+new $.jqcUpload({
+    el: $('.multiple'),
+    url: 'http://172.29.114.86:7001/upload',
+    accept: ['xlsx', 'txt', 'jpg'],
+    mode: 'multiple',
+    placeholder: '请选择xlsx、txt、jpg格式文件,我是placeholder'
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/upload.js"></script>
+</body>
+
+</html>

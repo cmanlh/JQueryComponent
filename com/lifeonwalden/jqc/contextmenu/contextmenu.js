@@ -84,6 +84,9 @@
                     render.call(_this);
                 }, 0);
             };
+            $.jqcContextMenu.prototype.hide = function () {
+                $body.find('.jqcContextMenu').remove();
+            };
 
             // 绑定事件
             function bindEvent() {

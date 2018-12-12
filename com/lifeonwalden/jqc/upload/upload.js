@@ -6,7 +6,6 @@
 (function ($) {
     $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'icon', 'notification'])
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'upload').concat('css/upload.css'))
-        .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'upload').concat('css/common.css'))
         .execute(function () {
             const mimeType = {
                 "image": 'image/vnd.dwg,image/vnd.dxf,image/gif,image/jp2,image/jpeg,image/png,image/vnd.svf,image/tiff',   // 常用图片兼容
@@ -127,10 +126,10 @@
                         _this.files = [];
                         if (this.files.length) {
                             console.log(this.files)
-                            if (_this.maxSize && this.files[0].size > (_this.maxSize * 1024 * 1024)) {
+                            if (_this.maxSize && this.files[0].size > (_this.maxSize * 1024)) {
                                 $.jqcNotification({
                                     type: 'error',
-                                    title: `所选文件大小必须小于等于${(_this.maxSize).toFixed(2)}MB`
+                                    title: `所选文件大小必须小于等于${(_this.maxSize)}KB`
                                 });
                                 $(this).val('');
                                 return;
@@ -205,7 +204,7 @@
                                     type: 'error',
                                     title: '上传失败'
                                 });
-                                _this.reset();
+                                _this.reset(true);
                             });
                         }
                     });
@@ -253,10 +252,10 @@
             $.jqcUpload.prototype.addFiles = function (files) {
                 var _this = this;
                 for (var index = 0; index < files.length; index++) {
-                    if (files[index].size > (_this.maxSize*1024*1024)) {
+                    if (_this.maxSize && files[index].size > (_this.maxSize*1024)) {
                         $.jqcNotification({
                             type: 'error',
-                            title: `所选文件大小必须小于等于${(_this.maxSize).toFixed(2)}MB`,
+                            title: `所选文件大小必须小于等于${(_this.maxSize)}KB`,
                             content: files[index].name
                         });
                     } else {
@@ -285,11 +284,14 @@
                 }
             }
             // reset
-            $.jqcUpload.prototype.reset = function () {
+            $.jqcUpload.prototype.reset = function (isError) {
                 var _this = this;
                 this.container.removeClass('loading');
                 this.uploading = false;
                 this.input.prop('disabled', false);
+                if (isError) {
+                    return;
+                }
                 if (this.mode == 'single') {
                     this.files = [];
                 } else {

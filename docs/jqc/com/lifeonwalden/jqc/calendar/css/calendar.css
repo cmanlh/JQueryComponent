@@ -1,11 +1,12 @@
 @charset 'UTF-8';
 .jqcCalendar-container {
-    /*border: 1px solid red;*/
+    background: #fff;
+    padding: 10px;
 }
 .jqcCalendar-container * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 .jqcCalendar-header{
     display: flex;
@@ -13,7 +14,8 @@
     justify-content: space-between;
     font-size: 16px;
     color: #222;
-    margin-bottom: 30px;
+    padding-bottom: 30px;
+    background: #fff;
 }
 .jqcCalendar-title {
     height: 30px;
@@ -52,6 +54,7 @@
     border: 1px solid #e4e6ee;
     align-items: center;
     justify-content: space-around;
+    background: #fff;
 }
 .jqcCalendar-body .jqcCalendar-item{
     border-left: 1px solid #e4e6ee;
@@ -205,6 +208,7 @@
     line-height: 18px;
     margin: 0;
     padding: 0;
+    font-size: 12px;
 }
 .jqcCalendar-item-tips p:nth-child(1) {
     width: 100%;
@@ -315,14 +319,77 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 164px;
+    width: 313px;
     background: #FFFFFF;
     border: 1px solid #F2F2F2;
     box-shadow: 0 2px 12px 0 rgba(0,0,0,0.2);
     border-radius: 2px;
-    padding: 10px;
+    padding: 15px;
     z-index: 1000;
     box-sizing: border-box;
+    font-size: 12px;
+}
+.jqcCalendar-memo-editor-color{
+    display: inline-block;
+    width: 8px!important;
+    height: 8px!important;
+    border-radius: 1px;
+    margin-right: 7px!important;
+}
+.jqcCalendar-memo-editor-timebox > div {
+    overflow: hidden;
+}
+.jqcCalendar-memo-editor-timebox > div:nth-child(1) {
+    margin-bottom: 20px;
+}
+.editor .jqcCalendar-memo-editor-timebox > div:nth-child(1) {
+    margin-bottom: 10px;
+}
+.jqcCalendar-memo-editor.view {
+    line-height: 20px;
+    width: 200px;
+}
+.jqcCalendar-memo-editor > div {
+    overflow: hidden;
+}
+.jqcCalendar-memo-editor.editor{
+    /*padding-left: 73px;*/
+}
+.jqcCalendar-memo-editor.editor > div span+div {
+    width: 225px;
+    float: right;
+    position: relative;
+}
+.jqcCalendar-memo-editor.editor > div span+div span{
+    position: absolute;
+    z-index: 8;
+    left: 0;
+    top: 11px;
+}
+.jqcCalendar-memo-editor > div span{
+    float: left;
+    width: 63px;
+    color: #999;
+}
+.jqcCalendar-memo-editor.editor > div span{
+    float: left;
+    width: 63px;
+    color: #444;
+}
+.jqcCalendar-memo-editor.editor > div span{
+    width: 55px;
+    line-height: 30px;
+}
+.jqcCalendar-memo-editor > div p{
+    float: left;
+    width: 105px;
+    display: flex;
+    align-items: center;
+    color: #666;
+}
+.jqcCalendar-memo-editor-text {
+    color: #222!important;
+    word-break: break-all;
 }
 .jqcCalendar-memo-editor::before{
     content: '';
@@ -337,6 +404,10 @@
     transform: rotate(45deg);
     z-index: 1;
 }
+.jqcCalendar-memo-editor.bottom::before{
+    top: initial;
+    bottom: 15px;
+}
 .jqcCalendar-memo-editor::after{
     content: '';
     position: absolute;
@@ -346,6 +417,11 @@
     width: 20px;
     height: 50px;
     z-index: 2;
+}
+.jqcCalendar-memo-editor.bottom::after{
+    top: initial;
+    bottom: 0;
+    left: 0;
 }
 .jqcCalendar-memo-editor.jqcCalendar-memo-editor-arrow-right::before{
     right: -5px;
@@ -361,48 +437,60 @@
     padding: 0;
     position: relative;
     z-index: 3;
+    font-size: 12px!important;
 }
 .jqcCalendar-memo-editor textarea,
 .jqcCalendar-memo-editor input {
-    padding-left: 16px;
-    line-height: 20px;
+    padding: 5px 10px;
     display: inline-block;
     width: 60%;
-    height: 20px;
+    height: 30px;
     font-size: 12px;
-    border: none;
+    border-radius: 2px;
+    border: 1px solid #d9d9d9;
+}
+.jqcCalendar-memo-editor-content{
+    /*height: 30px;*/
 }
 .jqcCalendar-memo-editor textarea:hover,
 .jqcCalendar-memo-editor input:hover,
 .jqcCalendar-memo-editor textarea:focus,
 .jqcCalendar-memo-editor input:focus {
-    border: none!important;
+    border-color: #999!important;
 }
-
-
-.jqcCalendar-memo-editor .jqcCalendar-memo-editor-start-time,
-.jqcCalendar-memo-editor .jqcCalendar-memo-editor-end-time {
-    background: none;
-    width: 50px;
-    padding-left: 0;
+.jqcCalendar-memo-editor-start,
+.jqcCalendar-memo-editor-end {
+    width: 120px!important;
+    padding-left: 36px!important;
+    background: url('./images/icon-date.png') no-repeat 10px center;
+    background-size: 16px 16px;
+    cursor: pointer;
+}
+.jqcCalendar-memo-editor-start-time,
+.jqcCalendar-memo-editor-end-time {
+    width: 100px!important;
+    padding-left: 36px!important;
+    background: url('./images/icon-time.png') no-repeat 10px center;
+    background-size: 16px 16px;
     margin-left: 5px;
+    cursor: pointer;
 }
 .jqcCalendar-memo-editor textarea:focus,
 .jqcCalendar-memo-editor input:focus {
     outline: none;
 }
 .jqcCalendar-memo-editor pre{
-    min-height: 20px;
+    min-height: 30px;
     line-height: 20px;
     white-space: normal;
     word-break: break-all;
     letter-spacing: 0;
-    padding-left: 16px;
+    padding: 5px 10px;
     font-size: 12px;
+    border: 1px solid #fff;
     visibility: hidden;
 }
 .jqcCalendar-memo-editor textarea{
-    background: url('./images/icon_edit.svg') no-repeat 0 center;
     color: #222;
     resize: none;
     position: absolute;
@@ -411,32 +499,32 @@
     left: 0;
     width: 100%;
     height: 100%;
+    line-height: 20px;
     overflow: hidden;
+    word-break: break-all;
     background-position: 0 5px;
 }
 .jqcCalendar-memo-editor input{
-    background: url('./images/icon_time.svg') no-repeat 0 center;
-    color: #666;
+    color: #222;
+}
+.jqcCalendar-memo-editor-textarea{
+    position: relative
 }
 .jqcCalendar-memo-editor-timebox{
-    padding: 9px 0;
-    margin: 10px 0;
+    padding: 14px 0;
+    margin: 15px 0;
     border-top: 1px solid #f2f2f2;
     border-bottom: 1px solid #f2f2f2;
 }
 .jqcCalendar-memo-editor-type{
-    height: 20px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 .jqcCalendar-memo-type {
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    left: 0;
+    padding-left: 26px!important;
     width: 100%!important;
-    background: none!important;
 }
 .jqcCalendar-mask{
     position: fixed;
