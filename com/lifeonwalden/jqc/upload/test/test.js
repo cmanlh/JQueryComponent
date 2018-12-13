@@ -18,11 +18,25 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 accept: 'image',
                 maxSize: 800,
                 name: 'test',
-                data: {
-                    username: 'mawenjie',
-                    password: '111111'
+                data: function () {
+                    return {
+                        username: $('.username').val(),
+                        password: $('.password').val()
+                    };
                 },
                 placeholder: 'placeholder',
+                check: function (data, upload) {
+                    console.log('check', data);
+                    if (data.username == '') {
+                        alert('用户名不能为空');
+                        return false;
+                    }
+                    if (data.password == '') {
+                        alert('密码不能为空');
+                        return false;
+                    }
+                    return true;
+                },
                 success: function (data, success, error) {
                     // 根据接口返回结果自定义成功与失败
                     if (data) {

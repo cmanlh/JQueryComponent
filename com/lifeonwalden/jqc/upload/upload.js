@@ -83,7 +83,10 @@
                 placeholder: '',
                 selectFilesText: '选取文件',
                 files: [],
-                maxSize: 0,
+                maxSize: 0,     // 文件大小 单位KB
+                check: function (data) {    // 检查数据
+                    return true;
+                },
                 success: function (data, next, errorCallback) {
                     next();
                 },
@@ -101,6 +104,7 @@
                 if (!this.el || !(this.el instanceof $)) {
                     throw new Error('jqcUpload: 缺少el容器！');
                 }
+                this.files = [];
                 this.container = $('<div>').addClass('jqcUpload-container');
                 this.btn = $('<button>').addClass('jqcUpload-btn').text(this.uploadBtnText);
                 this.loading = $('<i>').addClass('el-icon-loading jqcUpload-loading');
@@ -167,6 +171,10 @@
                     var _data = _this.data;
                     if (typeof _this.data == 'function') {
                         _data = _this.data() || {};
+                    }
+                    if (!_this.check(_data)) {
+                        _this.reset(true);
+                        return;
                     }
                     for (var key in _data) {
                         if (_data.hasOwnProperty(key)) {
