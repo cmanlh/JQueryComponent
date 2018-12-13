@@ -71,7 +71,7 @@
                 </tr>
                 <tr>
                     <td>data</td>
-                    <td>Object</td>
+                    <td>Object|Function</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -135,11 +135,11 @@
                 </tr>
                 <tr>
                     <td>success</td>
-                    <td>Function（data, next）</td>
+                    <td>Function（data, successCallback, errorCallback）</td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>请求成功的回调函数，data为接口返回的数据，next表示成功后，组件需要调用的回调，已封装，直接调用</td>
+                    <td>请求成功的回调函数，data为接口返回的数据，successCallback自定义成功的回调，errorCallback自定义失败的回调</td>
                 </tr>
                 <tr>
                     <td>error</td>

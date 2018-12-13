@@ -23,12 +23,13 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                     password: '111111'
                 },
                 placeholder: 'placeholder',
-                success: function (data, next) {
-                    var files = data.filename;
-                    files.forEach(function(name) {
-                        console.log(`http://172.29.114.86:7001/${name}`);
-                    });
-                    next(); //必须调用
+                success: function (data, success, error) {
+                    // 根据接口返回结果自定义成功与失败
+                    if (data) {
+                        success();
+                    } else {
+                        error();
+                    }
                 }
             }); 
            window.b = new $.jqcUpload({
@@ -37,6 +38,9 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 accept: ['xlsx', 'txt', 'jpg'],
                 mode: 'multiple',
                 maxSize: 800,
+                data: function () {
+                    return {a: Math.random()};
+                },
                 placeholder: '请选择图片,我是placeholder',
                 success: function (data, next) {
                     var files = data.filename;

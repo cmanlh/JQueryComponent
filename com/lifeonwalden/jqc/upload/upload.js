@@ -84,7 +84,7 @@
                 selectFilesText: '选取文件',
                 files: [],
                 maxSize: 0,
-                success: function (data, next) {
+                success: function (data, next, errorCallback) {
                     next();
                 },
                 error: function (data, next) {
@@ -164,9 +164,13 @@
                     _this.uploading = true;
                     _this.input.prop('disabled', true);
                     var formData = new FormData();
-                    for (var key in _this.data) {
-                        if (_this.data.hasOwnProperty(key)) {
-                            var value = _this.data[key];
+                    var _data = _this.data;
+                    if (typeof _this.data == 'function') {
+                        _data = _this.data() || {};
+                    }
+                    for (var key in _data) {
+                        if (_data.hasOwnProperty(key)) {
+                            var value = _data[key];
                             formData.append(key, value);            
                         }
                     }
@@ -196,6 +200,12 @@
                                     });
                                 }
                                 _this.reset();
+                            }, () => {
+                                $.jqcNotification({
+                                    type: 'error',
+                                    title: '上传失败'
+                                });
+                                _this.reset(true);
                             });
                         },
                         error: function (data) {
