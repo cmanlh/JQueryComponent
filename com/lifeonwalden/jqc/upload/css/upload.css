@@ -35,14 +35,14 @@
     overflow: hidden;
 }
 .jqcUpload-container.jqcUpload-single .jqcUpload-input-mask{
-    width: 150px;
+    width: 122px;
     border-left: 1px solid #d9d9d9;
     border-top: 1px solid #d9d9d9;
     border-bottom: 1px solid #d9d9d9;
     border-radius: 2px 0 0 2px;
 }
 .jqcUpload-container.jqcUpload-single .jqcUpload-file-name{
-    width: 124px;
+    width: 96px;
     padding: 0 10px;
     font-size: 12px;
     border: none;
