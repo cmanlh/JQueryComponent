@@ -179,12 +179,15 @@
                     for (var key in _data) {
                         if (_data.hasOwnProperty(key)) {
                             var value = _data[key];
-                            formData.append(key, value);            
+                            if (typeof value == 'string') {
+                                value = encodeURIComponent(value);
+                            }
+                            formData.append(key, value);    
                         }
                     }
                     _this.files.forEach(file => {
                         if (!file.hasUpload) {
-                            formData.append(_this.name, file, file.name);
+                            formData.append(_this.name, file, encodeURIComponent(file.name));
                         }
                     });
                     $.ajax({
