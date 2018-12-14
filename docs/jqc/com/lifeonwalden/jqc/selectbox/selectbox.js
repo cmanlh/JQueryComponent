@@ -380,7 +380,7 @@
                             continue;
                         }
                         packageData = {
-                            label: '<li '.concat('value="v').concat(_data[keyVal]).concat('">').concat(_data[keyLabel]).concat('</li>'),
+                            label: '<li '.concat('value="v').concat(_data[keyVal]).concat('" title="').concat(_data[keyLabel]).concat('">').concat(_data[keyLabel]).concat('</li>'),
                             key: keyVal,
                             text: _data[keyLabel],
                             data: _data
@@ -388,7 +388,7 @@
                     } else {
                         var text = keyLabel(_data);
                         packageData = {
-                            label: '<li '.concat('value="v').concat(_data[keyVal]).concat('">').concat(text).concat('</li>'),
+                            label: '<li '.concat('value="v').concat(_data[keyVal]).concat('" title="').concat(text).concat('">').concat(text).concat('</li>'),
                             key: keyVal,
                             text: text,
                             data: _data
