@@ -146,7 +146,7 @@
                     if (_this.cellRender) {
                         label = _this.cellRender(label, data);
                     }
-                    _li.append(label);
+                    _li.append(label).attr('title', label);
                     if (value == _this.currentValue) {
                         _li.addClass('active');
                     }

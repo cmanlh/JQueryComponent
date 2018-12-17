@@ -380,7 +380,7 @@
                             continue;
                         }
                         packageData = {
-                            label: '<li '.concat('value="v').concat(_data[keyVal]).concat('">').concat(_data[keyLabel]).concat('</li>'),
+                            label: '<li '.concat('value="v').concat(_data[keyVal]).concat('" title="').concat(_data[keyLabel]).concat('">').concat(_data[keyLabel]).concat('</li>'),
                             key: keyVal,
                             text: _data[keyLabel],
                             data: _data
@@ -388,7 +388,7 @@
                     } else {
                         var text = keyLabel(_data);
                         packageData = {
-                            label: '<li '.concat('value="v').concat(_data[keyVal]).concat('">').concat(text).concat('</li>'),
+                            label: '<li '.concat('value="v').concat(_data[keyVal]).concat('" title="').concat(text).concat('">').concat(text).concat('</li>'),
                             key: keyVal,
                             text: text,
                             data: _data
@@ -444,16 +444,37 @@
                     var count = 0;
                     for (var index = 0; index < this.sortedFilterCache.length; index++) {
                         var _data = this.sortedFilterCache[index].data;
-                        var _key = _data.data[_data.key];
-                        if (params != undefined && params.selected && params.selected.has(_key)) {
-                            continue;
+                        if ($.isArray(_data)) {
+                            _data.forEach(item => {
+                                var _key = item.data[item.key];
+                                if (params && params.currentVal == _key) {
+                                    return;
+                                }
+                                if (params && params.selected && params.selected.has(_key)) {
+                                    return;
+                                }
+                                if (cache.indexOf(_key) > -1) {
+                                    return;
+                                }
+                                cache.push(_key);
+                                _list += item.label;
+                                count++;
+                            })
+                        } else {
+                            var _key = _data.data[_data.key];
+                            if (params && params.currentVal == _key) {
+                                continue;
+                            }
+                            if (params != undefined && params.selected && params.selected.has(_key)) {
+                                continue;
+                            }
+                            if (cache.indexOf(_key) > -1) {
+                                continue;
+                            }
+                            cache.push(_key);
+                            _list += _data.label;
+                            count++;
                         }
-                        if (cache.indexOf(_key) > -1) {
-                            continue;
-                        }
-                        cache.push(_key);
-                        _list += _data.label;
-                        count++;
                         if (count >= 10) {
                             break;
                         }
@@ -871,7 +892,9 @@
                     that.input.focus();
                     // 自动显示
                     if (that.options.autoDisplay) {
-                        that.optionUL.html(that.optionCore.autoDisplay());
+                        that.optionUL.html(that.optionCore.autoDisplay({
+                            currentVal: that.currentVal
+                        }));
                     }
                 });
 
@@ -912,7 +935,9 @@
                             {
                                 var _val = that.input.val();
                                 if ($.trim(_val) == '' && that.options.autoDisplay) {
-                                    that.optionUL.html(that.optionCore.autoDisplay());
+                                    that.optionUL.html(that.optionCore.autoDisplay({
+                                        currentVal: that.currentVal
+                                    }));
                                     return;
                                 }
                                 if (null != filterHandler) {
