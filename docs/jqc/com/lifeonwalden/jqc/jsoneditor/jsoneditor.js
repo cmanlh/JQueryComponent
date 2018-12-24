@@ -36375,3 +36375,4 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
+$JqcLoader.importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'jsoneditor').concat('css/jsoneditor.css')).execute();

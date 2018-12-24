@@ -5,7 +5,7 @@
     justify-content: space-between;
     position: relative;
     background: #fff;
-    overflow: hidden;
+    /*overflow: hidden;*/
     z-index: 4;
 }
 .jqcFormToolBar.jqcFormToolBar-newline {

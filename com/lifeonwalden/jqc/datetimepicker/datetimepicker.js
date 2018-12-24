@@ -2384,3 +2384,5 @@ var datetimepickerFactory = function ($) {
     }
 
 }));
+
+$JqcLoader.importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'datetimepicker').concat('css/datetimepicker.css')).execute();

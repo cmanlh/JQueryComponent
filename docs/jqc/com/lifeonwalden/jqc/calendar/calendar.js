@@ -4,7 +4,6 @@
  */
 ;(function ($) {
     $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'valHooks', 'select', 'timepicker', 'notification', 'contextmenu', 'datetimepicker', 'dateUtil', 'confirm'])
-        .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'datetimepicker').concat('css/datetimepicker.css'))
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'calendar').concat('css/calendar.css'))
         .execute(function () {
             const today = new Date();
