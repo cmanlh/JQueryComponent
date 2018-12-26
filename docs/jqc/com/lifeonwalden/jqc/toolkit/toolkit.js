@@ -49,9 +49,22 @@
         }
         return num > 9 ? num : '0' + num;
     }
+    /**
+     * 获取url query
+     * @param { String } name 
+     */
+    function getQueryString(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    }
     $.jqcToolkit = {
         rawType: rawType,
         uuid: uuid,
-        b0: b0
+        b0: b0,
+        getQueryString,
     };
 })(jQuery);
