@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <title>checkbox - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">checkbox</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>支持单选模式、复选模式</li>
+            <li>支持横向展示、竖向展示</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>el</td>
+                    <td>$(INPUT)</td>
+                    <td>yes</td>
+                    <td></td>
+                    <td></td>
+                    <td>jquery对象（input）</td>
+                </tr>
+                onChange: null
+                <tr>
+                    <td>type</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>checkbox|radio</td>
+                    <td>checkbox</td>
+                    <td>样式类型</td>
+                </tr>
+                <tr>
+                    <td>mode</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>single|multiple</td>
+                    <td>single</td>
+                    <td>单选模式、复选模式</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>Array(object)</td>
+                    <td></td>
+                    <td></td>
+                    <td>[]</td>
+                    <td>数据</td>
+                </tr>
+                <tr>
+                    <td>disabled</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>置灰 多选如： 1,2,3  只读： *</td>
+                </tr>
+                <tr>
+                    <td>defaultValue</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>默认值</td>
+                </tr>
+                <tr>
+                    <td>direction</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>row|column</td>
+                    <td>row</td>
+                    <td>展示方向</td>
+                </tr>
+                <tr>
+                    <td>adapter</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td>{label:'label',value:'value'}</td>
+                    <td>数据适配，label可以是function,参数1为对应数据，参数2为选中状态，返回字符串，或html片段</td>
+                </tr>
+                <tr>
+                    <td>trigger</td>
+                    <td>String</td>
+                    <td></td>
+                    <td>icon</td>
+                    <td></td>
+                    <td>是否仅icon触发选中</td>
+                </tr>
+                <tr>
+                    <td>onChange</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>值变化后触发的回调</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            
+            <div class="exampleTitle">默认值</div>
+            <div>
+                <input type="text" id="default">
+            </div>
+            <pre class="prettyprint linenums">
+    const dataSource = [{
+            label: '测试1',
+            value: 1
+        }, {
+            label: '测试2',
+            value: 2
+        }, {
+            label: '测试3',
+            value: 3
+        }, {
+            label: '测试4',
+            value: 4
+        }, {
+            label: '测试5',
+            value: 5
+        }, {
+            label: '测试6',
+            value: 6
+        }];
+
+    new $.jqcCheckbox({
+        el: $('#default'),
+        data: dataSource,
+        defaultValue: '4'
+    });
+        </pre>
+        </section>
+
+        <section>
+            <div class="exampleTitle">复选</div>
+            <div>
+                <input type="text" id="multiple">
+            </div>            
+            <pre class="prettyprint linenums">
+    new $.jqcCheckbox({
+        el: $('#multiple'),
+        data: dataSource,
+        mode: 'multiple',
+        defaultValue: '1,3,5'
+    });
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">radio</div>
+            <div>
+                <input type="text" id="radio">
+            </div>            
+            <pre class="prettyprint linenums">
+    new $.jqcCheckbox({
+        el: $('#radio'),
+        data: dataSource,
+        type: 'radio'
+    });
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">纵向</div>
+            <div>
+                <input type="text" id="column">
+            </div>            
+            <pre class="prettyprint linenums">
+    new $.jqcCheckbox({
+        el: $('#column'),
+        data: dataSource,
+        direction: 'column'
+    });
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">适配</div>
+            <div>
+                <input type="text" id="adapter">
+            </div>            
+            <pre class="prettyprint linenums">
+    const dataSource1 = [{
+        id: 0,
+        name: '佩奇'
+    }, {
+        id: 1,
+        name: '乔治'
+    }];
+    new $.jqcCheckbox({
+        el: $('#adapter'),
+        data: dataSource1,
+        defaultValue: 0,
+        direction: 'column',
+        adapter: {
+            label: function (data, isChecked) {
+                return `我是小猪${data.name}${isChecked?',哼哼哼':''}！`
+            },
+            value: 'id'
+        }
+    });
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/checkbox.js"></script>
+</body>
+
+</html>
