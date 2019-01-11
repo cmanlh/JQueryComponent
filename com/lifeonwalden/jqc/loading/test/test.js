@@ -11,11 +11,11 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
 
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['loading']).execute(function () {
             var a = new $.jqcLoading({
-                show: true,
+                show: true
             });
             $('#btn1').click(function (e) {
                 e.stopPropagation();
-                a.show();
+                a.show('点击，加载中...');
             });
             $(document).click(function () {
                 a.hide();
