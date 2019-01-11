@@ -32,17 +32,21 @@
 }
 
 .jqcMenuTree li.hasChild:after {
-    content: '';
-    width: 8px;
+    font-family: element-icons !important;
+    content: '\e900';
+    width: 10px;
     height: 6px;
     position: absolute;
-    top: 17px;
-    right: 20px;
-    background: url('./images/icon_item_detault.png') no-repeat center;
+    color: #CAD3DC;
+    top: 15px;
+    right: 24px;
+    /*background: url('./images/icon_item_detault.png') no-repeat center;*/
 }
 
 .jqcMenuTree li.hasChild.active:after {
-    background: url('./images/icon_item_active.png') no-repeat center;
+    content: '\e905';
+    color: #fff;
+    /*background: url('./images/icon_item_active.png') no-repeat center;*/
 }
 
 .jqcMenuTree li ul{
@@ -153,17 +157,22 @@
     position: relative;
 }
 .jqcMenuTree-settingPanel ul div.hasChild::after{
-    content: '';
+    font-family: element-icons !important;
+    content: '\e900';
     position: absolute;
-    width: 8px;
+    width: 10px;
     height: 6px;
-    background: url('./images/icon_arrow_down.png') no-repeat center;
+    font-size: 10px;
+    color: #666;
+    /*background: url('./images/icon_arrow_down.png') no-repeat center;*/
     right: 0;
-    top: 50%;
-    margin-top: -3px;
+    top: 0;
+    /*margin-top: -3px;*/
 }
 .jqcMenuTree-settingPanel .active > div.hasChild::after{
-    background: url('./images/icon_arrow_up.png') no-repeat center;
+    color: #C63136;
+    content: '\e905';
+    /*background: url('./images/icon_arrow_up.png') no-repeat center;*/
 }
 .jqcMenuTree-settingPanel ul div input{
     position: absolute;
