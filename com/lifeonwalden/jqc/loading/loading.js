@@ -32,11 +32,7 @@
                 var _this = this;
                 this.options = Object.assign({}, DEFAULT_OPTIONS, params);
                 this.body = $('body');
-                this.aid = 0;           //looper id
-                this.frame = 0;         //frame number
-                pointData.call(this);
                 render.call(this);
-                this.loop = drawLine.bind(this);    //looper function
                 this.options.show && this.show();
                 this.status = this.options.show ? 'show' : 'hide';
                 this.typeName = 'jqcMenu';
@@ -45,20 +41,19 @@
             Loading.prototype = new $.jqcBaseElement();
             Loading.prototype.constructor = Loading;
 
-            Loading.prototype.show = function () {
+            Loading.prototype.show = function (text) {
                 if (this.locked) {
-                    return;
-                }
-                if (this.status === 'show') {
                     return;
                 }
                 var _this = this;
                 this.status = 'show';
                 this.mask.css('display', 'flex');
+                if (text != undefined) {
+                    this.text.text(text).show();
+                } else {
+                    this.text.hide();
+                }
                 removeScroll.call(_this);
-                this.frame = 0;
-                this.ctx.beginPath();
-                this.aid = window.requestAnimationFrame(_this.loop);
             };
 
             Loading.prototype.hide = function () {
@@ -72,7 +67,6 @@
                 this.status = 'hide';
                 this.mask.hide();
                 addScroll.call(_this);
-                cancelAnimationFrame(_this.aid);
             };
 
             Loading.prototype.lock = function (time) {
@@ -105,13 +99,15 @@
 
             function renderLoadingBox() {
                 var _this = this;
-                this.box = $('<div>')
-                    .addClass('jqcLoading-box')
-                    .append(renderCanvas.call(_this))
-                    .css({
-                        width: _this.options.width,
-                        height: _this.options.height,
-                    });
+                this.box = $('<div>').addClass('jqcLoading-body');
+                var box = $('<div>').addClass('jqcLoading-svg-container');
+                var svg = $('<svg><circle class="jqcLoading-circle" cx="50" cy="50" r="20" fill="none"/></svg>')
+                    .addClass('jqcLoading-svg')
+                    .attr('viewBox', '25 25 50 50');
+                box.append(svg);
+                this.box.append(box);
+                this.text = $('<p>').addClass('jqcLoading-text').text(this.options.text);
+                this.box.append(this.text);
                 return this.box;
             }
 
@@ -128,53 +124,16 @@
                 return this.canvas;
             }
 
-            function pointData() {
-                this.x1 = this.options.width * 4 / 15;
-                this.y1 = this.options.height / 2;
-                this.x2 = this.options.width * 5.5 / 15;
-                this.y2 = this.options.height / 4 * 3;
-                this.x3 = this.options.width * 9.5 / 15;
-                this.y3 = this.options.height / 4;
-                this.x4 = this.options.width * 11 / 15;
-                this.y4 = this.options.height / 2;
-                this.x5 = this.options.width;
-                this.y5 = 0;
-            }
-
-            function drawLine() {
-                var _this = this;
-                var y;
-                this.ctx.clearRect(0, 0, _this.options.width, _this.options.height);
-                this.ctx.moveTo(0, _this.options.height);
-                this.frame += this.options.speed;
-                if (this.frame < _this.x1) {
-                    y = this.options.height - Math.round(_this.y1 / _this.x1 * _this.frame);
-                } else if (this.frame <  _this.x2) {
-                    this.ctx.lineTo(_this.x1, _this.y1);
-                    y = _this.y1 + Math.round(_this.y3 / (_this.x2 - _this.x1) * (_this.frame - _this.x1));
-                } else if (this.frame <  _this.x3) {
-                    this.ctx.lineTo(_this.x1, _this.y1);
-                    this.ctx.lineTo(_this.x2, _this.y2);
-                    y = _this.y2 - Math.round(_this.y1 / _this.x1 * (_this.frame - _this.x2));
-                } else if (this.frame <  _this.x4) {
-                    this.ctx.lineTo(_this.x1, _this.y1);
-                    this.ctx.lineTo(_this.x2, _this.y2);
-                    this.ctx.lineTo(_this.x3, _this.y3);
-                    y = _this.y3 + Math.round(_this.y3 / (_this.x2 - _this.x1) * (_this.frame - _this.x3));
-                } else if (this.frame < _this.x5) {
-                    this.ctx.lineTo(_this.x1, _this.y1);
-                    this.ctx.lineTo(_this.x2, _this.y2);
-                    this.ctx.lineTo(_this.x3, _this.y3);
-                    this.ctx.lineTo(_this.x4, _this.y4);
-                    y = _this.y1 - Math.round(_this.y1 / _this.x1 * (_this.frame - _this.x4));
-                } else {
-                    this.frame = 0;
-                    y = 0;
-                    this.ctx.beginPath();
-                }
-                this.ctx.lineTo(_this.frame, y);
-                this.ctx.stroke();
-                this.aid = window.requestAnimationFrame(_this.loop);
+            function renderCircle() {
+                this.circle = $('<circle>')
+                    .addClass('jqcLoading-circle')
+                    .attr({
+                        cx: 50,
+                        cy: 50,
+                        r: 20,
+                        fill: 'none'
+                    });
+                return this.circle; 
             }
 
             function removeScroll() {

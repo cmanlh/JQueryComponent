@@ -12,6 +12,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
             .registerComponent('blocker')
             .registerComponent('zindex')
             .registerComponent('menuTree')
+            .registerComponent('icon')
             .registerComponent('draggable'));
 
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['menuTree']).execute(function () {

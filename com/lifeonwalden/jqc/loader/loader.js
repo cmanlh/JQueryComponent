@@ -129,6 +129,7 @@
         TYPE_CMP = 4;
 
     function Loader() {
+        this.version = '?v=' + +new Date();
         this.moduleMap = new Map();
         this.cmpStack = [];
         this.jsStack = [];
@@ -251,7 +252,7 @@
         if (resource) {
             if (TYPE_JS == resource.type || TYPE_CMP == resource.type) {
                 var script = document.createElement("script");
-                script.src = resource.url;
+                script.src = resource.url + _this.version;
                 script.type = "text/javascript";
                 var fun = function () {
                     script.removeEventListener('load', fun);
@@ -264,7 +265,7 @@
                 document.getElementsByTagName('head')[0].appendChild(script);
             } else if (TYPE_CSS == resource.type) {
                 var css = document.createElement("link");
-                css.href = resource.url;
+                css.href = resource.url + _this.version;
                 css.rel = 'stylesheet';
                 css.type = "text/css";
                 var fun = function () {

@@ -3,7 +3,7 @@
  * lastModifyTime: 2018年7月9日15:55:45
  */
 ;(function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'lang', 'zindex'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'uniqueKey', 'lang', 'zindex', 'icon'])
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'menuTree').concat('css/menuTree.css'))
         .execute(function () {
             var pageHeight = window.innerHeight;

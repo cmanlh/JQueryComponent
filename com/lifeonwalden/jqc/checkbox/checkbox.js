@@ -20,6 +20,7 @@
                     label: 'label',
                     value: 'value'
                 },
+                width: '100%',
                 onChange: null
             };
 
@@ -48,7 +49,10 @@
                 this.el.data('jqcInput', this);
                 this.el.hide().prop('hidden', true);
                 this.container = $('<div>').addClass('jqcCheckbox-container')
-                    .addClass(this.type).addClass(this.direction);
+                    .addClass(this.type).addClass(this.direction)
+                    .css({
+                        width: this.width
+                    });
                 this.el.after(this.container);
                 this.render();
                 this.container.on('click', '.jqcCheckbox-item>p', function (e) {
