@@ -54,7 +54,7 @@
     border-radius: 0 2px 2px 0;
     padding: 0 15px;
     font-size: 12px;
-    color: #fff;
+    color: #fff!important;
     background: #C63136;
     border: none;
     cursor: pointer;
@@ -74,7 +74,7 @@
     font-size: 12px;
     text-align: center;
     line-height: 30px;
-    color: #fff;
+    color: #fff!important;
     margin-right: 10px;
 }
 .jqcUpload-container.jqcUpload-multiple{
