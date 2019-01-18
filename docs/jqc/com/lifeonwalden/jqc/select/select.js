@@ -245,6 +245,7 @@
                     jqcSelect: undefined
                 }).removeClass('jqcSelect-input')
                     .off('click.jqcSelect')
+                    .prop('readonly', false)
                     .val('');
             }
 

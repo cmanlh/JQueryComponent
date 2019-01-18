@@ -963,6 +963,9 @@
                 });
 
                 $(document).click(function(e) {
+                    if (that.container.is(':hidden')) {
+                        return;
+                    }
                     if (!triggerByMe) {
                         that.container.hide();
                         that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
@@ -1091,6 +1094,10 @@
             superDestroy = $.jqcSelectBox.prototype.destroy;
             $.jqcSelectBox.prototype.destroy = function() {
                 superDestroy.apply(this);
+                this.el.removeClass('jqcSelectboxHooks')
+                    .removeClass('jqcSelectboxHooks-active')
+                    .off('focus')
+                    .off('blur');
                 this.container.remove();
             };
         });
