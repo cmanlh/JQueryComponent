@@ -126,6 +126,7 @@
 }
 .jqcUpload-files-item .close.uploaded{
     display: block;
+    cursor: default;
 }
 .jqcUpload-files-item .close.uploaded::before{
     content: '\e933';
@@ -137,10 +138,10 @@
 .jqcUpload-files-item:hover .close{
     display: block;
 }
-.jqcUpload-files-item:hover .close.uploaded::before{
+/* .jqcUpload-files-item:hover .close.uploaded::before{
     content: "\e909";
     color: #999;
-}
+} */
 .jqcUpload-files-item p{
     width: 294px;
     margin: 0 20px 0 6px;
