@@ -236,6 +236,9 @@
                         if (_this.uploading) {
                             return;
                         }
+                        if ($(this).hasClass('uploaded')) {
+                            return;
+                        }
                         var index = $(this).attr('index');
                         _this.files.splice(index, 1);
                         _this.fillFilesList();
