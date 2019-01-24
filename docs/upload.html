@@ -139,7 +139,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>请求成功的回调函数，data为接口返回的数据，successCallback自定义成功的回调，errorCallback自定义失败的回调</td>
+                    <td>请求成功的回调函数，data为接口返回的数据，successCallback自定义成功的回调,调用时需要传入map对象，map对象已{前端uid: 后台返回uid}形式传入，errorCallback自定义失败的回调</td>
                 </tr>
                 <tr>
                     <td>check</td>
@@ -148,6 +148,14 @@
                     <td></td>
                     <td></td>
                     <td>返回值为Boolean, true执行下一步，false中断上传</td>
+                </tr>
+                <tr>
+                    <td>onRemove</td>
+                    <td>Function(uid, successCallback, errorCallback)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>监听删除文件操作，回调函数可传字符串参数作为提醒文字，若不传则不提醒</td>
                 </tr>
             </tbody>
         </table>
