@@ -12,7 +12,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
             .registerComponent('upload'));
 
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['upload']).execute(function () {
-            new $.jqcUpload({
+            window.a = new $.jqcUpload({
                 el: $('.single'),
                 url: 'http://172.29.114.86:7001/upload',
                 accept: 'image',
@@ -24,7 +24,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                         password: $('.password').val()
                     };
                 },
-                placeholder: 'placeholder',
+                placeholder: '请选择文件',
                 check: function (data, upload) {
                     console.log('check', data);
                     if (data.username == '') {
@@ -40,7 +40,7 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 success: function (data, success, error) {
                     // 根据接口返回结果自定义成功与失败
                     if (data) {
-                        success();
+                        success(data);
                     } else {
                         error();
                     }
@@ -56,12 +56,17 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                     return {a: Math.random()};
                 },
                 placeholder: '请选择图片,我是placeholder',
-                success: function (data, next) {
-                    var files = data.filename;
-                    files.forEach(function(name) {
-                        console.log(`http://172.29.114.86:7001/${name}`);
-                    });
-                    next();
+                success: function (data, success, error) {
+                    if (data) {
+                        success(data);
+                    } else {
+                        error();
+                    }
+                },
+                onRemove: function (id, success, error) {
+                    setTimeout(function () {
+                        success('删除成功');
+                    }, 1000);
                 }
             });
         });

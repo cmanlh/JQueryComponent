@@ -4,7 +4,7 @@
  */
 ;
 (function ($) {
-    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'icon', 'notification'])
+    $JqcLoader.importComponents('com.lifeonwalden.jqc', ['baseElement', 'icon', 'notification', 'toolkit'])
         .importCss($JqcLoader.getCmpParentURL('com.lifeonwalden.jqc', 'upload').concat('css/upload.css'))
         .execute(function () {
             const mimeType = {
@@ -93,6 +93,9 @@
                 error: function (data, next) {
                     next();
                 },
+                onRemove: function (backendUuid, success, error) {
+                    success();
+                }
             };
 
             $.jqcUpload = function (params) {
@@ -124,12 +127,11 @@
             $.jqcUpload.prototype.bindEvent = function () {
                 var _this = this;
                 // 选择文件
-                this.input.change(function (e) {
+                this.input.change(function (e, isActive) {
                     // 单文件上传
                     if (_this.mode === 'single') {
                         _this.files = [];
                         if (this.files.length) {
-                            console.log(this.files)
                             if (_this.maxSize && this.files[0].size > (_this.maxSize * 1024)) {
                                 $.jqcNotification({
                                     type: 'error',
@@ -138,11 +140,13 @@
                                 $(this).val('');
                                 return;
                             }
-                            _this.icon.removeClass('el-icon-success').addClass('el-icon-folder');
+                            // _this.icon.removeClass('el-icon-success').addClass('el-icon-folder');
+                            _this.icon.removeClass('el-icon-success el-icon-folder').addClass('el-icon-circle-close');
                             _this._input.val(this.files[0].name);
                             _this.files.push(this.files[0]);
+                            _this.files[0].uuid = $.jqcToolkit.uuid(20);
                         } else {
-                            _this._input.val('');
+                            _this.clear();
                         }
                     } else {
                         if (this.files.length) {
@@ -153,20 +157,67 @@
                     }
                 });
                 // 上传
-                this.btn.click(function () {
+                this.btn.click(function (e, slice) {
+                    _this.upload(true);
+                });
+                // 删除 仅多文件上传
+                if (this.mode == 'multiple') {
+                    this.container.on('click', '.close', function () {
+                        if (_this.uploading) {
+                            return;
+                        }
+                        var index = $(this).attr('index');
+                        var backendUuid = _this.files[index].result;
+                        _this.onRemove(backendUuid, function (res) {
+                            if (res) {
+                                $.jqcNotification({
+                                    type: 'success',
+                                    title: res,
+                                });
+                            }
+                            _this.files.splice(index, 1);
+                            _this.fillFilesList();
+                        }, function (err) {
+                            if (err) {
+                                $.jqcNotification({
+                                    type: 'error',
+                                    title: err
+                                });
+                            }
+                        });
+                    });
+                } else {
+                    this.icon.click(function (e) {
+                        var $icon = $(this);
+                        if ($icon.hasClass('el-icon-circle-close') || $icon.hasClass('el-icon-success')) {
+                            var backendUuid = _this.files[0].result;
+                            _this.onRemove(backendUuid, function (res) {
+                                if (res) {
+                                    $.jqcNotification({
+                                        type: 'success',
+                                        title: res,
+                                    });
+                                }
+                                _this.clear();
+                            }, function (err) {
+                                if (err) {
+                                    $.jqcNotification({
+                                        type: 'error',
+                                        title: err
+                                    });
+                                }
+                            });
+                        }
+                    })
+                }
+            }
+            // 上传
+            $.jqcUpload.prototype.upload = function (needTip) {
+                var _this = this;
+                return new Promise((resolve, reject) => {
                     if (_this.uploading) {
                         return;
                     }
-                    if (!_this.files.length) {
-                        $.jqcNotification({
-                            type: 'error',
-                            title: '请选择文件'
-                        });
-                        return;
-                    }
-                    _this.container.addClass('loading');
-                    _this.uploading = true;
-                    _this.input.prop('disabled', true);
                     var formData = new FormData();
                     var _data = _this.data;
                     if (typeof _this.data == 'function') {
@@ -185,11 +236,26 @@
                             formData.append(key, value);    
                         }
                     }
+                    var needUpload = false;
                     _this.files.forEach(file => {
                         if (!file.hasUpload) {
-                            formData.append(_this.name, file, encodeURIComponent(file.name));
+                            needUpload = true;
+                            formData.append(_this.name, file, encodeURIComponent(file.name + '_' + file.uuid));
                         }
                     });
+                    if (!needUpload) {
+                        if (needTip) {
+                            $.jqcNotification({
+                                type: 'error',
+                                title: '请选择文件'
+                            });
+                        }
+                        resolve();
+                        return;
+                    }
+                    _this.container.addClass('loading');
+                    _this.uploading = true;
+                    _this.input.prop('disabled', true);
                     $.ajax({
                         type: 'POST',
                         url: _this.url,
@@ -198,25 +264,34 @@
                         processData: false,
                         contentType: false,
                         success: function(data) {
-                            _this.success && _this.success(data, () => {
-                                $.jqcNotification({
-                                    type: 'success',
-                                    title: '上传成功'
-                                });
-                                if (_this.mode == 'single') {
-                                    _this.icon.removeClass('el-icon-folder').addClass('el-icon-success');
-                                } else {
-                                    _this.files.forEach(file => {
-                                        file.hasUpload = true;
+                            _this.success && _this.success(data, (map) => {
+                                if (!map) {
+                                    map = {};
+                                }
+                                if (needTip) {
+                                    $.jqcNotification({
+                                        type: 'success',
+                                        title: '上传成功'
                                     });
                                 }
+                                if (_this.mode == 'single') {
+                                    _this.icon.removeClass('el-icon-circle-close').addClass('el-icon-success');
+                                }
+                                _this.files.forEach(file => {
+                                    file.hasUpload = true;
+                                    if (map[file.uuid]) {
+                                        file.result = map[file.uuid];
+                                    }
+                                });
                                 _this.reset();
+                                resolve();
                             }, () => {
                                 $.jqcNotification({
                                     type: 'error',
                                     title: '上传失败'
                                 });
                                 _this.reset(true);
+                                reject();
                             });
                         },
                         error: function (data) {
@@ -226,24 +301,11 @@
                                     title: '上传失败'
                                 });
                                 _this.reset(true);
+                                reject();
                             });
                         }
                     });
                 });
-                // 删除 仅多文件上传
-                if (this.mode == 'multiple') {
-                    this.container.on('click', '.close', function () {
-                        if (_this.uploading) {
-                            return;
-                        }
-                        if ($(this).hasClass('uploaded')) {
-                            return;
-                        }
-                        var index = $(this).attr('index');
-                        _this.files.splice(index, 1);
-                        _this.fillFilesList();
-                    });
-                }
             }
             // 单文件上传
             $.jqcUpload.prototype.renderSlingleMode = function () {
@@ -303,6 +365,9 @@
                     if (this.files[index].hasUpload) {
                         close.addClass('uploaded')
                     }
+                    if (!this.files[index].uuid) {
+                        this.files[index].uuid = $.jqcToolkit.uuid(20);
+                    }
                     item.append(icon, p, close);
                     this.filesList.append(item);
                 }
@@ -317,7 +382,23 @@
                     return;
                 }
                 if (this.mode == 'single') {
-                    this.files = [];
+                    // this.files = [];
+                } else {
+                    this.input.val('');
+                    this.fillFilesList();
+                }
+            }
+            // remove
+            $.jqcUpload.prototype.clear = function () {
+                var _this = this;
+                this.container.removeClass('loading');
+                this.uploading = false;
+                this.input.prop('disabled', false);
+                this.files = [];
+                if (this.mode == 'single') {
+                    this.input.val('');
+                    this._input.val('');
+                    this.icon.removeClass('el-icon-circle-close el-icon-success').addClass('el-icon-folder');
                 } else {
                     this.input.val('');
                     this.fillFilesList();
