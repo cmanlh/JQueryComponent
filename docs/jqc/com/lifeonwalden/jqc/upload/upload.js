@@ -285,20 +285,22 @@
                                 });
                                 _this.reset();
                                 resolve();
-                            }, () => {
+                            }, (msg) => {
                                 $.jqcNotification({
                                     type: 'error',
-                                    title: '上传失败'
+                                    title: '上传失败',
+                                    content: msg
                                 });
                                 _this.reset(true);
                                 reject();
                             });
                         },
                         error: function (data) {
-                            _this.error && _this.error(data, () => {
+                            _this.error && _this.error(data, (msg) => {
                                 $.jqcNotification({
                                     type: 'error',
-                                    title: '上传失败'
+                                    title: '上传失败',
+                                    content: msg
                                 });
                                 _this.reset(true);
                                 reject();
