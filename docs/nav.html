@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .jqcTag-container > p{
+            text-indent: 0;
+        }
+    </style>
+    <title>nav - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">nav</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>多层级按钮导航</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>el</td>
+                    <td>jQuery Object</td>
+                    <td>yes</td>
+                    <td></td>
+                    <td></td>
+                    <td>承载导航的容器</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>Array</td>
+                    <td></td>
+                    <td></td>
+                    <td>[]</td>
+                    <td>按钮数据</td>
+                </tr>
+                <tr>
+                    <td>adapter</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td></td>
+                    <td>{value: 'value', children: 'children', disabled: 'disabled'}}</td>
+                    <td>适配器</td>
+                </tr>
+                <tr>
+                    <td>onSelect</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>点击事件回调</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="nav"></div>
+            <pre class="prettyprint linenums">
+var btns = [{
+    label: '一级菜单-1',
+    children: [{
+        label: '二级菜单-1'
+    }, {
+        label: '二级菜单-特别长特别长特别长特别长',
+        children: [{
+            label: '三级菜单-1'
+        }, {
+            label: '三级菜单-特别长特别长特别长特别长'
+        }, {
+            label: '三级菜单-3',
+            disabled: true
+        }, {
+            label: '三级菜单-4'
+        }]
+    }, {
+        label: '二级菜单-3',
+        disabled: true
+    }, {
+        label: '二级菜单-4'
+    }]
+}, {
+    label: '一级菜单-2'
+}, {
+    label: '一级菜单-3',
+    disabled: true
+}, {
+    label: '一级菜单-4'
+}, {
+    label: '一级菜单-5'
+}];
+
+new $.jqcNav({
+    el: $('.nav'),
+    data: btns,
+    onSelect: function (data) {
+        console.log(data);
+    }
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/nav.js"></script>
+</body>
+
+</html>
