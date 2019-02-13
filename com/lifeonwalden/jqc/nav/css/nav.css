@@ -1,0 +1,96 @@
+@charset 'UTF-8';
+.jqcNav-container{
+    display: inline-flex;
+    line-height: 30px;
+}
+.jqcNav-container > div:nth-last-child(1){
+    margin-right: 0;
+}
+
+.jqcNav-item{
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    cursor: pointer;
+    color: #fff!important;
+    font-size: 12px;
+    background: #C63136;
+    margin-right: 20px;
+    border-radius: 2px;
+}
+.jqcNav-item:hover,
+.jqcNav-item.hover {
+    background: #D86065;
+}
+.jqcNav-item.disabled{
+    background: #ccc;
+    cursor: not-allowed;
+}
+.jqcNav-item.hasChildren.hover .jqcNav-icon-arrow{
+    transform: scale(.8) rotate(180deg);
+}
+
+.jqcNav-icon-arrow {
+    margin: 0 0 0 8px!important;
+    transform: scale(.8);
+    display: flex;
+    color: #fff;
+    height: 14px;
+    transform-origin: 50%;
+    transition: all .3s;
+}
+.jqcNav-icon-arrow::before{
+    font-family: element-icons !important;
+    content: '\e900';
+    line-height: 14px;
+    color: #fff;
+    font-style: normal;
+}
+.jqcNav-subContainer{
+    width: 200px;
+    border: 1px solid #d9d9d9;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .2);
+    line-height: 30px;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    z-index: 999;
+}
+.jqcNav-subItem{
+    padding: 0 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+}
+.jqcNav-subItem p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
+    color: #333;
+    font-size: 12px;
+}
+.jqcNav-subItem .jqcNav-icon-arrow{
+    transform: scale(.6) rotate(-90deg);
+    color: #333;
+    flex-shrink: 0;
+}
+.jqcNav-subItem .jqcNav-icon-arrow::before{
+    color: #333;
+}
+.jqcNav-subItem.hover .jqcNav-icon-arrow{
+    transform: scale(.6) rotate(90deg);
+}
+.jqcNav-subItem.disabled{
+    opacity: .25;
+    cursor: not-allowed;
+}
+.jqcNav-subItem:hover,
+.jqcNav-subItem.hover{
+    color: #000;
+    background: #e4e6ee;
+}
