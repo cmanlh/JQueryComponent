@@ -129,7 +129,7 @@
         TYPE_CMP = 4;
 
     function Loader() {
-        this.version = '?v=' + +new Date();
+        this.version = '';
         this.moduleMap = new Map();
         this.cmpStack = [];
         this.jsStack = [];
@@ -144,6 +144,11 @@
     Loader.prototype.registerModule = function (m) {
         this.moduleMap.set(m.getName(), m);
 
+        return this;
+    };
+
+    Loader.prototype.setVersion = function (version) {
+        this.version = version ? '?version=' + version : '';
         return this;
     };
 
