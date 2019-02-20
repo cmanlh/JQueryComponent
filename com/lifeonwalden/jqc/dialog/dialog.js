@@ -226,8 +226,8 @@
                             }
                     }
                 } else {
-                    _top = _position.top;
-                    _left = _position.left;
+                    _top = _position.top >= 0 ? _position.top : 100;
+                    _left = _position.left >= 0 ? _position.left : (window.innerWidth - width) / 2;
                 }
                 dialog.container.css('top', _top);
                 dialog.container.css('left', _left);
