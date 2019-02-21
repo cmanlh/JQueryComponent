@@ -226,8 +226,8 @@
                             }
                     }
                 } else {
-                    _top = _position.top;
-                    _left = _position.left;
+                    _top = _position.top >= 0 ? _position.top : 100;
+                    _left = _position.left >= 0 ? _position.left : (window.innerWidth - width) / 2;
                 }
                 dialog.container.css('top', _top);
                 dialog.container.css('left', _left);
@@ -288,6 +288,15 @@
                 var that = this;
                 if (that.options.beforeOpen) {
                     that.options.beforeOpen();
+                }
+                if (this.options.position == 'auto') {
+                    var _dialogHeight = this.container.outerHeight();
+                    var sHeight = window.innerHeight;
+                    if ((_dialogHeight + 200) > sHeight) {
+                        this.container.css('top', 0);
+                    } else {
+                        this.container.css('top', 100);
+                    }
                 }
                 if (that.options.modal) {
                     that.modalBox.show();

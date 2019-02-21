@@ -25,12 +25,25 @@
         var that = this;
         that.options = $.extend(true, {}, defaultOptions, param);
         var dom = $(document);
-
         that.options.dragHandler.addClass('jqcDraggable');
         that.options.dragHandler.on('mousedown.jqcDraggable', function (e) {
             if (e.target.className.indexOf('jqcDraggable') < 0) {
                 return;
             }
+            var zIndex = that.options.movableBox.css('z-index');
+            zIndex = zIndex == 'auto' ? 9999 : zIndex;
+            var mask = $('<div>').addClass('jqcDraggable-mask').css({
+                'position': 'fixed',
+                'width': '100%',
+                'height': '100%',
+                'top': 0,
+                'left': 0,
+                'background-color': '#000',
+                'opacity': '0',
+                'cursor': 'move',
+                'z-index': zIndex + 1
+            });
+            $('body').css('user-select', 'none').append(mask);
             var _scrollY = $(window).scrollTop(),
                 _scrollX = $(window).scrollLeft();
             var _position = that.options.movableBox.position();
@@ -52,9 +65,11 @@
                 that.options.movableBox.css('left', _left);
             });
 
-            that.options.dragHandler.on('mouseup.jqcDraggable', function (e) {
-                that.options.dragHandler.off('mouseup.jqcDraggable');
+            dom.on('mouseup.jqcDraggable', function (e) {
+                dom.off('mouseup.jqcDraggable');
                 dom.off('mousemove.jqcDraggable');
+                $('body').css('user-select', 'inherit');
+                $('body').find('.jqcDraggable-mask').remove();
             });
         });
     };
