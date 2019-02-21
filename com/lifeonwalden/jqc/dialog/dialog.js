@@ -289,6 +289,15 @@
                 if (that.options.beforeOpen) {
                     that.options.beforeOpen();
                 }
+                if (this.options.position == 'auto') {
+                    var _dialogHeight = this.container.outerHeight();
+                    var sHeight = window.innerHeight;
+                    if ((_dialogHeight + 200) > sHeight) {
+                        this.container.css('top', 0);
+                    } else {
+                        this.container.css('top', 100);
+                    }
+                }
                 if (that.options.modal) {
                     that.modalBox.show();
                 }
