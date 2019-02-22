@@ -1,0 +1,1 @@
+"use strict";!function(t){t.jqcUniqueKey={fetchIntradayKey:function(){var t="".concat(Date.now()).substr(4);return t=t.concat("".concat(Math.random()).substr(2,11))}}}(jQuery);
