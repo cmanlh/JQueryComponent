@@ -232,7 +232,7 @@
                     return data;
                 }
                 // 有child
-                child = data[_child].filter(item => (_this.avavilable[item[_id]]));
+                var child = data[_child].filter(item => (_this.avavilable[item[_id]]));
                 var len = child.length;
                 if (len >= 2) {
                     return data;

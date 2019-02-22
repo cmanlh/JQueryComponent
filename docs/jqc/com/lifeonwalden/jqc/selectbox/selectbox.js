@@ -1091,7 +1091,7 @@
                 }
             };
 
-            superDestroy = $.jqcSelectBox.prototype.destroy;
+            var superDestroy = $.jqcSelectBox.prototype.destroy;
             $.jqcSelectBox.prototype.destroy = function() {
                 superDestroy.apply(this);
                 this.el.removeClass('jqcSelectboxHooks')

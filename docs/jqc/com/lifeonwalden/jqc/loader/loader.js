@@ -267,6 +267,10 @@
                     loadResource.call(_this);
                 };
                 script.addEventListener('load', fun);
+                script.addEventListener('error', function () {
+                    console.error('资源加载出错：' + resource.url);
+                    loadResource.call(_this);
+                });
                 document.getElementsByTagName('head')[0].appendChild(script);
             } else if (TYPE_CSS == resource.type) {
                 var css = document.createElement("link");
@@ -278,6 +282,10 @@
                     loadResource.call(_this);
                 };
                 css.addEventListener('load', fun);
+                css.addEventListener('error', function () {
+                    console.error('资源加载出错：' + resource.url);
+                    loadResource.call(_this);
+                });
                 document.getElementsByTagName('head')[0].appendChild(css);
             } else {
                 resource.fun(resource.param);
@@ -294,4 +302,4 @@
     };
 
     global.$JqcLoader = jqcLoader;
-}(this));
+}(window));
