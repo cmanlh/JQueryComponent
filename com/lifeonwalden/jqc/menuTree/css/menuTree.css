@@ -79,6 +79,9 @@
 /*一级菜单*/
 .jqcMenuTree-scrollbox > ul > li > div {
     padding-left: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 /*二级菜单*/
 .jqcMenuTree-scrollbox > ul > li > ul > li > div {
@@ -99,6 +102,9 @@
     padding-bottom: 6px;
     background-color: #2B3042;
     color: #B6C8DA;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .jqcMenuTree-settingPanel {
