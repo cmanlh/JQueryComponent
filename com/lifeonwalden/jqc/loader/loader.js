@@ -139,6 +139,7 @@
             normal: []
         };
         this.loadingCount = 0;
+        this.loadedUrl = new Map();
     }
 
     Loader.prototype.registerModule = function (m) {
@@ -255,6 +256,10 @@
             resource = _this.resources.normal.shift();
         }
         if (resource) {
+            if (_this.loadedUrl.has(resource.url)) {
+                loadResource.call(_this);
+                return;
+            }
             if (TYPE_JS == resource.type || TYPE_CMP == resource.type) {
                 var script = document.createElement("script");
                 script.src = resource.url + _this.version;
@@ -264,9 +269,14 @@
                     if (TYPE_CMP == resource.type) {
                         resource.cmp.toLoaded();
                     }
+                    _this.loadedUrl.set(resource.url, true);
                     loadResource.call(_this);
                 };
                 script.addEventListener('load', fun);
+                script.addEventListener('error', function () {
+                    console.error('资源加载出错：' + resource.url);
+                    loadResource.call(_this);
+                });
                 document.getElementsByTagName('head')[0].appendChild(script);
             } else if (TYPE_CSS == resource.type) {
                 var css = document.createElement("link");
@@ -275,9 +285,14 @@
                 css.type = "text/css";
                 var fun = function () {
                     css.removeEventListener('load', fun);
+                    _this.loadedUrl.set(resource.url, true);
                     loadResource.call(_this);
                 };
                 css.addEventListener('load', fun);
+                css.addEventListener('error', function () {
+                    console.error('资源加载出错：' + resource.url);
+                    loadResource.call(_this);
+                });
                 document.getElementsByTagName('head')[0].appendChild(css);
             } else {
                 resource.fun(resource.param);
@@ -294,4 +309,4 @@
     };
 
     global.$JqcLoader = jqcLoader;
-}(this));
+}(window));

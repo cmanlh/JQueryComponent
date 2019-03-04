@@ -40,6 +40,9 @@
                 if (this.defaultValue == '*') {
                     this.defaultValue = this.data.map(i => (i[this.adapter.value])).join(',');
                 }
+                if (!this.defaultValue) {
+                    this.defaultValue = '';
+                }
                 this.currentValue = this.defaultValue.toString().split(',');
                 this.init();
             }

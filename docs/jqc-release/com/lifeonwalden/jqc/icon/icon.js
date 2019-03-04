@@ -1,0 +1,1 @@
+"use strict";jQuery,$JqcLoader.importCss($JqcLoader.getCmpParentURL("com.lifeonwalden.jqc","icon").concat("css/icon.css")).execute(function(){});

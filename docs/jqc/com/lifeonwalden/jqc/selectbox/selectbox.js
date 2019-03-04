@@ -700,6 +700,21 @@
                     that.optionUL.find('li.jqcSelectboxSelected').removeClass('jqcSelectboxSelected');
                     that.optionUL.find('li').eq(selectIndex = selectIndex % optionSize).addClass('jqcSelectboxSelected');
                 });
+                // bug fix#点击非组件区域列表自动关闭
+                var timer = null;
+                that.input.blur(function () {
+                    clearTimeout(timer);
+                    timer = setTimeout(function () {
+                        if (that.container.is(':hidden')) {
+                            return;
+                        }
+                        that.container.hide();
+                        that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
+                        triggerByMe = 3;
+                    }, 150)
+                }).focus(function () {
+                    clearTimeout(timer);
+                });
 
                 $(document).click(function(e) {
                     if (1 !== triggerByMe && 2 !== triggerByMe) {
@@ -717,7 +732,6 @@
                             that.options.afterSelect(result)
                         }
                     }
-
                     triggerByMe = 3;
                 });
 
@@ -785,6 +799,7 @@
                     }
                     that.optionUL.append(that.optionCore.get(_val).label);
                     onSelecting = true;
+                    that.input.focus();
                 });
 
 
@@ -961,6 +976,19 @@
                     that.optionUL.find('li.jqcSelectboxSelected').removeClass('jqcSelectboxSelected');
                     that.optionUL.find('li').eq(selectIndex = selectIndex % optionSize).addClass('jqcSelectboxSelected');
                 });
+                // bug fix#点击非组件区域列表自动关闭
+                that.input.blur(function () {
+                    if (that.container.is(':hidden')) {
+                        return;
+                    }
+                    setTimeout(function () {
+                        if (!triggerByMe) {
+                            triggerByMe = false;
+                            that.container.hide();
+                            that.el.removeClass('jqcSelectboxHooks-active').trigger('blur');
+                        }
+                    }, 150)
+                });
 
                 $(document).click(function(e) {
                     if (that.container.is(':hidden')) {
@@ -1091,7 +1119,7 @@
                 }
             };
 
-            superDestroy = $.jqcSelectBox.prototype.destroy;
+            var superDestroy = $.jqcSelectBox.prototype.destroy;
             $.jqcSelectBox.prototype.destroy = function() {
                 superDestroy.apply(this);
                 this.el.removeClass('jqcSelectboxHooks')
