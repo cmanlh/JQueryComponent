@@ -264,14 +264,15 @@
                         processData: false,
                         contentType: false,
                         success: function(data) {
-                            _this.success && _this.success(data, (map) => {
+                            _this.success && _this.success(data, (map, msg) => {
                                 if (!map) {
                                     map = {};
                                 }
                                 if (needTip) {
                                     $.jqcNotification({
                                         type: 'success',
-                                        title: '上传成功'
+                                        title: '上传成功',
+                                        content: msg
                                     });
                                 }
                                 if (_this.mode == 'single') {
