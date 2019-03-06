@@ -58,6 +58,9 @@
             $.jqcMenuTree.prototype.constructor = $.jqcMenuTree;
             $.jqcMenuTree.prototype.show = function () {
                 var _this = this;
+                if (this.switch.hasClass('active')) {
+                    return;
+                }
                 if (this.options.position == 'fixed') {
                     this.container.animate({
                         left: this.options.left

@@ -39,11 +39,10 @@
                 this.status = 'fold';
                 render.call(_this);
                 bindEvent.call(_this);
-                if (this.options.afterRender) {
-                    setTimeout(function () {
-                        _this.options.afterRender.call(_this);
-                    }, 0);
-                }
+                setTimeout(function () {
+                    _this.options.afterRender && _this.options.afterRender.call(_this);
+                    _this.resize();
+                }, 0);
             };
 
             $.jqcFormToolBar.prototype = new $.jqcBaseElement();
@@ -55,11 +54,12 @@
                     return;
                 }
                 _this.switch.removeClass('active');
-                _this.options.onChange && _this.options.onChange(_this.options.height);
                 _this.conditionBox.animate({
                     height: _this.options.height
                 }, 50, function () {
                     _this.status = 'fold';
+                    var _height = _this.box.outerHeight();
+                    _this.options.onChange && _this.options.onChange(_height);
                 });
             };
 
@@ -69,11 +69,12 @@
                     return;
                 }
                 _this.switch.addClass('active');
-                _this.options.onChange && _this.options.onChange(_this.height);
                 _this.conditionBox.animate({
                     height: _this.height
                 }, 50, function () {
                     _this.status = 'spread';
+                    var _height = _this.box.outerHeight();
+                    _this.options.onChange && _this.options.onChange(_height);
                 });
             };
 
@@ -96,9 +97,11 @@
                     this.conditionBox.removeClass('showmore-visible');
                 }
                 if (this.options.onResize && this.box.is(':visible')) {
-                    var _height = this.box.outerHeight();
-                    var _margin = parseInt(this.box.css('margin-bottom'));
-                    this.options.onResize(_height + _margin);
+                    setTimeout(function () {
+                        var _height = _this.box.outerHeight();
+                        var _margin = parseInt(_this.box.css('margin-bottom'));
+                        _this.options.onResize(_height + _margin);
+                    }, 0);
                 }
             };
 
