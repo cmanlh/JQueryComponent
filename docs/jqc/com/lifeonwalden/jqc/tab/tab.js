@@ -83,9 +83,25 @@
                     e.stopPropagation();
                     _this.moreContainer.toggle();
                 });
-
-                this.moreBtn.on('mouseover.tab', function (e) {
+                var lock = false;
+                var timer = null;
+                this.moreBtn.mouseenter('mouseover.tab', function (e) {
+                    clearTimeout(timer);
                     _this.moreContainer.show();
+                }).mouseleave(function () {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        _this.moreContainer.hide();
+                    }, 300);
+                });
+
+                this.moreContainer.on('mouseleave.tab', function (e) {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        $(this).hide();
+                    }, 300);
+                }).mouseenter(function (e) {
+                    clearTimeout(timer);
                 });
             }
 
@@ -167,8 +183,8 @@
                 this.owner = param.owner;
                 this.id = ''.concat(param.id);
                 this.isActive = true;
-                this.tab = $('<span>').addClass('jqcTabInactive').addClass('jqcTabActive').attr('tabId', this.id).text(param.title);
-                this.close = $('<span>').attr('closeId', this.id).addClass('jqcTabClose');
+                this.tab = $('<span>').addClass('jqcTabInactive').addClass('jqcTabActive').attr('tabId', this.id).text(param.title).attr('title', param.title);
+                this.close = $('<span>').attr('closeId', this.id).addClass('jqcTabClose').attr('title', '关闭' + param.title);
                 this.tab.append(this.close);
                 this.panel = $('<div>').addClass('jqcTabPanel').append(param.content);
                 this.beforeDestroy = param.beforeDestroy;
