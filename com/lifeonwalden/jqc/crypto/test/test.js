@@ -5,6 +5,22 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
             .registerComponents(['charUtil', 'crypto']));
 
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['crypto']).execute(function () {
-            $.crypto.aesGenerateKeyAsync().then(key => console.log(key),reason=>console.log('failed :'.concat(reason)));
+            QUnit.test("String", function (assert) {
+                assert.expect(2);
+                let done = assert.async(2);
+                $.crypto.aesGenerateKeyAsync()
+                    .then(key => {
+                        assert.equal(1, 1, key);
+                        done();
+
+                        $.crypto.importKeyAsync(key)
+                            .then(importedKey => {
+                                crypto.subtle.exportKey('raw', importedKey).then(exportedKey => {
+                                    assert.equal($.charUtil.encodeArrayBuffer(exportedKey), key, $.charUtil.encodeArrayBuffer(exportedKey));
+                                    done();
+                                });
+                            });
+                    });
+            });
         });
     });

@@ -32,6 +32,13 @@
                             });
                         }).catch(err => reject(err));
                     });
+                },
+                importKeyAsync: function (key, format = 'raw', name = 'AES-GCM', usage = ['encrypt', 'decrypt']) {
+                    return new Promise((resolve, reject) => {
+                        subtle.importKey(format, $.charUtil.decodeArrayBuffer(key), name, true, usage)
+                            .then(importedKey => resolve(importedKey))
+                            .catch(err => reject(err));
+                    });
                 }
             };
         });
