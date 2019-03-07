@@ -135,7 +135,7 @@
                 mask = 63;
             do {
                 buf = buf.concat(CHAR_SET[val & mask]);
-                val >>= 6;
+                val >>>= 6;
             } while (val != 0);
 
             return buf;
