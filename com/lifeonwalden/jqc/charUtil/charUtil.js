@@ -91,7 +91,7 @@
 
             new Uint32Array(source).forEach(val => {
                 target = target.concat('=')
-                    .concat(this.charToU64(val));
+                    .concat(this.uintToU64(val));
             });
 
             return target;
@@ -103,7 +103,7 @@
             var size = charArray.length;
             var buffer = new Uint32Array(size - 1);
             for (var i = 1; i < size; i++) {
-                buffer[i - 1] = this.u64ToChar(charArray[i]).charCodeAt(0);
+                buffer[i - 1] = this.u64ToUint(charArray[i]);
             }
 
             return buffer.buffer;
@@ -113,7 +113,7 @@
 
             for (var i in source) {
                 target = target.concat('=')
-                    .concat(this.charToU64(source.charCodeAt(i)));
+                    .concat(this.uintToU64(source.charCodeAt(i)));
             }
 
             return target;
@@ -130,7 +130,7 @@
 
             return target;
         },
-        charToU64: function (val) {
+        uintToU64: function (val) {
             var buf = '',
                 mask = 63;
             do {
@@ -144,10 +144,19 @@
             var len = 0,
                 val = 0;
             for (var i in u64) {
-                val += CHAR_MAP[u64[i]] << (len++ * 6);
+                val |= CHAR_MAP[u64[i]] << (len++ * 6);
             }
 
             return String.fromCharCode(val);
+        },
+        u64ToUint: function (u64) {
+            var len = 0,
+                val = 0;
+            for (var i in u64) {
+                val |= CHAR_MAP[u64[i]] << (len++ * 6);
+            }
+
+            return val;
         }
     };
 }(jQuery));
