@@ -38,6 +38,21 @@
             }
 
             $.crypto = {
+                /**
+                 * 
+                 * 
+                 * @param {*} key 
+                 * @param {*} format 'raw' for AES, 'pkcs8' for RSA private key, 'spki' for RSA public key
+                 * @param {*} algorithm 
+                 * @param {*} usage 
+                 */
+                importKeyAsync: function (key, format = 'raw', algorithm = 'AES-GCM', usage = ['encrypt', 'decrypt']) {
+                    return new Promise((resolve, reject) => {
+                        subtle.importKey(format, $.charUtil.u64ToByte(key), algorithm, true, usage)
+                            .then(importedKey => resolve(importedKey))
+                            .catch(err => reject(err));
+                    });
+                },
                 aesGenerateKeyAsync: function (name = 'AES-GCM', size = 256, usage = ['encrypt', 'decrypt']) {
                     return new Promise((resolve, reject) => {
                         subtle.generateKey({
@@ -48,13 +63,6 @@
                                 resolve($.charUtil.byteToU64(exportKey));
                             });
                         }).catch(err => reject(err));
-                    });
-                },
-                importKeyAsync: function (key, format = 'raw', name = 'AES-GCM', usage = ['encrypt', 'decrypt']) {
-                    return new Promise((resolve, reject) => {
-                        subtle.importKey(format, $.charUtil.u64ToByte(key), name, true, usage)
-                            .then(importedKey => resolve(importedKey))
-                            .catch(err => reject(err));
                     });
                 },
                 encryptAesGcmAsync: function (key, text, iv) {
@@ -81,6 +89,53 @@
                     return new Promise((resolve, reject) => {
                         subtle.decrypt(algorithm, key, new Uint8Array($.charUtil.u64ToByte(text)))
                             .then(decrypted => resolve($.charUtil.byteToText(new Uint8Array(decrypted))))
+                            .catch(err => reject(err));
+                    });
+                },
+                rsaGenerateKeyAsync: function (name = 'RSA-OAEP', size = 2048, usage = ['encrypt', 'decrypt']) {
+                    return new Promise((resolve, reject) => {
+                        subtle.generateKey({
+                            name: name,
+                            modulusLength: size,
+                            publicExponent: new Uint8Array([1, 0, 1]),
+                            hash: "SHA-256",
+                        }, true, usage).then(key => {
+                            subtle.exportKey('pkcs8', key.privateKey)
+                                .then(exportedPrivateKey => {
+                                    subtle.exportKey('spki', key.publicKey)
+                                        .then(exportedPublicKey => resolve({
+                                            privateKey: $.charUtil.byteToU64(exportedPrivateKey),
+                                            publicKey: $.charUtil.byteToU64(exportedPublicKey)
+                                        }))
+                                        .catch(err => reject(err));
+                                }).catch(err => reject(err));
+                        }).catch(err => reject(err));
+                    });
+                },
+                encryptRsaAsync: function (publicKey, text) {
+                    let algorithm = {
+                        name: 'RSA-OAEP'
+                    };
+                    return new Promise((resolve, reject) => {
+                        subtle.encrypt(algorithm, publicKey, new Uint8Array($.charUtil.textToByte(text)))
+                            .then(encrypted => resolve($.charUtil.byteToU64(encrypted)))
+                            .catch(err => reject(err));
+                    });
+                },
+                decryptRsaAsync: function (privateKey, text) {
+                    let algorithm = {
+                        name: 'RSA-OAEP'
+                    };
+                    return new Promise((resolve, reject) => {
+                        subtle.decrypt(algorithm, privateKey, new Uint8Array($.charUtil.u64ToByte(text)))
+                            .then(decrypted => resolve($.charUtil.byteToText(new Uint8Array(decrypted))))
+                            .catch(err => reject(err));
+                    });
+                },
+                digestAsync: function (text, algorithm = 'SHA-256') {
+                    return new Promise((resolve, reject) => {
+                        subtle.digest(algorithm, $.charUtil.textToByte(text))
+                            .then(digested => resolve($.charUtil.byteToU64(digested)))
                             .catch(err => reject(err));
                     });
                 }
