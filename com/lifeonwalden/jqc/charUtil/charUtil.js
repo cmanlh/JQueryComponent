@@ -86,30 +86,64 @@
     };
 
     $.charUtil = {
-        charToByte: function (text) {
-            return new TextEncoder(text).buffer;
+        textToByte: function (text) {
+            return new TextEncoder().encode(text).buffer;
+        },
+        byteToText: function (buffer) {
+            return new TextDecoder().decode(new Uint8Array(buffer));
         },
         byteToU64: function (buffer) {
             var target = '';
-
-            new Uint32Array(buffer).forEach(val => {
-                target = target.concat('=')
-                    .concat(this.uintToU64(val));
-            });
+            var leftBitLength = (buffer.byteLength * 8) % 32, uint32Count = Math.floor(buffer.byteLength / 4);
+            if (0 == leftBitLength) {
+                new Uint32Array(buffer).forEach(val => {
+                    target = target.concat('=')
+                        .concat(this.uintToU64(val));
+                });
+            } else {
+                target = target.concat('=-'.concat(uint32Count + 2));
+                if (uint32Count > 0) {
+                    new Uint32Array(buffer.slice(0, uint32Count * 4)).forEach(val => {
+                        target = target.concat('=')
+                            .concat(this.uintToU64(val));
+                    });
+                }
+                new Uint8Array(buffer.slice(uint32Count * 4)).forEach(val => {
+                    target = target.concat('=')
+                        .concat(this.uintToU64(val));
+                });
+            }
 
             return target;
         },
         u64ToByte: function (u64Text) {
-            var target = '';
-
             var charArray = u64Text.split('=');
-            var size = charArray.length;
-            var buffer = new Uint32Array(size - 1);
-            for (var i = 1; i < size; i++) {
-                buffer[i - 1] = this.u64ToUint(charArray[i]);
-            }
+            if (charArray[1].indexOf('-') > -1) {
+                let uint8Index = parseInt(charArray[1].substring(1));
 
-            return buffer.buffer;
+                let uint32Buffer = new Uint32Array(uint8Index - 2);
+                for (let i = 2; i < uint8Index; i++) {
+                    uint32Buffer[i - 2] = this.u64ToUint(charArray[i]);
+                }
+                let size = charArray.length;
+                let uint8Buffer = new Uint8Array(size - uint8Index);
+                for (let k = uint8Index; k < size; k++) {
+                    uint8Buffer[k - uint8Index] = this.u64ToUint(charArray[k]);
+                }
+                let buffer = new Uint8Array(new ArrayBuffer(uint32Buffer.length * 4 + uint8Buffer.length));
+                buffer.set(new Uint8Array(uint32Buffer.buffer));
+                buffer.set(uint8Buffer, uint32Buffer.length * 4);
+
+                return buffer.buffer;
+            } else {
+                let size = charArray.length;
+                let uint32Buffer = new Uint32Array(size - 1);
+                for (let i = 1; i < size; i++) {
+                    uint32Buffer[i - 1] = this.u64ToUint(charArray[i]);
+                }
+
+                return uint32Buffer.buffer;
+            }
         },
         textToU64: function (text) {
             var target = '';
@@ -146,7 +180,7 @@
         u64ToChar: function (u64) {
             var len = 0,
                 val = 0;
-            for (var i in u64) {
+            for (let i in u64) {
                 val |= CHAR_MAP[u64[i]] << (len++ * 6);
             }
 
@@ -155,7 +189,7 @@
         u64ToUint: function (u64) {
             var len = 0,
                 val = 0;
-            for (var i in u64) {
+            for (let i in u64) {
                 val |= CHAR_MAP[u64[i]] << (len++ * 6);
             }
 
