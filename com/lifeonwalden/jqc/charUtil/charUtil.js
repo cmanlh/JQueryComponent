@@ -86,20 +86,23 @@
     };
 
     $.charUtil = {
-        encodeArrayBuffer: function (source) {
+        charToByte: function (text) {
+            return new TextEncoder(text).buffer;
+        },
+        byteToU64: function (buffer) {
             var target = '';
 
-            new Uint32Array(source).forEach(val => {
+            new Uint32Array(buffer).forEach(val => {
                 target = target.concat('=')
                     .concat(this.uintToU64(val));
             });
 
             return target;
         },
-        decodeArrayBuffer: function (source) {
+        u64ToByte: function (u64Text) {
             var target = '';
 
-            var charArray = source.split('=');
+            var charArray = u64Text.split('=');
             var size = charArray.length;
             var buffer = new Uint32Array(size - 1);
             for (var i = 1; i < size; i++) {
@@ -108,20 +111,20 @@
 
             return buffer.buffer;
         },
-        encodeString: function (source) {
+        textToU64: function (text) {
             var target = '';
 
-            for (var i in source) {
+            for (var i in text) {
                 target = target.concat('=')
-                    .concat(this.uintToU64(source.charCodeAt(i)));
+                    .concat(this.uintToU64(text.charCodeAt(i)));
             }
 
             return target;
         },
-        decodeString: function (source) {
+        u64ToText: function (u64Text) {
             var target = '';
 
-            var charArray = source.split('=');
+            var charArray = u64Text.split('=');
             var size = charArray.length;
 
             for (var i = 1; i < size; i++) {
@@ -147,7 +150,7 @@
                 val |= CHAR_MAP[u64[i]] << (len++ * 6);
             }
 
-            return String.fromCharCode(val);
+            return String.fromCodePoint(val);
         },
         u64ToUint: function (u64) {
             var len = 0,

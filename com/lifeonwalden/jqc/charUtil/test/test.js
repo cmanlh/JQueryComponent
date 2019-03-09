@@ -7,9 +7,9 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
         $JqcLoader.importComponents('com.lifeonwalden.jqc', ['charUtil']).execute(function () {
             QUnit.test("String", function (assert) {
                 var source = "加密数据处理tools";
-                var _encodedString = $.charUtil.encodeString(source);
+                var _encodedString = $.charUtil.textToU64(source);
                 assert.equal(1, 1, _encodedString);
-                var _decodeString = $.charUtil.decodeString(_encodedString);
+                var _decodeString = $.charUtil.u64ToText(_encodedString);
                 assert.equal(_decodeString, source, _decodeString);
             });
 
@@ -17,9 +17,9 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 var source = new ArrayBuffer(20);
                 var view = new Uint32Array(source);
                 view.set([11101, 11102, 11103, 11104, 11105]);
-                var _encodedString = $.charUtil.encodeArrayBuffer(source);
+                var _encodedString = $.charUtil.byteToU64(source);
                 assert.equal(1, 1, _encodedString);
-                var _decodeArrayBuffer = $.charUtil.decodeArrayBuffer(_encodedString);
+                var _decodeArrayBuffer = $.charUtil.u64ToByte(_encodedString);
                 var target = '';
                 var decodeView = new Uint32Array(_decodeArrayBuffer);
                 assert.equal(decodeView.join(), view.join(), view.join());
