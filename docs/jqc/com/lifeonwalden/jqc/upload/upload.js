@@ -69,7 +69,7 @@
                 "xlt": "application/vnd.ms-excel",
                 "xlw": "application/vnd.ms-excel",
                 "xml": "text/xml, application/xml",
-                "zip": "aplication/zip"
+                "zip": "application/zip"
             };
 
             const defaultParams = {
