@@ -12,10 +12,12 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 el: $('.nav_box'),
                 data: [{
                     id: 'btn1',
-                    text: '处理中心'
+                    text: '处理中心',
+                    type: 'normal'
                 }, {
                     id: 'btn2',
                     text: '我的工作台',
+                    type: 'normal',
                     children: [{
                         id: 'btn2-1',
                         text: '选项1选项1选项1选项1选项1选项1选项1选项1'
