@@ -30,5 +30,20 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
                 element: $('input[name=floatNumber0000]'),
                 decimals: 4
             });
+
+            new $.jqcInputNumber({
+                element: $('input[name=font-family1]')
+            });
+            new $.jqcInputNumber({
+                element: $('input[name=font-family2]')
+            });
+            new $.jqcInputNumber({
+                element: $('input[name=intNumber_disabled]')
+            });
+            var flag = true;
+            $('.btn').click(function () {
+                flag = !flag;
+                $('#test').prop('disabled', flag);
+            });
         });
     });
