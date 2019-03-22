@@ -209,13 +209,14 @@
                 var _color = el.attr('suffix-color') || el.css('color');
                 var _weight = el.attr('suffix-weight') || el.css('font-weight');
                 var _family = el.attr('suffix-family') || el.css('font-family');
+                var _baseline = el.attr('suffix-baseline') || 'hanging';
                 var canvas = document.createElement('canvas');
                 canvas.width = _size * _suffix.length + 10;
                 canvas.height = _size;
                 var ctx = canvas.getContext('2d');
                 ctx.fillStyle = _color;
                 ctx.font = _weight+' '+_size+'px '+ _family;
-                ctx.textBaseline = 'top';
+                ctx.textBaseline = _baseline;
                 ctx.fillText(_suffix, 5, 0);
                 var suffix_png = canvas.toDataURL('image/png', 1.0);
                 el.css({
