@@ -313,7 +313,6 @@
             // 单文件上传
             $.jqcUpload.prototype.renderSlingleMode = function () {
                 var _this = this;
-                console.log('single');
                 this.input = createInput(this.accept);
                 this._input = $('<input>').attr('placeholder', this.placeholder).addClass('jqcUpload-file-name');
                 this.icon = $('<span>').addClass('el-icon-folder');
@@ -323,7 +322,6 @@
             // 多文件上传
             $.jqcUpload.prototype.renderMultipleMode = function () {
                 var _this = this;
-                console.log('multiple');
                 var header = $('<div>').addClass('jqcUpload-header');
                 this.input = createInput(this.accept, true);
                 var span = $('<span>').text(this.selectFilesText).addClass('jqcUpload-select-files');
