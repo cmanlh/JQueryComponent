@@ -18,9 +18,21 @@
     margin-right: 20px;
     border-radius: 2px;
 }
+.jqcNav-item.normal{
+    color: #444!important;
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+    line-height: 28px;
+}
 .jqcNav-item:hover,
 .jqcNav-item.hover {
     background: #D86065;
+}
+.jqcNav-item.normal:hover,
+.jqcNav-item.normal.hover {
+    background: #fff;
+    color: #C63136!important;
+    border: 1px solid #C63136;
 }
 .jqcNav-item.disabled{
     background: #ccc;
@@ -29,7 +41,12 @@
 .jqcNav-item.hasChildren.hover .jqcNav-icon-arrow{
     transform: scale(.8) rotate(180deg);
 }
-
+.normal .jqcNav-icon-arrow::before{
+    color: #444;
+}
+.normal:hover .jqcNav-icon-arrow::before{
+    color: #C63136;
+}
 .jqcNav-icon-arrow {
     margin: 0 0 0 8px!important;
     transform: scale(.8);

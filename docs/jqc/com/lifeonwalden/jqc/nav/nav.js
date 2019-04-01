@@ -46,6 +46,9 @@
                 this.el.append(this.container);
                 this.data.forEach(data => {
                     var $nav = $('<div>').addClass('jqcNav-item');
+                    if (typeof data.type == 'string') {
+                        $nav.addClass(data.type);
+                    }
                     var text = '';
                     if (typeof __label === 'string') {
                         text = data[__label];
@@ -83,10 +86,15 @@
                        var _height = $this.outerHeight();
                        var _width = $this.outerWidth();
                        var x = offset.left;
-                       var y = offset.top + _height + 4;
+                       var y = offset.top;
                        var sWidth = window.innerWidth;
                        if (x + 205 > sWidth) {
                            x = x - 204 + _width;
+                       }
+                       if (y + 164 >= window.innerHeight) {
+                           y = y - _height * data[__children].length - 4;
+                       } else {
+                           y = y + _height + 4;
                        }
                        renderSubNav.call(_this, data[__children], x, y, $this[0]);
                     }
