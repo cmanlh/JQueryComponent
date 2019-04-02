@@ -20,6 +20,7 @@
     $JqcLoader.importComponents('com.lifeonwalden.jqc', ['charUtil'])
         .execute(function () {
             var subtle = window.crypto.subtle;
+
             function ivPreprocess(iv) {
                 let _iv = iv;
                 if (null == _iv || (null == _iv.byteBuffer && null == _iv.text)) {
@@ -73,10 +74,14 @@
                     };
                     return new Promise((resolve, reject) => {
                         subtle.encrypt(algorithm, key, new Uint8Array($.charUtil.textToByte(text)))
-                            .then(encrypted => resolve({
-                                text: $.charUtil.byteToU64(encrypted),
-                                iv: _iv
-                            }))
+                            .then(encrypted => {
+                                let removedPadding = encrypted;
+                                console.log(new Int8Array(encrypted).join());
+                                resolve({
+                                    text: $.charUtil.byteToU64(removedPadding),
+                                    iv: _iv
+                                })
+                            })
                             .catch(err => reject(err));
                     });
                 },
