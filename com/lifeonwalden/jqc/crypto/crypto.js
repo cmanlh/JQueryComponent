@@ -25,7 +25,7 @@
                 let _iv = iv;
                 if (null == _iv || (null == _iv.byteBuffer && null == _iv.text)) {
                     _iv = {};
-                    var buffer = new Uint8Array(12);
+                    var buffer = new Uint8Array(16);
                     window.crypto.getRandomValues(buffer);
                     _iv.byteBuffer = buffer.buffer;
                     _iv.text = $.charUtil.byteToU64(_iv.byteBuffer);
