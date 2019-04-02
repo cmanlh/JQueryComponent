@@ -4,14 +4,37 @@
 <head>
     <meta charset="utf-8">
     <title>QUnit InputNumber</title>
+    <style>
+        input{
+            margin: 0;
+            padding: 0;
+            font-size: 12px;
+        }
+        input:disabled{
+            color: red;
+        }
+        #type1 {
+            font-family: '黑体';
+        }
+        #type2 {
+            font-family: '宋体';
+        }
+    </style>
 </head>
 
 <body>
-    <label>整数</label><input type="text" name="intNumber"><br>
-    <label>浮点数 000.0</label><input type="text" name="floatNumber0" decimal="1"><br>
+    <label>整数</label><input type="text" name="intNumber" suffix="万元"><br>
+    <label>浮点数 000.0</label><input type="text" name="floatNumber0" decimal="1" suffix="元"><br>
     <label>浮点数 000.00</label><input type="text" name="floatNumber00" decimal="2"><br>
     <label>浮点数 000.000</label><input type="text" name="floatNumber000" decimal="3"><br>
     <label>浮点数 000.0000</label><input type="text" name="floatNumber0000" decimal="4"><br>
+    <div>
+        <label>disabled</label><input type="text" name="intNumber_disabled" id="test" disabled value="123456" suffix="测试"><br>
+        <button class="btn">切换disabled</button>
+    </div>
+    
+    <label>继承input字体</label><input type="text" name="font-family1" id="type1" decimal="4" suffix="黑体"><br>
+    <label>继承input字体</label><input type="text" name="font-family2" id="type2" decimal="4" suffix="宋体"><br>
     <script src="../../loader/loader.js"></script>
     <script src="test.js"></script>
 </body>

@@ -26,4 +26,5 @@ $JqcLoader.registerModule($JqcLoader.newModule('com.lifeonwalden.jqc', 'jqc/')
     .registerComponents(['upload'])
     .registerComponents(['checkbox'])
     .registerComponents(['nav'])
+    .registerComponents(['textarea'])
     .registerComponents(['msg']));

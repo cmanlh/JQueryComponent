@@ -307,6 +307,11 @@
                 if (that.options.afterOpen) {
                     that.options.afterOpen();
                 }
+                $(document).on('keyup.esc', function (e) {
+                    if (e.keyCode == 27) {
+                        that.close();
+                    }
+                });
             };
 
             $.jqcDialog.prototype.close = function (param) {
@@ -325,6 +330,7 @@
                 if (that.options.afterClose) {
                     that.options.afterClose();
                 }
+                $(document).off('keyup.esc');
             };
 
             $.jqcDialog.prototype.minimize = function (param) {
