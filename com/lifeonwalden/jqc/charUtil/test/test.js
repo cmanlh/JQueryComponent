@@ -15,14 +15,19 @@ $JqcLoader.importScript('../../../../../qunit/jquery-3.1.1.js')
 
             QUnit.test("ArrayBuffer", function (assert) {
                 var source = new ArrayBuffer(20);
-                var view = new Uint32Array(source);
-                view.set([11101, 11102, 11103, 11104, 11105]);
+                var view = new DataView(source);
+                view.setUint32(0, 11101);
+                view.setUint32(4, 11102);
+                view.setUint32(8, 11103);
+                view.setUint32(12, 11104);
+                view.setUint32(16, 11105);
+
                 var _encodedString = $.charUtil.byteToU64(source);
                 assert.equal(1, 1, _encodedString);
                 var _decodeArrayBuffer = $.charUtil.u64ToByte(_encodedString);
                 var target = '';
                 var decodeView = new Uint32Array(_decodeArrayBuffer);
-                assert.equal(decodeView.join(), view.join(), view.join());
+                assert.equal(decodeView.join(), (new Uint32Array(source)).join(), (new Uint32Array(source)).join());
             });
         });
     });
