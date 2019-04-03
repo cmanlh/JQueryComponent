@@ -95,6 +95,27 @@
                     }
                     setupFormatProcessor(that);
                 });
+                // 添加后缀
+                if (this.el.attr('suffix')) {
+                    Object.defineProperty(this.input, 'disabled', {
+                        get() {
+                            if (this._disabled === undefined) {
+                                return false;
+                            }
+                            return this._disabled;
+                        },
+                        set(val) {
+                            this._disabled = val;
+                            if (val) {
+                                this.setAttribute('disabled', '');
+                            } else {
+                                this.removeAttribute('disabled')
+                            }
+                            _suffix(that.el);
+                        }
+                    });
+                    _suffix(this.el);
+                }              
             }
 
             function setupFormatProcessor(that) {
@@ -178,6 +199,34 @@
                 }
 
                 return correctedPosition;
+            }
+            function _suffix(el) {
+                var _suffix = el.attr('suffix');
+                if (!_suffix || _suffix.length == 0) {
+                    return;
+                }
+                var _size = el.attr('suffix-size') || parseInt(el.css('font-size'));
+                var _color = el.attr('suffix-color') || el.css('color');
+                var _weight = el.attr('suffix-weight') || el.css('font-weight');
+                var _family = el.attr('suffix-family') || el.css('font-family');
+                var _baseline = el.attr('suffix-baseline') || 'hanging';
+                var canvas = document.createElement('canvas');
+                canvas.width = _size * _suffix.length + 10;
+                canvas.height = _size;
+                var ctx = canvas.getContext('2d');
+                ctx.fillStyle = _color;
+                ctx.font = _weight+' '+_size+'px '+ _family;
+                ctx.textBaseline = _baseline;
+                ctx.fillText(_suffix, 5, 0);
+                var suffix_png = canvas.toDataURL('image/png', 1.0);
+                el.css({
+                    'background-image': 'url(' + suffix_png + ')',
+                    'background-size': 'auto',
+                    'background-position': 'right center',
+                    'background-repeat': 'no-repeat',
+                    'padding-right': canvas.width,
+                    'box-sizing': 'border-box'
+                });
             }
 
             $.jqcInputNumber.prototype = new $.jqcBaseElement();

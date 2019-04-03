@@ -32,7 +32,7 @@
     $.jqcZindex.notification = 400;
     $.jqcZindex.waiting = 500;
     $.jqcZindex.notification = 550;
-    $.jqcZindex.loading = 600;
+    $.jqcZindex.loading = 10000;
 
     var popupZindexStack = [];
     $.jqcZindex.popupMgr = {

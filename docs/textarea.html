@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="jQuery Component : 基于jQuery的组件库">
+    <style>
+        section>div>input {
+            padding: 8px 8px;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+        }
+        .div1{
+            line-height: 36px;
+        }
+        label{
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .jqcTag-container > p{
+            text-indent: 0;
+        }
+    </style>
+    <title>textarea - jQuery Component</title>
+</head>
+
+<body>
+    <div class="catalog">
+        <a href="index.html">主目录 >>></a>
+    </div>
+    <div class="title">textarea</div>
+    <section>
+        <div class="sectionTitle">功能</div>
+        <ul>
+            <li>拓展原生textarea</li>
+            <li>自适应铺满屏幕</li>
+            <li>增加可输入量</li>
+        </ul>
+    </section>
+    <section>
+        <div class="sectionTitle">参数</div>
+        <table cellspacing="0" border="1" borderColor="#e5e5e5" style="margin-top:5px;">
+            <tr>
+                <th width="64px">参数</th>
+                <th width="128px">参数类型</th>
+                <th width="64px">是否必须</th>
+                <th width="256px">可选值</th>
+                <th width="64px">默认值</th>
+                <th>说明</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>el</td>
+                    <td>jQuery Object（input,textarea）</td>
+                    <td>yes</td>
+                    <td></td>
+                    <td></td>
+                    <td>需要拓展的input或textarea对象</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>编辑</td>
+                    <td>弹框title</td>
+                </tr>
+                <tr>
+                    <td>placeholder</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>请输入内容...</td>
+                    <td>placeholder</td>
+                </tr>
+                <tr>
+                    <td>cancelBtnText</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>取消</td>
+                    <td>取消按钮文案</td>
+                </tr>
+                <tr>
+                    <td>saveBtnText</td>
+                    <td>String</td>
+                    <td></td>
+                    <td></td>
+                    <td>保存</td>
+                    <td>保存按钮文案</td>
+                </tr>
+                <tr>
+                    <td>closeByModal</td>
+                    <td>Boolean</td>
+                    <td></td>
+                    <td></td>
+                    <td>false</td>
+                    <td>是否可以通过点击modal关闭输入框</td>
+                </tr>
+                <tr>
+                    <td>beforeSave</td>
+                    <td>Function</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>保存之前回调，参数(value, next)next表示下一步即保存并关闭输入框</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <div class="sectionTitle">示例</div>
+        <section>
+            <div class="exampleTitle">正常示例</div>
+            <textarea id="textarea1"></textarea>
+            <pre class="prettyprint linenums">
+new $.jqcTextarea({
+    el: $('#textarea1')
+});
+        </pre>
+        </section>
+        <section>
+            <div class="exampleTitle">异步保存</div>
+            <textarea id="textarea2" off></textarea>
+            <pre class="prettyprint linenums">
+var loading = new $.jqcLoading();
+
+new $.jqcTextarea({
+    el: $('#textarea2'),
+    beforeSave: function (value, next) {
+        loading.show('保存中，2秒后关闭...');
+        setTimeout(() => {
+            loading.hide();
+            next();
+        }, 2000);
+    }
+});
+        </pre>
+        </section>
+    </section>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="jqc/com/lifeonwalden/jqc/loader/loader.js"></script>
+    <script src="exampleJs/config.js"></script>
+    <script src="exampleJs/textarea.js"></script>
+</body>
+
+</html>
