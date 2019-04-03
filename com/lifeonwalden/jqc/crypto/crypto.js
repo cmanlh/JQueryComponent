@@ -76,14 +76,12 @@
                     };
                     return new Promise((resolve, reject) => {
                         subtle.encrypt(algorithm, key, new Uint8Array($.charUtil.textToByte(text)))
-                            .then(encrypted => {
-                                let removedPadding = encrypted;
-                                console.log(new Int8Array(encrypted).join());
+                            .then(encrypted =>
                                 resolve({
-                                    text: $.charUtil.byteToU64(removedPadding),
+                                    text: $.charUtil.byteToU64(encrypted),
                                     iv: _iv
                                 })
-                            })
+                            )
                             .catch(err => reject(err));
                     });
                 },
@@ -139,7 +137,7 @@
                             .catch(err => reject(err));
                     });
                 },
-                digestAsync: function (text, algorithm = 'SHA-256') {
+                digestAsync: function (text, algorithm = 'SHA-512') {
                     return new Promise((resolve, reject) => {
                         subtle.digest(algorithm, $.charUtil.textToByte(text))
                             .then(digested => resolve($.charUtil.byteToU64(digested)))
